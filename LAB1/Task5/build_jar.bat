@@ -1,0 +1,1 @@
+jar --create --file MyFirstProgram.jar --manifest manifest.mf MyFirstClass.class myfirstpackage/MySecondClass.class
