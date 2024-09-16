@@ -4,8 +4,7 @@ public class CompositeFunction implements MathFunction {
 
     private final MathFunction firstFunction;
     private final MathFunction secondFunction;
-
-    CompositeFunction(MathFunction outer, MathFunction inner) {
+    public CompositeFunction(MathFunction outer, MathFunction inner) {
         this.firstFunction = outer;
         this.secondFunction = inner;
     }
