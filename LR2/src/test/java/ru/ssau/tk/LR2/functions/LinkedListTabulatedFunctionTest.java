@@ -18,19 +18,30 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
     public void testApply() {
         LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(new double[]{0.0, 1.0, 2.0, 3.0}, new double[]{1.0, 0.0, 2.0, -1.0});
 
-        assertEquals(func.apply(0.0), 1.0);
-        assertEquals(func.apply(0.5), 0.5);
-        assertEquals(func.apply(1.0), 0.0);
-        assertEquals(func.apply(1.5), 1.0);
-        assertEquals(func.apply(2.0), 2.0);
-        assertEquals(func.apply(3.0), -1.0);
-        assertEquals(func.apply(-1.0), 2.0);
-        assertEquals(func.apply(4.0), -4.0);
+        assertEquals(4, func.getCount());
+        assertEquals(0.0, func.getX(0));
+        assertEquals(1.0, func.getY(0));
+        assertEquals(3, func.indexOfX(3.0));
+        assertEquals(2, func.indexOfY(2.0));
+        assertEquals(2, func.floorIndexOfX(2.5));
+        assertEquals(0.0, func.leftBound());
+        assertEquals(3.0, func.rightBound());
+
+        assertEquals(1.0, func.apply(0.0));
+        assertEquals(0.5, func.apply(0.5));
+        assertEquals(0.0, func.apply(1.0));
+        assertEquals(1.0, func.apply(1.5));
+        assertEquals(2.0, func.apply(2.0));
+        assertEquals(-1.0, func.apply(3.0));
+        assertEquals(2.0, func.apply(-1.0));
+        assertEquals(-4.0, func.apply(4.0));
 
         LinkedListTabulatedFunction func2 = new LinkedListTabulatedFunction(new SqrFunction(), 1.0, 4.0, 100);
 
-        assertEquals(func2.apply(1.0), 1.0);
-        assertTrue(Math.abs(func2.apply(2.0) - 4.0) < 1e-3);
-        assertEquals(func2.apply(4.0), 16.0);
+        assertEquals(101, func2.getCount());
+
+        assertEquals(1.0, func2.apply(1.0));
+        assertEquals(4.0, func2.apply(2.0), 1e-3);
+        assertEquals(16.0, func2.apply(4.0));
     }
 }

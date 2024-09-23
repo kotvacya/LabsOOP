@@ -1,8 +1,10 @@
 package ru.ssau.tk.LR2.functions;
 
+
+
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
 
-    static class Node {
+    static protected class Node {
         Node next = null, prev = null;
         double x, y;
         public Node(double x, double y){
@@ -62,8 +64,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     protected int floorIndexOfX(double x) {
         Node node = head;
         for(int i = 0; i < count; i++){
-            if(x < node.x) return i;
             node = node.next;
+            if(x < node.x) return i;
         }
         return 0;
     }
@@ -75,7 +77,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         double x1 = head.next.x;
         double y0 = head.y;
         double y1 = head.next.y;
-        return (x-x0)*(y1-y0)/(x1-x0) + y0;
+        return interpolate(x, x0, x1, y0, y1);
     }
 
     @Override
@@ -85,24 +87,21 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
         double x1 = head.prev.x;
         double y0 = head.prev.prev.y;
         double y1 = head.prev.y;
-        return (x-x0)*(y1-y0)/(x1-x0) + y0;
+        return interpolate(x, x0, x1, y0, y1);
     }
 
     @Override
     protected double interpolate(double x, int floorIndex) {
-        Node node = head;
-        double x0 = head.x;
-        double y0 = head.y;
+        Node node = getNode(floorIndex);
+        return interpolate(x, node);
+    }
 
-        for(int i = 0; i < count; i++){
-            double x1 = node.x;
-            double y1 = node.y;
-            if(x < node.x) return (x-x0)*(y1-y0)/(x1-x0) + y0;
-            x0 = x1;
-            y0 = y1;
-            node = node.next;
-        }
-        return 0.0;
+    protected double interpolate(double x, Node node) {
+        double x0 = node.x;
+        double y0 = node.y;
+        double x1 = node.next.x;
+        double y1 = node.next.y;
+        return interpolate(x, x0, x1, y0, y1);
     }
 
     @Override
@@ -153,5 +152,25 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction {
     @Override
     public double rightBound() {
         return head.prev.x;
+    }
+
+    private Node floorNodeOfX(double x){
+        Node node = head;
+        for(int i = 0; i < count; i++){
+            if(x < node.next.x) return node;
+            node = node.next;
+        }
+        return head;
+    }
+
+    @Override
+    public double apply(double x) {
+        if (x < leftBound()) return extrapolateLeft(x);
+        else if (x > rightBound()) return extrapolateRight(x);
+        else if (indexOfX(x) == -1) {
+            Node node = floorNodeOfX(x);
+            return interpolate(x, node);
+        }
+        return getY(indexOfX(x));
     }
 }

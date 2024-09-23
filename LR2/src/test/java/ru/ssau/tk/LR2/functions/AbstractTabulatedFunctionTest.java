@@ -26,19 +26,17 @@ class MockTabulatedFunction extends AbstractTabulatedFunction {
     // y = (x-x0)*(y1-y0)/(x1-x0) + y0
     @Override
     protected double extrapolateLeft(double x) {
-        return (x-x0)*(y1-y0)/(x1-x0) + y0;
+        return interpolate(x, x0, x1, y0, y1);
     }
 
     @Override
     protected double extrapolateRight(double x) {
-        return (x-x0)*(y1-y0)/(x1-x0) + y0;
+        return interpolate(x, x0, x1, y0, y1);
     }
 
     @Override
     protected double interpolate(double x, int floorIndex) {
-        double xs = (floorIndex != 0) ? x1 : x0;
-        double ys = (floorIndex != 0) ? y1 : y0;
-        return (x-xs)*(y1-y0)/(x1-x0) + ys;
+        return interpolate(x, x0, x1, y0, y1);
     }
 
     @Override
