@@ -51,9 +51,9 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
         assertEquals(func.getCount() - 1, func.indexOfY(54.0));
 
         func.remove(0);
-        func.remove(0);
+        func.remove(func.getCount()-1);
         assertEquals(5, func.getCount());
-        assertEquals(0.0, func.leftBound());
+        assertEquals(-0.5, func.leftBound());
         assertEquals(-1, func.indexOfY(52.0));
     }
 
