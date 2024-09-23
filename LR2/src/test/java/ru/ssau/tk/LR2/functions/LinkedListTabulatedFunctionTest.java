@@ -5,19 +5,13 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 public class LinkedListTabulatedFunctionTest extends TestCase {
-    public LinkedListTabulatedFunctionTest( String testName )
-    {
-        super( testName );
-    }
 
-    public static Test suite()
-    {
-        return new TestSuite( LinkedListTabulatedFunctionTest.class );
-    }
+    LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
+            new double[]{0.0, 1.0, 2.0, 3.0},
+            new double[]{1.0, 0.0, 2.0, -1.0}
+    );
 
     public void testApply() {
-        LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(new double[]{0.0, 1.0, 2.0, 3.0}, new double[]{1.0, 0.0, 2.0, -1.0});
-
         assertEquals(4, func.getCount());
         assertEquals(0.0, func.getX(0));
         assertEquals(1.0, func.getY(0));
@@ -43,5 +37,25 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
         assertEquals(1.0, func2.apply(1.0));
         assertEquals(4.0, func2.apply(2.0), 1e-3);
         assertEquals(16.0, func2.apply(4.0));
+    }
+
+    public void testInsert() {
+        func.insert(-1.0, 52.0);
+        assertEquals(52.0, func.getY(0));
+        assertEquals(0, func.indexOfY(52.0));
+        func.insert(-0.5, 53.0);
+        assertEquals(53.0, func.getY(1));
+        assertEquals(1, func.indexOfY(53.0));
+        func.insert(5.0, 54.0);
+        assertEquals(54.0, func.getY(func.getCount() - 1));
+        assertEquals(func.getCount() - 1, func.indexOfY(54.0));
+    }
+
+    public LinkedListTabulatedFunctionTest(String testName) {
+        super(testName);
+    }
+
+    public static Test suite() {
+        return new TestSuite(LinkedListTabulatedFunctionTest.class);
     }
 }
