@@ -15,9 +15,9 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
 
     @Override
     public double apply(double x) {
-        if (x < leftBound()) extrapolateLeft(x);
-        else if (x > leftBound()) extrapolateRight(x);
-        else if (indexOfX(x) == -1) interpolate(x, floorIndexOfX(x));
+        if (x < leftBound()) return extrapolateLeft(x);
+        else if (x > leftBound()) return extrapolateRight(x);
+        else if (indexOfX(x) == -1) return interpolate(x, floorIndexOfX(x));
         return getY(indexOfX(x));
     }
 }
