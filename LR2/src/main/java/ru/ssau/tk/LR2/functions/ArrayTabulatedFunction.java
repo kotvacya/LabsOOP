@@ -3,11 +3,11 @@ package ru.ssau.tk.LR2.functions;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable {
 
-    public double[] xValues;
-    public double[] yValues;
-    public int count;
+    private double[] xValues;
+    private double[] yValues;
+    private int count;
 
     ArrayTabulatedFunction(double[] xValues, double[] yValues) {
         this.count = xValues.length;
@@ -122,5 +122,40 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction {
         double rightX = xValues[floorIndex + 1];
         double leftX = xValues[floorIndex];
         return interpolate(x, leftX, rightX, leftY, rightY);
+    }
+
+    @Override
+    public void insert(double x, double y) {
+        int ix = indexOfX(x);
+        if(indexOfX(x) != -1){
+            setY(ix, y);
+        }else{
+            double[] new_xvalues = new double[count+1];
+            double[] new_yvalues = new double[count+1];
+
+            if(x < leftBound()){
+                new_xvalues[0] = x;
+                new_yvalues[0] = y;
+
+                System.arraycopy(xValues, 0, new_xvalues, 1, count);
+                System.arraycopy(yValues, 0, new_yvalues, 1, count);
+
+            }else {
+                int fix = floorIndexOfX(x);
+                System.arraycopy(xValues, 0, new_xvalues, 0, fix + 1);
+                System.arraycopy(yValues, 0, new_yvalues, 0, fix + 1);
+
+                new_xvalues[fix + 1] = x;
+                new_yvalues[fix + 1] = y;
+
+                System.arraycopy(xValues, fix+1, new_xvalues, fix + 2, count - fix - 1);
+                System.arraycopy(yValues, fix+1, new_yvalues, fix + 2, count - fix - 1);
+            }
+
+            xValues = new_xvalues;
+            yValues = new_yvalues;
+
+            count++;
+        }
     }
 }

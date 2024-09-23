@@ -87,6 +87,24 @@ public class ArrayTabulatedFunctionTest extends TestCase {
         assertEquals(-10.0, atf3.getY(2));
     }
 
+    public void testInsertable(){
+        ArrayTabulatedFunction arrtabf = new ArrayTabulatedFunction(new double[]{1.0, 2.0, 4.0}, new double[]{1.0, 2.0, 2.0});
+        arrtabf.insert(3.0, 1.0);
+
+        assertEquals(4, arrtabf.getCount());
+        assertEquals(1.0, arrtabf.apply(3.0));
+
+        arrtabf.insert(0.0, 2.0);
+
+        assertEquals(5, arrtabf.getCount());
+        assertEquals(2.0, arrtabf.apply(0.0));
+
+        arrtabf.insert(5.0, 1.0);
+
+        assertEquals(6, arrtabf.getCount());
+        assertEquals(1.0, arrtabf.apply(5.0));
+    }
+
     public ArrayTabulatedFunctionTest(String testName) {
         super(testName);
     }
