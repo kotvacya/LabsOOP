@@ -6,18 +6,15 @@ import junit.framework.TestSuite;
 
 public class IdentityFunctionTest extends TestCase {
 
-    public IdentityFunctionTest( String testName )
-    {
-        super( testName );
+    public IdentityFunctionTest(String testName) {
+        super(testName);
     }
 
-    public static Test suite()
-    {
-        return new TestSuite( IdentityFunctionTest.class );
+    public static Test suite() {
+        return new TestSuite(IdentityFunctionTest.class);
     }
 
-    public void testApply()
-    {
+    public void testApply() {
         IdentityFunction func = new IdentityFunction();
 
         assertEquals(0.0, func.apply(0.0));

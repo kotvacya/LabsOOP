@@ -6,18 +6,15 @@ import junit.framework.TestSuite;
 
 public class NewtonsMethodFunctionTest extends TestCase {
 
-    public NewtonsMethodFunctionTest( String testName )
-    {
-        super( testName );
+    public NewtonsMethodFunctionTest(String testName) {
+        super(testName);
     }
 
-    public static Test suite()
-    {
-        return new TestSuite( NewtonsMethodFunctionTest.class );
+    public static Test suite() {
+        return new TestSuite(NewtonsMethodFunctionTest.class);
     }
 
-    public void testApply()
-    {
+    public void testApply() {
         final double PRECISION = 1e-9;
 
         MathFunction sin = new MathFunction() {

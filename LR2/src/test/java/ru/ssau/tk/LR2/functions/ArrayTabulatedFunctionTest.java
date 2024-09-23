@@ -108,7 +108,7 @@ public class ArrayTabulatedFunctionTest extends TestCase {
                 new double[]{0.0, 1.0, 2.0, 3.0, 5.0},
                 new double[]{0.0, 10.0, 20.0, 30.0, 50.0}
         );
-        
+
         atf.remove(0);
         assertEquals(4, atf.getCount());
         assertEquals(0.0, atf.apply(0.0));

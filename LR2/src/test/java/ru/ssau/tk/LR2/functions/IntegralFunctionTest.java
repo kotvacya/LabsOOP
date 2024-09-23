@@ -15,7 +15,7 @@ public class IntegralFunctionTest extends TestCase {
 
         SqrFunction sr = new SqrFunction();
         IntegralFunction inf2 = new IntegralFunction(sr, 0.0, 1.0, 1e-8);
-        assertTrue(Math.abs(1.0/3 - inf2.apply(0)) < 0.01);
+        assertTrue(Math.abs(1.0 / 3 - inf2.apply(0)) < 0.01);
 
     }
 

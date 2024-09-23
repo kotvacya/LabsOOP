@@ -29,13 +29,13 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     @Override
     public void remove(int index) {
-        if(count == 1){
+        if (count == 1) {
             count = 0;
             head = null;
             return;
         }
 
-        if(index == 0){
+        if (index == 0) {
             head = head.next;
         }
 
