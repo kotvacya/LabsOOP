@@ -1,6 +1,8 @@
 package ru.ssau.tk.LR2.functions;
 
+import junit.framework.Test;
 import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 public class ArrayTabulatedFunctionTest extends TestCase {
 
@@ -83,5 +85,13 @@ public class ArrayTabulatedFunctionTest extends TestCase {
         assertEquals(10.0, atf1.getY(0));
         assertEquals(0.0, atf2.getY(1));
         assertEquals(-10.0, atf3.getY(2));
+    }
+
+    public ArrayTabulatedFunctionTest(String testName) {
+        super(testName);
+    }
+
+    public static Test suite() {
+        return new TestSuite(ArrayTabulatedFunctionTest.class);
     }
 }
