@@ -87,24 +87,39 @@ public class ArrayTabulatedFunctionTest extends TestCase {
         assertEquals(-10.0, atf3.getY(2));
     }
 
-    public void testInsertable(){
-        ArrayTabulatedFunction arrtabf = new ArrayTabulatedFunction(new double[]{1.0, 2.0, 4.0}, new double[]{1.0, 2.0, 2.0});
-        arrtabf.insert(3.0, 1.0);
+    public void testInsertable() {
+        ArrayTabulatedFunction atf = new ArrayTabulatedFunction(new double[]{1.0, 2.0, 4.0}, new double[]{1.0, 2.0, 2.0});
 
-        assertEquals(4, arrtabf.getCount());
-        assertEquals(1.0, arrtabf.apply(3.0));
+        atf.insert(3.0, 1.0);
+        assertEquals(4, atf.getCount());
+        assertEquals(1.0, atf.apply(3.0));
 
-        arrtabf.insert(0.0, 2.0);
+        atf.insert(0.0, 2.0);
+        assertEquals(5, atf.getCount());
+        assertEquals(2.0, atf.apply(0.0));
 
-        assertEquals(5, arrtabf.getCount());
-        assertEquals(2.0, arrtabf.apply(0.0));
+        atf.insert(5.0, 1.0);
+        assertEquals(6, atf.getCount());
+        assertEquals(1.0, atf.apply(5.0));
+    }
 
-        arrtabf.insert(5.0, 1.0);
+    public void testRemovable() {
+        ArrayTabulatedFunction atf = new ArrayTabulatedFunction(
+                new double[]{0.0, 1.0, 2.0, 3.0, 5.0},
+                new double[]{0.0, 10.0, 20.0, 30.0, 50.0}
+        );
+        
+        atf.remove(0);
+        assertEquals(4, atf.getCount());
+        assertEquals(0.0, atf.apply(0.0));
 
-        assertEquals(6, arrtabf.getCount());
-        assertEquals(1.0, arrtabf.apply(5.0));
+        atf.remove(3);
+        assertEquals(3, atf.getCount());
+        assertEquals(50.0, atf.apply(5.0));
 
-
+        atf.remove(1);
+        assertEquals(2, atf.getCount());
+        assertEquals(30.0, atf.apply(3.0));
     }
 
     public ArrayTabulatedFunctionTest(String testName) {
