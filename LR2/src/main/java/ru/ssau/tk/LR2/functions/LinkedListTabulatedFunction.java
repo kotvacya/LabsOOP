@@ -1,7 +1,7 @@
 package ru.ssau.tk.LR2.functions;
 
 
-public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable {
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
 
     @Override
     public void insert(double x, double y) {
@@ -16,7 +16,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
                 head = new_node;
             } else {
                 Node fnx = floorNodeOfX(x);
-                System.out.println(fnx.x);
                 new_node.next = fnx.next;
                 new_node.prev = fnx;
                 fnx.next.prev = new_node;
@@ -26,6 +25,25 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             setY(indexOfX(x), y);
         }
         count++;
+    }
+
+    @Override
+    public void remove(int index) {
+        if(count == 1){
+            count = 0;
+            head = null;
+            return;
+        }
+
+        if(index == 0){
+            head = head.next;
+        }
+
+        Node node = getNode(index);
+        node.next.prev = node.prev;
+        node.prev.next = node.next;
+
+        count--;
     }
 
     static protected class Node {

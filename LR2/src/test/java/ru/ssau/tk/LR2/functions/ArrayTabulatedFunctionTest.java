@@ -103,6 +103,8 @@ public class ArrayTabulatedFunctionTest extends TestCase {
 
         assertEquals(6, arrtabf.getCount());
         assertEquals(1.0, arrtabf.apply(5.0));
+
+
     }
 
     public ArrayTabulatedFunctionTest(String testName) {

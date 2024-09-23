@@ -39,7 +39,7 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
         assertEquals(16.0, func2.apply(4.0));
     }
 
-    public void testInsert() {
+    public void testInsertRemove() {
         func.insert(-1.0, 52.0);
         assertEquals(52.0, func.getY(0));
         assertEquals(0, func.indexOfY(52.0));
@@ -49,6 +49,12 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
         func.insert(5.0, 54.0);
         assertEquals(54.0, func.getY(func.getCount() - 1));
         assertEquals(func.getCount() - 1, func.indexOfY(54.0));
+
+        func.remove(0);
+        func.remove(0);
+        assertEquals(5, func.getCount());
+        assertEquals(0.0, func.leftBound());
+        assertEquals(-1, func.indexOfY(52.0));
     }
 
     public LinkedListTabulatedFunctionTest(String testName) {
