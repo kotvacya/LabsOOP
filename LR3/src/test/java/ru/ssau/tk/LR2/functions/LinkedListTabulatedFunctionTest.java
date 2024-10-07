@@ -4,8 +4,19 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.junit.jupiter.api.Assertions;
+import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
+import ru.ssau.tk.LR2.exceptions.DifferentLengthOfArraysException;
 
 public class LinkedListTabulatedFunctionTest extends TestCase {
+
+    public void testConstructor() {
+        MathFunction mf1 = new IdentityFunction();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(mf1, 1, 10, 1));
+        Assertions.assertThrows(DifferentLengthOfArraysException.class, () -> new ArrayTabulatedFunction(new double[]{1, 2}, new double[]{1, 2, 3}));
+        Assertions.assertThrows(DifferentLengthOfArraysException.class, () -> new ArrayTabulatedFunction(new double[]{0, 0}, new double[]{}));
+        Assertions.assertThrows(ArrayIsNotSortedException.class, () -> new ArrayTabulatedFunction(new double[]{1, 3, 2}, new double[]{1 ,2, 3}));
+        Assertions.assertThrows(ArrayIsNotSortedException.class, () -> new ArrayTabulatedFunction(new double[]{2, 1}, new double[]{1, 2}));
+    }
 
     public void testApply() {
         LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
