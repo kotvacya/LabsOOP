@@ -2,24 +2,28 @@ package ru.ssau.tk.LR2.functions;
 
 public class IntegralFunction implements MathFunction {
 
-    private double result;
+    final private MathFunction mf;
+    final private double start, end;
 
-    IntegralFunction(MathFunction mf, double a, double b, double precision) {
-        result = mf.apply(a) * (b - a);
+    IntegralFunction(MathFunction mf, double a, double b) {
+        this.mf = mf;
+        start = a;
+        end = b;
+    }
+
+    @Override
+    public double apply(double precision) {
+        double result = mf.apply(start) * (end - start);
         double old;
         long n = 2;
         do {
             old = result;
             result = 0;
             for (long i = 0; i < n; i++) {
-                result += mf.apply(a + i * (b - a) / n) * (b - a) / n;
+                result += mf.apply(start + i * (end - start) / n) * (end - start) / n;
             }
             n++;
         } while (Math.abs(result - old) >= precision);
-    }
-
-    @Override
-    public double apply(double x) {
         return result;
     }
 }
