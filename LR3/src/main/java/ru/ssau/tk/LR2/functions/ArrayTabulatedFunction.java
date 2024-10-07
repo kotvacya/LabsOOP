@@ -186,9 +186,4 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         }
         count--;
     }
-
-    @Override
-    public Iterator<Point> iterator() {
-        throw new UnsupportedOperationException();
-    }
 }

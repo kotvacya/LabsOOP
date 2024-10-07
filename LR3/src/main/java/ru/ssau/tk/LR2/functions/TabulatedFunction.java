@@ -20,5 +20,7 @@ public interface TabulatedFunction extends MathFunction, Iterable<Point> {
 
     double rightBound();
 
-    Iterator<Point> iterator();
+    default Iterator<Point> iterator() {
+        throw new UnsupportedOperationException();
+    }
 }

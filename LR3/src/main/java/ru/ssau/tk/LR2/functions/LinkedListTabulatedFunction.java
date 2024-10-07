@@ -2,6 +2,7 @@ package ru.ssau.tk.LR2.functions;
 
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
 
@@ -233,7 +234,24 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     @Override
-    public Iterator<Point> iterator() {
-        throw new UnsupportedOperationException();
+    public Iterator<Point> iterator(){
+        return new Iterator<Point>() {
+            Node node = head;
+            int remain = getCount();
+
+            @Override
+            public boolean hasNext() {
+                return remain > 0;
+            }
+
+            @Override
+            public Point next() {
+                if(remain <= 0) throw new NoSuchElementException();
+                remain--;
+                Point res = new Point(node.x, node.y);
+                node = node.next;
+                return res;
+            }
+        };
     }
 }
