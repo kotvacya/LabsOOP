@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Assertions;
 import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.LR2.exceptions.DifferentLengthOfArraysException;
 
+import java.util.Iterator;
+
 public class LinkedListTabulatedFunctionTest extends TestCase {
 
     public void testConstructor() {
@@ -137,6 +139,55 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
         Assertions.assertThrows(IllegalArgumentException.class, () -> func.remove(100));
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> func.floorIndexOfX(-100.0));
+    }
+
+    public void testIterator(){
+        double[] x = new double[]{0.0, 1.0, 2.0, 3.0};
+        double[] y = new double[]{1.0, 0.0, 2.0, -1.0};
+
+        LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(x, y);
+
+        {
+            Iterator<Point> iterator = func.iterator();
+            int i = 0;
+            while (iterator.hasNext()) {
+                Point point = iterator.next();
+                assertEquals(x[i], point.x);
+                assertEquals(y[i], point.y);
+                i++;
+            }
+        }
+
+        {
+            int i = 0;
+            for (Point point : func) {
+                assertEquals(x[i], point.x);
+                assertEquals(y[i], point.y);
+                i++;
+            }
+        }
+
+        LinkedListTabulatedFunction func2 = new LinkedListTabulatedFunction(new IdentityFunction(), 0, 10, 10);
+
+        {
+            Iterator<Point> iterator = func2.iterator();
+            double i = 0.0;
+            while (iterator.hasNext()) {
+                Point point = iterator.next();
+                assertEquals(i, point.x);
+                assertEquals(i, point.y);
+                i += 1.0;
+            }
+        }
+
+        {
+            double i = 0.0;
+            for (Point point : func) {
+                assertEquals(i, point.x);
+                assertEquals(i, point.x);
+                i += 1.0;
+            }
+        }
     }
 
     public LinkedListTabulatedFunctionTest(String testName) {
