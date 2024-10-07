@@ -31,8 +31,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     @Override
-    public void remove(int index) throws IllegalArgumentException{
-        if(index < 0 || index >= getCount()) throw new IllegalArgumentException();
+    public void remove(int index) throws IllegalArgumentException {
+        if (index < 0 || index >= getCount()) throw new IllegalArgumentException();
 
         if (count == 1) {
             count = 0;
@@ -82,7 +82,9 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public LinkedListTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException {
-        if(xValues.length < 2) throw new IllegalArgumentException("Array length <2");
+        if (xValues.length < 2) throw new IllegalArgumentException("Array length <2");
+        checkLengthIsTheSame(xValues, yValues);
+        checkSorted(xValues);
 
         for (int i = 0; i < xValues.length; i++) {
             addNode(xValues[i], yValues[i]);
@@ -90,7 +92,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     public LinkedListTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        if(count < 2) throw new IllegalArgumentException("Array length <2");
+        if (count < 2) throw new IllegalArgumentException("Array length <2");
 
         if (xFrom > xTo) {
             double tmp = xFrom;
@@ -114,7 +116,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     @Override
     protected int floorIndexOfX(double x) throws IllegalArgumentException {
-        if(x < leftBound()) throw new IllegalArgumentException();
+        if (x < leftBound()) throw new IllegalArgumentException();
 
         Node node = head;
         for (int i = 0; i < count; i++) {
@@ -136,7 +138,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     @Override
     protected double extrapolateRight(double x) {
-       // if (count == 1) return head.y;
+        // if (count == 1) return head.y;
         double x0 = head.prev.prev.x;
         double x1 = head.prev.x;
         double y0 = head.prev.prev.y;
@@ -146,11 +148,17 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
 
     @Override
     protected double interpolate(double x, int floorIndex) throws IllegalArgumentException {
+        if (!(x >= getNode(floorIndex).x && x <= getNode(floorIndex + 1).x)) {
+            throw new IllegalArgumentException();
+        }
         Node node = getNode(floorIndex);
         return interpolate(x, node);
     }
 
     protected double interpolate(double x, Node node) {
+        if (!(x >= node.x && x <= node.next.x)) {
+            throw new IllegalArgumentException();
+        }
         double x0 = node.x;
         double y0 = node.y;
         double x1 = node.next.x;
@@ -164,20 +172,20 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     @Override
-    public double getX(int index) throws IllegalArgumentException{
-        if(index < 0 || index >= getCount()) throw new IllegalArgumentException();
+    public double getX(int index) throws IllegalArgumentException {
+        if (index < 0 || index >= getCount()) throw new IllegalArgumentException();
         return getNode(index).x;
     }
 
     @Override
     public double getY(int index) throws IllegalArgumentException {
-        if(index < 0 || index >= getCount()) throw new IllegalArgumentException();
+        if (index < 0 || index >= getCount()) throw new IllegalArgumentException();
         return getNode(index).y;
     }
 
     @Override
     public void setY(int index, double value) throws IllegalArgumentException {
-        if(index < 0 || index >= getCount()) throw new IllegalArgumentException();
+        if (index < 0 || index >= getCount()) throw new IllegalArgumentException();
         getNode(index).y = value;
     }
 

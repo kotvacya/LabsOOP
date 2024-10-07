@@ -3,11 +3,21 @@ package ru.ssau.tk.LR2.functions;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.junit.jupiter.api.Assertions;
+import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
+import ru.ssau.tk.LR2.exceptions.DifferentLengthOfArraysException;
+
+import java.util.Iterator;
 
 class MockTabulatedFunction extends AbstractTabulatedFunction {
 
     private final double x0, x1;
     private final double y0, y1;
+
+    @Override
+    public Iterator<Point> iterator() {
+        return null;
+    }
 
     public MockTabulatedFunction(double x0, double x1, double y0, double y1) {
         assert (x0 < x1);
@@ -92,12 +102,33 @@ public class AbstractTabulatedFunctionTest extends TestCase {
         return new TestSuite(AbstractTabulatedFunctionTest.class);
     }
 
+    MockTabulatedFunction mocker = new MockTabulatedFunction(1.0, 2.0, 2.0, 4.0);
+
     public void testApply() {
-        MockTabulatedFunction mocker = new MockTabulatedFunction(1.0, 2.0, 2.0, 4.0);
 
         assertEquals(mocker.apply(0.0), 0.0);
         assertEquals(mocker.apply(1.0), 2.0);
         assertEquals(mocker.apply(2.0), 4.0);
         assertEquals(mocker.apply(3.0), 6.0);
+    }
+
+    public void testCheckLengthIsTheSame() {
+        Assertions.assertThrows(DifferentLengthOfArraysException.class, () ->
+                mocker.checkLengthIsTheSame(new double[]{}, new double[]{0}));
+        Assertions.assertThrows(DifferentLengthOfArraysException.class, () ->
+                mocker.checkLengthIsTheSame(new double[]{1, 2}, new double[]{1, 2, 3}));
+        Assertions.assertThrows(DifferentLengthOfArraysException.class, () ->
+                mocker.checkLengthIsTheSame(new double[]{1}, new double[]{1, 1}));
+        Assertions.assertDoesNotThrow(() -> mocker.checkLengthIsTheSame(new double[]{1}, new double[]{2}));
+    }
+
+    public void testCheckSorted() {
+        Assertions.assertThrows(ArrayIsNotSortedException.class, () ->
+                mocker.checkSorted(new double[]{2, 1}));
+        Assertions.assertThrows(ArrayIsNotSortedException.class, () ->
+                mocker.checkSorted(new double[]{3, 2, 1}));
+        Assertions.assertThrows(ArrayIsNotSortedException.class, () ->
+                mocker.checkSorted(new double[]{0, 0, 1}));
+        Assertions.assertDoesNotThrow(() -> mocker.checkSorted(new double[]{1, 2, 3}));
     }
 }

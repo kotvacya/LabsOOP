@@ -5,6 +5,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.junit.jupiter.api.Assertions;
+import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
+import ru.ssau.tk.LR2.exceptions.DifferentLengthOfArraysException;
 
 public class ArrayTabulatedFunctionTest extends TestCase {
 
@@ -18,6 +20,10 @@ public class ArrayTabulatedFunctionTest extends TestCase {
     public void testConstructor() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(mf1, 1, 10, 1));
         Assertions.assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(new double[]{1.}, new double[]{1.}));
+        Assertions.assertThrows(DifferentLengthOfArraysException.class, () -> new ArrayTabulatedFunction(new double[]{1, 2}, new double[]{1, 2, 3}));
+        Assertions.assertThrows(DifferentLengthOfArraysException.class, () -> new ArrayTabulatedFunction(new double[]{0, 0}, new double[]{}));
+        Assertions.assertThrows(ArrayIsNotSortedException.class, () -> new ArrayTabulatedFunction(new double[]{1, 3, 2}, new double[]{1, 2, 3}));
+        Assertions.assertThrows(ArrayIsNotSortedException.class, () -> new ArrayTabulatedFunction(new double[]{2, 1}, new double[]{1, 2}));
     }
 
     public void testApply() {
@@ -137,6 +143,17 @@ public class ArrayTabulatedFunctionTest extends TestCase {
 
         Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.remove(-1));
         Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.remove(100));
+    }
+
+    public void testInterpolate() {
+        ArrayTabulatedFunction art = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3}) {
+            @Override
+            public double interpolate(double x, int floor) {
+                return super.interpolate(x, floor);
+            }
+        };
+        Assertions.assertThrows(IllegalArgumentException.class, () -> art.interpolate(4.0, 1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> art.interpolate(3.0, 0));
     }
 
     public ArrayTabulatedFunctionTest(String testName) {
