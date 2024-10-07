@@ -14,11 +14,6 @@ class MockTabulatedFunction extends AbstractTabulatedFunction {
     private final double x0, x1;
     private final double y0, y1;
 
-    @Override
-    public Iterator<Point> iterator() {
-        return null;
-    }
-
     public MockTabulatedFunction(double x0, double x1, double y0, double y1) {
         assert (x0 < x1);
         this.x0 = x0;
