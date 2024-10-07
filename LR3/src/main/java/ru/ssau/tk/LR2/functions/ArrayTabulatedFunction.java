@@ -9,33 +9,35 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     private double[] yValues;
     private int count;
 
-    ArrayTabulatedFunction(double[] xValues, double[] yValues) {
+    ArrayTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException {
+        if (xValues.length < 2) throw new IllegalArgumentException("Array length <2");
+
         this.count = xValues.length;
         this.xValues = Arrays.copyOf(xValues, count);
         this.yValues = Arrays.copyOf(yValues, count);
     }
 
-    ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) {
-        if (count > 0) {
-            this.count = count;
-            this.xValues = new double[count];
-            this.yValues = new double[count];
+    ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) throws IllegalArgumentException {
+        if (count < 2) throw new IllegalArgumentException("Array length <2");
 
-            if (xFrom > xTo) {
-                double temp = xFrom;
-                xFrom = xTo;
-                xTo = temp;
-            }
+        this.count = count;
+        this.xValues = new double[count];
+        this.yValues = new double[count];
 
-            int j = 0;
-            double step = (xTo - xFrom) / (count - 1);
-            for (double i = xFrom; i <= xTo && j < (count - 1); i += step, ++j) {
-                xValues[j] = i;
-                yValues[j] = source.apply(i);
-            }
-            xValues[j] = xTo;
-            yValues[j] = source.apply(xTo);
+        if (xFrom > xTo) {
+            double temp = xFrom;
+            xFrom = xTo;
+            xTo = temp;
         }
+
+        int j = 0;
+        double step = (xTo - xFrom) / (count - 1);
+        for (double i = xFrom; i <= xTo && j < (count - 1); i += step, ++j) {
+            xValues[j] = i;
+            yValues[j] = source.apply(i);
+        }
+        xValues[j] = xTo;
+        yValues[j] = source.apply(xTo);
     }
 
     @Override
@@ -44,17 +46,17 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public double getX(int index) {
+    public double getX(int index) throws ArrayIndexOutOfBoundsException {
         return xValues[index];
     }
 
     @Override
-    public double getY(int index) {
+    public double getY(int index) throws ArrayIndexOutOfBoundsException {
         return yValues[index];
     }
 
     @Override
-    public void setY(int index, double value) {
+    public void setY(int index, double value) throws ArrayIndexOutOfBoundsException {
         yValues[index] = value;
     }
 
@@ -87,8 +89,8 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    protected int floorIndexOfX(double x) {
-        if (x <= leftBound()) return 0;
+    protected int floorIndexOfX(double x) throws IllegalArgumentException {
+        if (x <= leftBound()) throw new IllegalArgumentException();
         if (x >= rightBound()) return count - 1;
         for (int i = 0; i < count; ++i) {
             if (xValues[i] > x) return i - 1;
@@ -162,25 +164,25 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     }
 
     @Override
-    public void remove(int index) {
-        if (0 <= index && index <= (count - 1)) {
-            if (count == 1) {
-                xValues = null;
-                yValues = null;
-            } else {
+    public void remove(int index) throws ArrayIndexOutOfBoundsException {
+        if (index < 0 || index >= getCount()) throw new ArrayIndexOutOfBoundsException();
 
-                double[] new_xvalues = new double[count - 1];
-                double[] new_yvalues = new double[count - 1];
+        if (count == 1) {
+            xValues = null;
+            yValues = null;
+        } else {
 
-                System.arraycopy(xValues, 0, new_xvalues, 0, index);
-                System.arraycopy(xValues, index + 1, new_xvalues, index, count - index - 1);
-                System.arraycopy(yValues, 0, new_yvalues, 0, index);
-                System.arraycopy(yValues, index + 1, new_yvalues, index, count - index - 1);
+            double[] new_xvalues = new double[count - 1];
+            double[] new_yvalues = new double[count - 1];
 
-                xValues = new_xvalues;
-                yValues = new_yvalues;
-            }
-            count--;
+            System.arraycopy(xValues, 0, new_xvalues, 0, index);
+            System.arraycopy(xValues, index + 1, new_xvalues, index, count - index - 1);
+            System.arraycopy(yValues, 0, new_yvalues, 0, index);
+            System.arraycopy(yValues, index + 1, new_yvalues, index, count - index - 1);
+
+            xValues = new_xvalues;
+            yValues = new_yvalues;
         }
+        count--;
     }
 }

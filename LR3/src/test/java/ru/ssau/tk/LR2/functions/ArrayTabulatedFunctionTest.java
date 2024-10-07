@@ -1,8 +1,10 @@
 package ru.ssau.tk.LR2.functions;
 
+import junit.framework.Assert;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.junit.jupiter.api.Assertions;
 
 public class ArrayTabulatedFunctionTest extends TestCase {
 
@@ -33,7 +35,7 @@ public class ArrayTabulatedFunctionTest extends TestCase {
     public void testFloorIndexOfX() {
         assertEquals(1, atf1.floorIndexOfX(2.1));
         assertEquals(4, atf2.floorIndexOfX(100));
-        assertEquals(0, atf3.floorIndexOfX(-100));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> atf3.floorIndexOfX(-100));
     }
 
     public void testGetCount() {
