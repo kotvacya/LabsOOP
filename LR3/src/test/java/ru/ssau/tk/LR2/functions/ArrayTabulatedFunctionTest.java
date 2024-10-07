@@ -15,6 +15,11 @@ public class ArrayTabulatedFunctionTest extends TestCase {
     ArrayTabulatedFunction atf2 = new ArrayTabulatedFunction(mf2, -1, -2, 5);
     ArrayTabulatedFunction atf3 = new ArrayTabulatedFunction(mf3, 7, 7, 7);
 
+    public void testConstructor() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(mf1, 1, 10, 1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new ArrayTabulatedFunction(new double[]{1.}, new double[]{1.}));
+    }
+
     public void testApply() {
         assertEquals(1.0, atf1.apply(1));
         assertEquals(100.0, atf1.apply(100));
@@ -48,12 +53,16 @@ public class ArrayTabulatedFunctionTest extends TestCase {
         assertEquals(1.0, atf1.getX(0));
         assertEquals(-2.0, atf2.getX(0));
         assertEquals(7.0, atf3.getX(0));
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.getX(-1));
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.getX(100));
     }
 
     public void testGetY() {
         assertEquals(1.0, atf1.getY(0));
         assertEquals(52.0, atf2.getY(0));
         assertEquals(49.0, atf3.getY(0));
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.getY(-1));
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.getY(100));
     }
 
     public void testIndexOfX() {
@@ -87,6 +96,9 @@ public class ArrayTabulatedFunctionTest extends TestCase {
         assertEquals(10.0, atf1.getY(0));
         assertEquals(0.0, atf2.getY(1));
         assertEquals(-10.0, atf3.getY(2));
+
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.setY(-1, 100.));
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.setY(100, -100.));
     }
 
     public void testInsertable() {
@@ -122,6 +134,9 @@ public class ArrayTabulatedFunctionTest extends TestCase {
         atf.remove(1);
         assertEquals(2, atf.getCount());
         assertEquals(30.0, atf.apply(3.0));
+
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.remove(-1));
+        Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> atf3.remove(100));
     }
 
     public ArrayTabulatedFunctionTest(String testName) {

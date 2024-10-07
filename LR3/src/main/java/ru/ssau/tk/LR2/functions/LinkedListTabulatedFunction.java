@@ -101,9 +101,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         }
     }
 
-    private Node getNode(int index) throws IllegalArgumentException {
-        if(index < 0 || index >= getCount()) throw new IllegalArgumentException();
-
+    private Node getNode(int index) {
         Node node = head;
         for (int i = 0; i < index; i++) {
             node = node.next;
@@ -112,7 +110,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
     }
 
     @Override
-    protected int floorIndexOfX(double x) {
+    protected int floorIndexOfX(double x) throws IllegalArgumentException {
         if(x < leftBound()) throw new IllegalArgumentException();
 
         Node node = head;

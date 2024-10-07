@@ -3,10 +3,9 @@ package ru.ssau.tk.LR2.functions;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import org.junit.jupiter.api.Assertions;
 
 public class LinkedListTabulatedFunctionTest extends TestCase {
-
-
 
     public void testApply() {
         LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
@@ -97,6 +96,36 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
         );
 
         assertEquals(1.0, func.interpolate(1.5, 1));
+    }
+
+    public void testExceptions(){
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
+                    new double[]{0.0},
+                    new double[]{1.0}
+            );
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new LinkedListTabulatedFunction(new SqrFunction(), 1.0, 4.0, 1));
+
+        LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
+                new double[]{0.0, 1.0, 2.0, 3.0},
+                new double[]{1.0, 0.0, 2.0, -1.0}
+        );
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.getX(-1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.getX(100));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.getY(-1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.getY(100));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.setY(-1, 0.0));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.setY(100, 0.0));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.remove(-1));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.remove(100));
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> func.floorIndexOfX(-100.0));
     }
 
     public LinkedListTabulatedFunctionTest(String testName) {
