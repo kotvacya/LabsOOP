@@ -6,12 +6,14 @@ import junit.framework.TestSuite;
 
 public class LinkedListTabulatedFunctionTest extends TestCase {
 
-    LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
-            new double[]{0.0, 1.0, 2.0, 3.0},
-            new double[]{1.0, 0.0, 2.0, -1.0}
-    );
+
 
     public void testApply() {
+        LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
+                new double[]{0.0, 1.0, 2.0, 3.0},
+                new double[]{1.0, 0.0, 2.0, -1.0}
+        );
+
         assertEquals(4, func.getCount());
         assertEquals(0.0, func.getX(0));
         assertEquals(1.0, func.getY(0));
@@ -40,6 +42,11 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
     }
 
     public void testInsertRemove() {
+        LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
+                new double[]{0.0, 1.0, 2.0, 3.0},
+                new double[]{1.0, 0.0, 2.0, -1.0}
+        );
+
         func.insert(-1.0, 52.0);
         assertEquals(52.0, func.getY(0));
         assertEquals(0, func.indexOfY(52.0));
@@ -55,6 +62,41 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
         assertEquals(5, func.getCount());
         assertEquals(-0.5, func.leftBound());
         assertEquals(-1, func.indexOfY(52.0));
+
+        func.remove(0);
+        func.remove(0);
+        func.remove(0);
+        func.remove(0);
+        func.remove(0);
+
+        assertEquals(0, func.getCount());
+    }
+
+    public void testSetYInsert() {
+        LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
+                new double[]{0.0, 1.0, 2.0, 3.0},
+                new double[]{1.0, 0.0, 2.0, -1.0}
+        );
+
+        func.setY(0, 0.0);
+
+        assertEquals(4, func.getCount());
+        assertEquals(0.0, func.leftBound());
+        assertEquals(0.0, func.apply(0.0));
+
+        func.insert(2.0, 4.0);
+
+        assertEquals(4.0, func.apply(2.0));
+        assertEquals(2.0, func.apply(1.5));
+    }
+
+    public void testInsertOld() {
+        LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(
+                new double[]{0.0, 1.0, 2.0, 3.0},
+                new double[]{1.0, 0.0, 2.0, -1.0}
+        );
+
+        assertEquals(1.0, func.interpolate(1.5, 1));
     }
 
     public LinkedListTabulatedFunctionTest(String testName) {
