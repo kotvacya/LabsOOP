@@ -5,10 +5,18 @@ public class NewtonsMethodFunction implements MathFunction {
     private final static double DERIVATIVE_EPS = 1e-6;
     private final MathFunction func;
     private final double tolerance;
+    private final double max_iterations;
 
     public NewtonsMethodFunction(MathFunction func, double tolerance) {
         this.func = func;
         this.tolerance = tolerance;
+        this.max_iterations = 100000000;
+    }
+
+    public NewtonsMethodFunction(MathFunction func, double tolerance, int max_iterations) {
+        this.func = func;
+        this.tolerance = tolerance;
+        this.max_iterations = max_iterations;
     }
 
     private double derivative(double x) {

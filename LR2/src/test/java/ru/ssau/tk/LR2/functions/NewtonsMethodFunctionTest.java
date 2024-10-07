@@ -26,7 +26,12 @@ public class NewtonsMethodFunctionTest extends TestCase {
 
         NewtonsMethodFunction sin_newton = new NewtonsMethodFunction(sin, PRECISION);
 
-        assertTrue(Math.abs(Math.PI - sin_newton.apply(2.0)) < PRECISION);
+        assertEquals(Math.PI,sin_newton.apply(2.0), PRECISION);
 
+        MathFunction const_func = new ConstantFunction(1.0);
+
+        NewtonsMethodFunction const_newton = new NewtonsMethodFunction(const_func, PRECISION);
+
+        
     }
 }
