@@ -2,6 +2,7 @@ package ru.ssau.tk.LR2.functions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
 
@@ -184,5 +185,10 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             yValues = new_yvalues;
         }
         count--;
+    }
+
+    @Override
+    public Iterator<Point> iterator() {
+        throw new UnsupportedOperationException();
     }
 }

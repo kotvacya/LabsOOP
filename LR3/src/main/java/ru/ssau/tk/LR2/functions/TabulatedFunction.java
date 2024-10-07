@@ -1,6 +1,8 @@
 package ru.ssau.tk.LR2.functions;
 
-public interface TabulatedFunction extends MathFunction {
+import java.util.Iterator;
+
+public interface TabulatedFunction extends MathFunction, Iterable<Point> {
 
     int getCount();
 
@@ -18,4 +20,5 @@ public interface TabulatedFunction extends MathFunction {
 
     double rightBound();
 
+    Iterator<Point> iterator();
 }

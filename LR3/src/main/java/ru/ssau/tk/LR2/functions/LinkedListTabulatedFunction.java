@@ -1,6 +1,8 @@
 package ru.ssau.tk.LR2.functions;
 
 
+import java.util.Iterator;
+
 public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
 
     @Override
@@ -228,5 +230,10 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             return interpolate(x, node);
         }
         return getY(indexOfX(x));
+    }
+
+    @Override
+    public Iterator<Point> iterator() {
+        throw new UnsupportedOperationException();
     }
 }
