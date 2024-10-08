@@ -11,7 +11,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     private double[] yValues;
     private int count;
 
-    ArrayTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException {
+    public ArrayTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException {
         if (xValues.length < 2) throw new IllegalArgumentException("Array length <2");
         checkLengthIsTheSame(xValues, yValues);
         checkSorted(xValues);
@@ -21,7 +21,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         this.yValues = Arrays.copyOf(yValues, count);
     }
 
-    ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) throws IllegalArgumentException {
+    public ArrayTabulatedFunction(MathFunction source, double xFrom, double xTo, int count) throws IllegalArgumentException {
         if (count < 2) throw new IllegalArgumentException("Array length <2");
 
         this.count = count;
