@@ -1,9 +1,31 @@
 package ru.ssau.tk.LR2.operations;
 
+import ru.ssau.tk.LR2.exceptions.InconsistentFunctionsException;
 import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
+import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
+import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 
 public class TabulatedFunctionOperationService {
+
+    private TabulatedFunctionFactory factory;
+
+    public TabulatedFunctionOperationService() {
+        this.factory = new ArrayTabulatedFunctionFactory();
+    }
+
+    public TabulatedFunctionOperationService(TabulatedFunctionFactory factory) {
+        this.factory = factory;
+    }
+
+    public TabulatedFunctionFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(TabulatedFunctionFactory factory) {
+        this.factory = factory;
+    }
+
     public static Point[] asPoints(TabulatedFunction tabulatedFunction) {
         int i = 0;
         Point[] arr = new Point[tabulatedFunction.getCount()];
@@ -11,5 +33,36 @@ public class TabulatedFunctionOperationService {
             arr[i++] = p;
         }
         return arr;
+    }
+
+    private interface BiOperation {
+        double apply(double u, double v);
+    }
+
+    private TabulatedFunction doOperation(TabulatedFunction a, TabulatedFunction b, BiOperation operation) {
+        int count = a.getCount();
+        if (count != b.getCount()) throw new InconsistentFunctionsException();
+
+        Point[] arrA = TabulatedFunctionOperationService.asPoints(a);
+        Point[] arrB = TabulatedFunctionOperationService.asPoints(b);
+
+        double[] xValues = new double[count];
+        double[] yValues = new double[count];
+
+        for (int i = 0; i < count; i++) {
+            if (arrA[i].x != arrB[i].x) throw new InconsistentFunctionsException();
+            xValues[i] = arrA[i].x;
+            yValues[i] = operation.apply(arrA[i].y, arrB[i].y);
+        }
+
+        return factory.create(xValues, yValues);
+    }
+
+    public TabulatedFunction add(TabulatedFunction a, TabulatedFunction b) {
+        return doOperation(a, b, (u, v) -> u + v); // Double::sui
+    }
+
+    public TabulatedFunction subtract(TabulatedFunction a, TabulatedFunction b) {
+        return doOperation(a, b, (u, v) -> u - v);
     }
 }
