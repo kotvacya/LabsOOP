@@ -4,7 +4,7 @@ public class StrictTabulatedFunction implements TabulatedFunction{
 
     private final TabulatedFunction function;
 
-    StrictTabulatedFunction(TabulatedFunction func){
+    public StrictTabulatedFunction(TabulatedFunction func){
         function = func;
     }
 
