@@ -100,8 +100,8 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             xTo = tmp;
         }
 
-        for (int i = 0; i <= count; i++) {
-            double x = xFrom + (xTo - xFrom) / count * i;
+        for (int i = 0; i < count; i++) {
+            double x = xFrom + (xTo - xFrom) / (count - 1) * i;
             addNode(x, source.apply(x));
         }
     }

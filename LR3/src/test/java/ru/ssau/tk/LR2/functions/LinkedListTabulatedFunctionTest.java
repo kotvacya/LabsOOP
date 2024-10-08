@@ -46,7 +46,7 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
 
         LinkedListTabulatedFunction func2 = new LinkedListTabulatedFunction(new SqrFunction(), 1.0, 4.0, 100);
 
-        assertEquals(101, func2.getCount());
+        assertEquals(100, func2.getCount());
 
         assertEquals(1.0, func2.apply(1.0));
         assertEquals(4.0, func2.apply(2.0), 1e-3);
@@ -167,7 +167,7 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
             }
         }
 
-        LinkedListTabulatedFunction func2 = new LinkedListTabulatedFunction(new IdentityFunction(), 0, 10, 10);
+        LinkedListTabulatedFunction func2 = new LinkedListTabulatedFunction(new IdentityFunction(), 0, 10, 11);
 
         {
             Iterator<Point> iterator = func2.iterator();
