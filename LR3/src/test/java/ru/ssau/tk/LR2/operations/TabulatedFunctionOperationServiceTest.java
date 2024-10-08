@@ -3,10 +3,9 @@ package ru.ssau.tk.LR2.operations;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.junit.jupiter.api.Test;
-import ru.ssau.tk.LR2.functions.ArrayTabulatedFunction;
-import ru.ssau.tk.LR2.functions.ArrayTabulatedFunctionTest;
-import ru.ssau.tk.LR2.functions.LinkedListTabulatedFunction;
-import ru.ssau.tk.LR2.functions.Point;
+import ru.ssau.tk.LR2.functions.*;
+import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
+import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,6 +26,67 @@ public class TabulatedFunctionOperationServiceTest extends TestCase {
             assertEquals(arr[i].y, ltf_arr[i].y);
         }
     }
+
+    public void testOperation() {
+        ArrayTabulatedFunction atf1 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{0, 0, 0});
+        ArrayTabulatedFunction atf2 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
+        LinkedListTabulatedFunction ltf1 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 1, 1});
+        LinkedListTabulatedFunction ltf2 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{7, 8, 9});
+
+        TabulatedFunctionFactory arr_tff = new ArrayTabulatedFunctionFactory();
+        TabulatedFunctionFactory list_tff = new ArrayTabulatedFunctionFactory();
+        TabulatedFunctionOperationService tf_os = new TabulatedFunctionOperationService(arr_tff);
+
+        // Тесты ArrayTabulatedFunction
+        {
+            TabulatedFunction tf = tf_os.add(atf1, atf2);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(tf.getX(i), atf2.getX(i));
+                assertEquals(tf.getY(i), atf2.getY(i));
+            }
+        }
+        {
+            TabulatedFunction tf = tf_os.subtract(atf1, atf2);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(tf.getX(i), atf2.getX(i));
+                assertEquals(tf.getY(i), -atf2.getY(i));
+            }
+        }
+
+        // Тесты LinkedListTabulatedFunction
+        tf_os.setFactory(list_tff);
+        {
+            TabulatedFunction tf = tf_os.add(ltf1, ltf2);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(tf.getX(i), ltf2.getX(i));
+                assertEquals(tf.getY(i), ltf2.getY(i) + 1);
+            }
+        }
+        {
+            TabulatedFunction tf = tf_os.subtract(ltf1, ltf2);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(tf.getX(i), ltf2.getX(i));
+                assertEquals(tf.getY(i), -ltf2.getY(i) + 1);
+            }
+        }
+        // Смешанные тесты
+        {
+            TabulatedFunction tf = tf_os.add(atf1, ltf2);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(tf.getX(i), ltf2.getX(i));
+                assertEquals(tf.getY(i), ltf2.getY(i));
+            }
+        }
+        tf_os.setFactory(arr_tff);
+        {
+            TabulatedFunction tf = tf_os.subtract(ltf1, atf2);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(tf.getX(i), ltf2.getX(i));
+                assertEquals(tf.getY(i), -atf2.getY(i) + 1);
+            }
+        }
+    }
+
 
     public TabulatedFunctionOperationServiceTest(String testName) {
         super(testName);
