@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Assertions;
 import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.LR2.exceptions.DifferentLengthOfArraysException;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public class ArrayTabulatedFunctionTest extends TestCase {
 
     MathFunction mf1 = new IdentityFunction();
@@ -154,6 +157,56 @@ public class ArrayTabulatedFunctionTest extends TestCase {
         };
         Assertions.assertThrows(IllegalArgumentException.class, () -> art.interpolate(4.0, 1));
         Assertions.assertThrows(IllegalArgumentException.class, () -> art.interpolate(3.0, 0));
+    }
+
+    public void testIterator() {
+        double[] x = new double[]{0.0, 1.0, 2.0, 3.0};
+        double[] y = new double[]{1.0, 0.0, 2.0, -1.0};
+
+        ArrayTabulatedFunction func = new ArrayTabulatedFunction(x, y);
+
+        {
+            Iterator<Point> iterator = func.iterator();
+            int i = 0;
+            while (iterator.hasNext()) {
+                Point point = iterator.next();
+                assertEquals(x[i], point.x);
+                assertEquals(y[i], point.y);
+                i++;
+            }
+            Assertions.assertThrows(NoSuchElementException.class, iterator::next);
+        }
+
+        {
+            int i = 0;
+            for (Point point : func) {
+                assertEquals(x[i], point.x);
+                assertEquals(y[i], point.y);
+                i++;
+            }
+        }
+
+        ArrayTabulatedFunction func2 = new ArrayTabulatedFunction(new IdentityFunction(), 1, 10, 10);
+
+        {
+            Iterator<Point> iterator = func2.iterator();
+            double i = 1.0;
+            while (iterator.hasNext()) {
+                Point point = iterator.next();
+                assertEquals(i, point.x);
+                assertEquals(i, point.y);
+                i += 1.0;
+            }
+        }
+
+        {
+            double i = 0.0;
+            for (Point point : func) {
+                assertEquals(i, point.x);
+                assertEquals(i, point.x);
+                i += 1.0;
+            }
+        }
     }
 
     public ArrayTabulatedFunctionTest(String testName) {

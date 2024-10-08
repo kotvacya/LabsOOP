@@ -3,6 +3,7 @@ package ru.ssau.tk.LR2.functions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
 
@@ -190,5 +191,24 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             yValues = new_yvalues;
         }
         count--;
+    }
+
+    @Override
+    public Iterator<Point> iterator() {
+        return new Iterator<Point>() {
+            int index = -1;
+
+            @Override
+            public boolean hasNext() {
+                return index + 1 < getCount();
+            }
+
+            @Override
+            public Point next() {
+                if (!hasNext()) throw new NoSuchElementException();
+                index++;
+                return new Point(xValues[index], yValues[index]);
+            }
+        };
     }
 }

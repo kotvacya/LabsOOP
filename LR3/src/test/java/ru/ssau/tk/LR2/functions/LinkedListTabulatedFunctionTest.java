@@ -8,6 +8,7 @@ import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.LR2.exceptions.DifferentLengthOfArraysException;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class LinkedListTabulatedFunctionTest extends TestCase {
 
@@ -156,6 +157,7 @@ public class LinkedListTabulatedFunctionTest extends TestCase {
                 assertEquals(y[i], point.y);
                 i++;
             }
+            Assertions.assertThrows(NoSuchElementException.class, iterator::next);
         }
 
         {
