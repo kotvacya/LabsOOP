@@ -28,10 +28,10 @@ public class TabulatedFunctionOperationServiceTest extends TestCase {
     }
 
     public void testOperation() {
-        ArrayTabulatedFunction atf1 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{0, 0, 0});
-        ArrayTabulatedFunction atf2 = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
-        LinkedListTabulatedFunction ltf1 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 1, 1});
-        LinkedListTabulatedFunction ltf2 = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{7, 8, 9});
+        ArrayTabulatedFunction zerofunc = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{0, 0, 0});
+        ArrayTabulatedFunction identfunc = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
+        LinkedListTabulatedFunction constfunc = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 1, 1});
+        LinkedListTabulatedFunction somefunc = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{7, 8, 9});
 
         TabulatedFunctionFactory arr_tff = new ArrayTabulatedFunctionFactory();
         TabulatedFunctionFactory list_tff = new ArrayTabulatedFunctionFactory();
@@ -39,50 +39,80 @@ public class TabulatedFunctionOperationServiceTest extends TestCase {
 
         // Тесты ArrayTabulatedFunction
         {
-            TabulatedFunction tf = tf_os.add(atf1, atf2);
+            TabulatedFunction tf = tf_os.add(zerofunc, identfunc);
             for (int i = 0; i < 3; ++i) {
-                assertEquals(tf.getX(i), atf2.getX(i));
-                assertEquals(tf.getY(i), atf2.getY(i));
+                assertEquals(identfunc.getX(i), tf.getX(i));
+                assertEquals(identfunc.getY(i), tf.getY(i));
             }
         }
         {
-            TabulatedFunction tf = tf_os.subtract(atf1, atf2);
+            TabulatedFunction tf = tf_os.subtract(zerofunc, identfunc);
             for (int i = 0; i < 3; ++i) {
-                assertEquals(tf.getX(i), atf2.getX(i));
-                assertEquals(tf.getY(i), -atf2.getY(i));
+                assertEquals(identfunc.getX(i), tf.getX(i));
+                assertEquals(-identfunc.getY(i), tf.getY(i));
             }
         }
+
 
         // Тесты LinkedListTabulatedFunction
         tf_os.setFactory(list_tff);
         {
-            TabulatedFunction tf = tf_os.add(ltf1, ltf2);
+            TabulatedFunction tf = tf_os.add(constfunc, somefunc);
             for (int i = 0; i < 3; ++i) {
-                assertEquals(tf.getX(i), ltf2.getX(i));
-                assertEquals(tf.getY(i), ltf2.getY(i) + 1);
+                assertEquals(somefunc.getX(i), tf.getX(i));
+                assertEquals(somefunc.getY(i) + 1.0, tf.getY(i));
             }
         }
         {
-            TabulatedFunction tf = tf_os.subtract(ltf1, ltf2);
+            TabulatedFunction tf = tf_os.subtract(constfunc, somefunc);
             for (int i = 0; i < 3; ++i) {
-                assertEquals(tf.getX(i), ltf2.getX(i));
-                assertEquals(tf.getY(i), -ltf2.getY(i) + 1);
+                assertEquals(somefunc.getX(i), tf.getX(i));
+                assertEquals(-somefunc.getY(i) + 1.0, tf.getY(i));
             }
         }
+
         // Смешанные тесты
         {
-            TabulatedFunction tf = tf_os.add(atf1, ltf2);
+            TabulatedFunction tf = tf_os.add(zerofunc, somefunc);
             for (int i = 0; i < 3; ++i) {
-                assertEquals(tf.getX(i), ltf2.getX(i));
-                assertEquals(tf.getY(i), ltf2.getY(i));
+                assertEquals(somefunc.getX(i), tf.getX(i));
+                assertEquals(somefunc.getY(i), tf.getY(i));
             }
         }
         tf_os.setFactory(arr_tff);
         {
-            TabulatedFunction tf = tf_os.subtract(ltf1, atf2);
+            TabulatedFunction tf = tf_os.subtract(constfunc, identfunc);
             for (int i = 0; i < 3; ++i) {
-                assertEquals(tf.getX(i), ltf2.getX(i));
-                assertEquals(tf.getY(i), -atf2.getY(i) + 1);
+                assertEquals(somefunc.getX(i), tf.getX(i));
+                assertEquals(-identfunc.getY(i) + 1.0, tf.getY(i));
+            }
+        }
+        {
+            TabulatedFunction tf = tf_os.multiply(zerofunc, identfunc);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(identfunc.getX(i), tf.getX(i));
+                assertEquals(0.0, tf.getY(i));
+            }
+        }
+        {
+            TabulatedFunction tf = tf_os.divide(identfunc, somefunc);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(identfunc.getX(i), tf.getX(i));
+                assertEquals(identfunc.getY(i)/somefunc.getY(i), tf.getY(i));
+            }
+        }
+        {
+            TabulatedFunction tf = tf_os.multiply(identfunc, constfunc);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(identfunc.getX(i), tf.getX(i));
+                assertEquals(identfunc.getY(i), tf.getY(i));
+            }
+        }
+        {
+            TabulatedFunction tf = tf_os.divide(identfunc, constfunc);
+            for (int i = 0; i < 3; ++i) {
+                assertEquals(identfunc.getX(i), tf.getX(i));
+                assertEquals(identfunc.getY(i), tf.getY(i));
             }
         }
     }
