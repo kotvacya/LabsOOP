@@ -126,4 +126,14 @@ public class AbstractTabulatedFunctionTest extends TestCase {
                 mocker.checkSorted(new double[]{0, 0, 1}));
         Assertions.assertDoesNotThrow(() -> mocker.checkSorted(new double[]{1, 2, 3}));
     }
+
+    public void testToString(){
+        LinkedListTabulatedFunction func = new LinkedListTabulatedFunction(new double[]{0.0,0.5,1.0}, new double[]{0.0,0.25,1.0});
+
+        assertEquals("LinkedListTabulatedFunction size = 3\n[0.0; 0.0]\n[0.5; 0.25]\n[1.0; 1.0]", func.toString());
+
+        ArrayTabulatedFunction func2 = new ArrayTabulatedFunction(new SqrFunction(), 0.0, 1.5, 4);
+
+        assertEquals("ArrayTabulatedFunction size = 3\n[0.0; 0.0]\n[0.5; 0.25]\n[1.0; 1.0]\n[1.5,2.25]", func2.toString());
+    }
 }

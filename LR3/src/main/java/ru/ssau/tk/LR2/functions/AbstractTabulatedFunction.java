@@ -2,6 +2,7 @@ package ru.ssau.tk.LR2.functions;
 
 import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.LR2.exceptions.DifferentLengthOfArraysException;
+import ru.ssau.tk.LR2.operations.TabulatedFunctionOperationService;
 
 public abstract class AbstractTabulatedFunction implements TabulatedFunction {
     protected abstract int floorIndexOfX(double x);
@@ -35,4 +36,21 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
         }
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append(this.getClass().getSimpleName());
+        builder.append(" size = ");
+        builder.append(getCount());
+
+        for(Point point: TabulatedFunctionOperationService.asPoints(this)){
+            builder.append("\n[");
+            builder.append(point.x);
+            builder.append("; ");
+            builder.append(point.y);
+            builder.append("]");
+        }
+
+        return builder.toString();
+    }
 }
