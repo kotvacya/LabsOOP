@@ -54,7 +54,7 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
         count--;
     }
 
-    static protected class Node {
+    static protected class Node implements Serializable {
         Node next = null, prev = null;
         double x, y;
 

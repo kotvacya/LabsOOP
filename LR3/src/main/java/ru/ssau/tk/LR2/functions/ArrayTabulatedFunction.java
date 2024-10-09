@@ -1,6 +1,5 @@
 package ru.ssau.tk.LR2.functions;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
