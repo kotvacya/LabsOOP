@@ -65,8 +65,6 @@ public final class FunctionsIO {
 
         int count = istream.readInt();
 
-        System.out.println(count);
-
         double[] xValues = new double[count];
         double[] yValues = new double[count];
 
