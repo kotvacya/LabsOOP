@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable, Serializable {
-    
+
     private static final long serialVersionUID = -8279954938813966470L;
     private double[] xValues;
     private double[] yValues;
