@@ -1,10 +1,13 @@
 package ru.ssau.tk.LR2.functions;
 
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
+public class LinkedListTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable, Serializable {
+
+    private static final long serialVersionUID = 3257822708502394848L;
 
     @Override
     public void insert(double x, double y) {
@@ -262,4 +265,6 @@ public class LinkedListTabulatedFunction extends AbstractTabulatedFunction imple
             }
         };
     }
+
+
 }
