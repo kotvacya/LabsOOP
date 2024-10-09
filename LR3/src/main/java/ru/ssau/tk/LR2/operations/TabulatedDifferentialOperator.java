@@ -8,11 +8,11 @@ import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 public class TabulatedDifferentialOperator implements DifferentialOperator<TabulatedFunction> {
     private TabulatedFunctionFactory factory;
 
-    TabulatedDifferentialOperator(TabulatedFunctionFactory factory) {
+    public TabulatedDifferentialOperator(TabulatedFunctionFactory factory) {
         this.factory = factory;
     }
 
-    TabulatedDifferentialOperator() {
+    public TabulatedDifferentialOperator() {
         factory = new ArrayTabulatedFunctionFactory();
     }
 

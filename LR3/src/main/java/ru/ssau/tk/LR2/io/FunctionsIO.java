@@ -2,6 +2,7 @@ package ru.ssau.tk.LR2.io;
 
 import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
+import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 
 import java.io.*;
 
@@ -31,5 +32,23 @@ public final class FunctionsIO {
 
         outputdata.flush();
 
+    }
+
+    public static TabulatedFunction readTabulatedFunction(BufferedInputStream inputStream, TabulatedFunctionFactory factory) throws IOException {
+        DataInputStream istream = new DataInputStream(inputStream);
+
+        int count = istream.readInt();
+
+        System.out.println(count);
+
+        double[] xValues = new double[count];
+        double[] yValues = new double[count];
+
+        for (int i = 0; i < count; i++){
+            xValues[i] = istream.readDouble();
+            yValues[i] = istream.readDouble();
+        }
+
+        return factory.create(xValues, yValues);
     }
 }
