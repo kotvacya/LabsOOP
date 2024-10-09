@@ -3,9 +3,7 @@ package ru.ssau.tk.LR2.io;
 import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 public final class FunctionsIO {
 
@@ -20,5 +18,18 @@ public final class FunctionsIO {
             pw.printf("%f %f\n", el.x, el.y);
         }
         pw.flush();
+    }
+
+    public static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
+        final DataOutputStream outputdata = new DataOutputStream(outputStream);
+
+        outputdata.writeInt(function.getCount());
+        for(Point p : function){
+            outputdata.writeDouble(p.x);
+            outputdata.writeDouble(p.y);
+        }
+
+        outputdata.flush();
+
     }
 }
