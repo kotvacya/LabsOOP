@@ -4,10 +4,7 @@ import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
 import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 
-<<<<<<< Updated upstream
 import java.io.*;
-=======
-<<<<<<< HEAD
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -15,10 +12,7 @@ import java.io.PrintWriter;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Locale;
-=======
-import java.io.*;
->>>>>>> 5e98e041ea90ffc8123181dc6a9dcae71f7243cc
->>>>>>> Stashed changes
+
 
 public final class FunctionsIO {
 
@@ -35,9 +29,6 @@ public final class FunctionsIO {
         pw.flush();
     }
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
     public static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
         int count = Integer.parseInt(reader.readLine());
 
@@ -55,22 +46,17 @@ public final class FunctionsIO {
             }
         }
         return factory.create(xValues, yValues);
-=======
->>>>>>> Stashed changes
+    }
+
     public static void writeTabulatedFunction(BufferedOutputStream outputStream, TabulatedFunction function) throws IOException {
         final DataOutputStream outputdata = new DataOutputStream(outputStream);
 
         outputdata.writeInt(function.getCount());
-        for(Point p : function){
+        for (Point p : function) {
             outputdata.writeDouble(p.x);
             outputdata.writeDouble(p.y);
         }
 
         outputdata.flush();
-
-<<<<<<< Updated upstream
-=======
->>>>>>> 5e98e041ea90ffc8123181dc6a9dcae71f7243cc
->>>>>>> Stashed changes
     }
 }
