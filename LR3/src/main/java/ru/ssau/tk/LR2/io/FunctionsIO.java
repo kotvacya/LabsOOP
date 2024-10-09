@@ -1,8 +1,11 @@
 package ru.ssau.tk.LR2.io;
 
+<<<<<<< HEAD
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+
+import com.thoughtworks.xstream.XStream;
 import ru.ssau.tk.LR2.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
@@ -32,6 +35,7 @@ public final class FunctionsIO {
         }
         pw.flush();
     }
+
 
     public static TabulatedFunction readTabulatedFunction(BufferedReader reader, TabulatedFunctionFactory factory) throws IOException {
         int count = Integer.parseInt(reader.readLine());
@@ -79,7 +83,7 @@ public final class FunctionsIO {
 
         return factory.create(xValues, yValues);
     }
-    
+
     public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream obj_stream = new ObjectInputStream(stream);
         return (TabulatedFunction) obj_stream.readObject();
@@ -102,5 +106,17 @@ public final class FunctionsIO {
         return arrayTablulatedReader.readValue(reader);
     }
 
+    public static void serializeXml(BufferedWriter writer, TabulatedFunction  function) {
+        XStream xs = new XStream();
+        PrintWriter pw = new PrintWriter(writer);
+        pw.println(xs.toXML(function));
+        pw.flush();
+    }
 
+    public static TabulatedFunction deserializeXml(BufferedReader reader) {
+        XStream xs = new XStream();
+        //xs.allowTypes(new Class[] { TabulatedFunction.class });
+        xs.allowTypeHierarchy(TabulatedFunction.class);
+        return (TabulatedFunction) xs.fromXML(reader);
+    }
 }
