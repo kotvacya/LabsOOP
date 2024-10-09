@@ -43,7 +43,7 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
         builder.append(" size = ");
         builder.append(getCount());
 
-        for(Point point: TabulatedFunctionOperationService.asPoints(this)){
+        for(Point point: this){
             builder.append("\n[");
             builder.append(point.x);
             builder.append("; ");

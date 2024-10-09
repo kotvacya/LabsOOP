@@ -134,6 +134,6 @@ public class AbstractTabulatedFunctionTest extends TestCase {
 
         ArrayTabulatedFunction func2 = new ArrayTabulatedFunction(new SqrFunction(), 0.0, 1.5, 4);
 
-        assertEquals("ArrayTabulatedFunction size = 3\n[0.0; 0.0]\n[0.5; 0.25]\n[1.0; 1.0]\n[1.5,2.25]", func2.toString());
+        assertEquals("ArrayTabulatedFunction size = 4\n[0.0; 0.0]\n[0.5; 0.25]\n[1.0; 1.0]\n[1.5; 2.25]", func2.toString());
     }
 }
