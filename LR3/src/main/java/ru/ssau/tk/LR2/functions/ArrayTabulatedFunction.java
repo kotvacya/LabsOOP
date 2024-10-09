@@ -1,5 +1,9 @@
 package ru.ssau.tk.LR2.functions;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -8,11 +12,14 @@ import java.util.NoSuchElementException;
 public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable, Serializable {
 
     private static final long serialVersionUID = -8279954938813966470L;
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
     private double[] xValues;
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
     private double[] yValues;
     private int count;
 
-    public ArrayTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException {
+    @JsonCreator
+    public ArrayTabulatedFunction(@JsonProperty(value = "xValues") double[] xValues , @JsonProperty(value = "yValues") double[] yValues) throws IllegalArgumentException {
         if (xValues.length < 2) throw new IllegalArgumentException("Array length <2");
         checkLengthIsTheSame(xValues, yValues);
         checkSorted(xValues);
