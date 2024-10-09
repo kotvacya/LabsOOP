@@ -1,12 +1,15 @@
 package ru.ssau.tk.LR2.functions;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable {
+public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements Insertable, Removable, Serializable {
 
+    private static final long serialVersionUID = -8279954938813966470L;
     private double[] xValues;
     private double[] yValues;
     private int count;
