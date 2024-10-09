@@ -9,10 +9,9 @@ import java.io.IOException;
 
 public class TabulatedFunctionFileWriter {
     public static void main(String[] args) {
-        try {
-            FileWriter fw1 = new FileWriter("output/array function.txt");
-            FileWriter fw2 = new FileWriter("output/linked list function.txt");
-
+        try (FileWriter fw1 = new FileWriter("output/array function.txt");
+             FileWriter fw2 = new FileWriter("output/linked list function.txt");
+        ) {
             BufferedWriter bf1 = new BufferedWriter(fw1);
             BufferedWriter bf2 = new BufferedWriter(fw2);
 
@@ -21,6 +20,7 @@ public class TabulatedFunctionFileWriter {
 
             FunctionsIO.writeTabulatedFunction(bf1, atf);
             FunctionsIO.writeTabulatedFunction(bf2, ltf);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
