@@ -77,4 +77,9 @@ public final class FunctionsIO {
 
         return factory.create(xValues, yValues);
     }
+
+    public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException{
+        ObjectInputStream obj_stream = new ObjectInputStream(stream);
+        return (TabulatedFunction) obj_stream.readObject();
+    }
 }
