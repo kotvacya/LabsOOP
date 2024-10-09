@@ -70,15 +70,15 @@ public final class FunctionsIO {
         double[] xValues = new double[count];
         double[] yValues = new double[count];
 
-        for (int i = 0; i < count; i++){
+        for (int i = 0; i < count; i++) {
             xValues[i] = istream.readDouble();
             yValues[i] = istream.readDouble();
         }
 
         return factory.create(xValues, yValues);
     }
-
-    public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException{
+    
+    public static TabulatedFunction deserialize(BufferedInputStream stream) throws IOException, ClassNotFoundException {
         ObjectInputStream obj_stream = new ObjectInputStream(stream);
         return (TabulatedFunction) obj_stream.readObject();
     }
@@ -88,5 +88,4 @@ public final class FunctionsIO {
         oos.writeObject(function);
         oos.flush();
     }
-
 }

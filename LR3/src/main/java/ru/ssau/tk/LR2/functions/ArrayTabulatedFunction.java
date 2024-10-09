@@ -1,7 +1,6 @@
 package ru.ssau.tk.LR2.functions;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
