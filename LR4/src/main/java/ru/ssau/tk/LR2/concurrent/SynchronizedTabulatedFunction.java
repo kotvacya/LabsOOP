@@ -1,6 +1,10 @@
 package ru.ssau.tk.LR2.concurrent;
 
+import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
+import ru.ssau.tk.LR2.operations.TabulatedFunctionOperationService;
+
+import java.util.Iterator;
 
 public class SynchronizedTabulatedFunction implements TabulatedFunction {
     private final TabulatedFunction func;
@@ -11,46 +15,89 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
 
     @Override
     public int getCount() {
-        return func.getCount();
+        synchronized (func) {
+            return func.getCount();
+        }
     }
 
     @Override
-    synchronized public double getX(int index) {
-        return func.getX(index);
+    public double getX(int index) {
+        synchronized (func) {
+            return func.getX(index);
+        }
     }
 
     @Override
-    synchronized public double getY(int index) {
-        return func.getY(index);
+    public double getY(int index) {
+        synchronized (func) {
+            return func.getY(index);
+        }
     }
 
     @Override
-    synchronized public void setY(int index, double value) {
-        func.setY(index, value);
+    public void setY(int index, double value) {
+        synchronized (func) {
+            func.setY(index, value);
+        }
     }
 
     @Override
-    synchronized public int indexOfX(double x) {
-        return func.indexOfX(x);
+    public int indexOfX(double x) {
+        synchronized (func) {
+            return func.indexOfX(x);
+        }
     }
 
     @Override
-    synchronized public int indexOfY(double y) {
-        return func.indexOfY(y);
+    public int indexOfY(double y) {
+        synchronized (func) {
+            return func.indexOfY(y);
+        }
     }
 
     @Override
     public double leftBound() {
-        return func.leftBound();
+        synchronized (func) {
+            return func.leftBound();
+        }
     }
 
     @Override
     public double rightBound() {
-        return func.rightBound();
+        synchronized (func) {
+            return func.rightBound();
+        }
     }
 
     @Override
-    synchronized public double apply(double x) {
-        return func.apply(x);
+    public double apply(double x) {
+        synchronized (func) {
+            return func.apply(x);
+        }
+    }
+
+    @Override
+    public Iterator<Point> iterator() {
+        Point[] points;
+
+        synchronized (func) {
+            points = TabulatedFunctionOperationService.asPoints(this);
+        }
+
+        return new Iterator<Point>() {
+            private int i = 0;
+            private final Point[] points_arr = points;
+
+            @Override
+            public boolean hasNext() {
+                return i <= points_arr.length;
+            }
+
+            @Override
+            public Point next() {
+                return points_arr[i++];
+            }
+        };
+
     }
 }

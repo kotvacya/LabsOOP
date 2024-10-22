@@ -4,7 +4,11 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import ru.ssau.tk.LR2.functions.ArrayTabulatedFunction;
-import ru.ssau.tk.LR2.functions.ArrayTabulatedFunctionTest;
+import ru.ssau.tk.LR2.functions.Point;
+import ru.ssau.tk.LR2.functions.SqrFunction;
+import ru.ssau.tk.LR2.operations.TabulatedFunctionOperationService;
+
+import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,6 +28,22 @@ public class SynchronizedTabulatedFunctionTest extends TestCase {
         assertEquals(sync_func.indexOfY(1.0), func.indexOfY(1.0));
         assertEquals(sync_func.indexOfX(1.0), func.indexOfX(1.0));
 
+    }
+
+    public void testIterator(){
+        ArrayTabulatedFunction func = new ArrayTabulatedFunction(new SqrFunction(), 0.0, 10.0, 11);
+
+        Point[] points = TabulatedFunctionOperationService.asPoints(func);
+        Iterator<Point> it = func.iterator();
+
+        for(int i = 0; i < points.length; i++){
+            Point ex = points[i];
+            Point got = it.next();
+            assertEquals(ex.x, got.x);
+            assertEquals(ex.y, got.y);
+        }
+
+        assertFalse(it.hasNext());
     }
 
     public SynchronizedTabulatedFunctionTest(String testName) {
