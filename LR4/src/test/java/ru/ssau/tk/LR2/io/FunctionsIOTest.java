@@ -13,7 +13,7 @@ import java.io.*;
 
 public class FunctionsIOTest extends TestCase {
 
-    public void testBuffered(){
+    public void testBuffered() {
         ArrayTabulatedFunction atf = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{11, 12, 13});
         LinkedListTabulatedFunction ltf = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{11, 12, 13});
 
@@ -52,7 +52,7 @@ public class FunctionsIOTest extends TestCase {
         }
     }
 
-    public void testStreamBuffered(){
+    public void testStreamBuffered() {
         ArrayTabulatedFunction func1 = new ArrayTabulatedFunction(new SqrFunction(), 0.0, 10.0, 11);
         LinkedListTabulatedFunction func2 = new LinkedListTabulatedFunction(new double[]{1.0, 2.0, 3.0}, new double[]{3.0, 2.0, 1.0});
 
@@ -64,7 +64,7 @@ public class FunctionsIOTest extends TestCase {
             FunctionsIO.writeTabulatedFunction(new BufferedOutputStream(ofstream_arr), func1);
             FunctionsIO.writeTabulatedFunction(new BufferedOutputStream(ofstream_list), func2);
 
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -80,12 +80,12 @@ public class FunctionsIOTest extends TestCase {
 
             assertEquals(func1.toString(), func1_new.toString());
             assertEquals(func2.toString(), func2_new.toString());
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void testSerialize(){
+    public void testSerialize() {
         SqrFunction sqr = new SqrFunction();
         ArrayTabulatedFunction atf = new ArrayTabulatedFunction(sqr, 1, 10, 10);
         TabulatedDifferentialOperator tdf = new TabulatedDifferentialOperator();
@@ -121,7 +121,7 @@ public class FunctionsIOTest extends TestCase {
     @Override
     protected void tearDown() throws Exception {
         File folder = new File("temp/");
-        if(folder != null) {
+        if (folder != null) {
             for (File file : folder.listFiles()) {
                 file.delete();
             }

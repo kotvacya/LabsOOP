@@ -12,6 +12,5 @@ public class ReadWriteTaskExecutor {
 
         read_thread.start();
         write_thread.start();
-
     }
 }

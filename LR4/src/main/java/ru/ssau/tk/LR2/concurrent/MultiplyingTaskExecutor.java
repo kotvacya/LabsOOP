@@ -22,8 +22,8 @@ public class MultiplyingTaskExecutor {
             el.start();
         }
 
-        for (Thread el : threadList) {
-            el.join();
+        while (!threadList.isEmpty()) {
+            threadList.removeIf(el -> !el.isAlive());
         }
 
         System.out.println(ltf);
