@@ -14,7 +14,9 @@ public class MultiplyingTask implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < tf.getCount(); ++i) {
-            tf.setY(i, tf.getY(0) * 2);
+            synchronized (tf) {
+                tf.setY(i, tf.getY(i) * 2);
+            }
         }
         System.out.println(Thread.currentThread().getName() + " закончил выполнение задачи");
     }
