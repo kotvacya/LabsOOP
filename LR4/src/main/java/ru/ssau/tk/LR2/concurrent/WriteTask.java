@@ -10,12 +10,12 @@ public class WriteTask implements Runnable {
         this.func = func;
         this.value = value;
     }
-    
+
     @Override
     public void run() {
         for(int i = 0; i < func.getCount(); i++){
             func.setY(i, value);
-            System.out.printf("Writing for index %d complete\n", i);
+            System.out.printf("Writing for index %d complete%n", i);
         }
     }
 }
