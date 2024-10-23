@@ -9,6 +9,10 @@ import java.util.Iterator;
 public class SynchronizedTabulatedFunction implements TabulatedFunction {
     private final TabulatedFunction func;
 
+    public interface Operation<T> {
+        public T apply(SynchronizedTabulatedFunction x);
+    }
+
     public SynchronizedTabulatedFunction(TabulatedFunction func) {
         this.func = func;
     }
@@ -100,4 +104,9 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
         };
 
     }
+
+    synchronized public <T> T doSynchronously(Operation<T> op) {
+        return op.apply(this);
+    }
+
 }
