@@ -85,7 +85,7 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
         Point[] points;
 
         synchronized (func) {
-            points = TabulatedFunctionOperationService.asPoints(this);
+            points = TabulatedFunctionOperationService.asPoints(this.func);
         }
 
         return new Iterator<Point>() {
@@ -94,7 +94,7 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
 
             @Override
             public boolean hasNext() {
-                return i <= points_arr.length;
+                return i <= points_arr.length-1;
             }
 
             @Override
