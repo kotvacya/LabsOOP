@@ -1,5 +1,6 @@
 package ru.ssau.tk.LR2.operations;
 
+import ru.ssau.tk.LR2.concurrent.SynchronizedTabulatedFunction;
 import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
 import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
@@ -40,5 +41,11 @@ public class TabulatedDifferentialOperator implements DifferentialOperator<Tabul
         yValues[xValues.length - 1] = yValues[xValues.length - 2];
 
         return factory.create(xValues, yValues);
+    }
+
+    public TabulatedFunction deriveSynchronously(TabulatedFunction function) {
+        if (!(function instanceof SynchronizedTabulatedFunction))
+            function = new SynchronizedTabulatedFunction(function);
+        return ((SynchronizedTabulatedFunction) function).doSynchronously(this::derive);
     }
 }
