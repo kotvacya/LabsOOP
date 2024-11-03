@@ -1,9 +1,19 @@
-package ru.ssau.tk.LR2.jdbc;
+package ru.ssau.tk.LR2.jdbc.model;
 
+import jakarta.annotation.Generated;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+@Table("MathResult")
 public class MathResult {
+
+    @Id
+    private int id;
+
+    private long hash;
     private double x;
     private double y;
-    private long hash;
+
 
     public double getX() {
         return x;
@@ -29,7 +39,12 @@ public class MathResult {
         this.hash = hash;
     }
 
+    @Override
     public String toString(){
         return String.format("x: %f y: %f hash: %x", x, y, hash);
+    }
+
+    public long getId() {
+        return id;
     }
 }
