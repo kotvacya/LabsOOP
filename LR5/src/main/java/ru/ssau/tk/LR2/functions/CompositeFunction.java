@@ -1,5 +1,7 @@
 package ru.ssau.tk.LR2.functions;
 
+import ru.ssau.tk.LR2.hash.Hasher;
+
 public class CompositeFunction implements MathFunction {
 
     private final MathFunction firstFunction;
@@ -13,5 +15,12 @@ public class CompositeFunction implements MathFunction {
     @Override
     public double apply(double x) {
         return firstFunction.apply(secondFunction.apply(x));
+    }
+
+    @Override
+    public long hash(Hasher h) {
+        firstFunction.hash(h);
+        secondFunction.hash(h);
+        return h.getHash(ConstantFunction.class);
     }
 }

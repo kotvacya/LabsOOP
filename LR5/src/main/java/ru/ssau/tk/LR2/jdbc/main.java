@@ -15,7 +15,5 @@ public class main {
         res.setX(10);
         res.setHash(1234567910);
         repo.insert(res);
-
-
     }
 }

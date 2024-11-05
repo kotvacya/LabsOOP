@@ -1,5 +1,7 @@
 package ru.ssau.tk.LR2.functions;
 
+import ru.ssau.tk.LR2.hash.Hasher;
+
 public class IntegralFunction implements MathFunction {
 
     final private MathFunction mf;
@@ -25,5 +27,13 @@ public class IntegralFunction implements MathFunction {
             n++;
         } while (Math.abs(result - old) >= precision);
         return result;
+    }
+
+    @Override
+    public long hash(Hasher h) {
+        mf.hash(h);
+        h.addDouble(start);
+        h.addDouble(end);
+        return h.getHash(IntegralFunction.class);
     }
 }

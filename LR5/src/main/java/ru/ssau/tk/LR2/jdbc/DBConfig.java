@@ -45,5 +45,4 @@ public class DBConfig {
     PlatformTransactionManager transactionManager(DataSource source) {
         return new DataSourceTransactionManager(source);
     }
-
 }
