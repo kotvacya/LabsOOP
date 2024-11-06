@@ -35,11 +35,13 @@ public class RepositoryTest {
 
         Assert.assertEquals(0, repo.getCount());
 
+        repo.insert(res1);
+
         for (int i = 0; i < 100; i++) {
             repo.insert(new MathResult(i, 100-i, 10000));
         }
 
-        Assert.assertEquals(100, repo.getCount());
+        Assert.assertEquals(101, repo.getCount());
 
         double prev = -Double.MAX_VALUE;
         for (MathResult res : repo.findByHashSortedByX(10000)){
