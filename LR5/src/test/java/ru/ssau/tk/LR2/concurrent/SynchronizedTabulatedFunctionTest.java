@@ -12,7 +12,6 @@ import java.util.Iterator;
 
 import ru.ssau.tk.LR2.functions.*;
 
-
 public class SynchronizedTabulatedFunctionTest extends TestCase {
 
     public void testTabulatedFunc() {

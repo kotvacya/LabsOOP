@@ -10,12 +10,5 @@ public class main {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(DBConfig.class);
         MathResultRepository repo = ctx.getBean(MathResultRepository.class);
 
-        MathResult res = new MathResult();
-        res.setY(10);
-        res.setX(10);
-        res.setHash(1234567910);
-        repo.insert(res);
-
-
     }
 }

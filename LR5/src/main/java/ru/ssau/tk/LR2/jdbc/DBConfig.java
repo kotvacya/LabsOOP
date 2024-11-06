@@ -5,8 +5,10 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -20,9 +22,10 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
-@EnableSqliteRepositories
+@EnableSqliteRepositories(namedQueriesLocation = "sql/jdbc-named-queries.properties")
 public class DBConfig {
     @Bean
+    @Profile("prod")
     DataSource dataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl("jdbc:sqlite:test.db");
@@ -39,11 +42,6 @@ public class DBConfig {
     @Bean
     public NamedParameterJdbcTemplate template(DataSource source){
         return new NamedParameterJdbcTemplate(source);
-    }
-
-    @Bean
-    PlatformTransactionManager transactionManager(DataSource source) {
-        return new DataSourceTransactionManager(source);
     }
 
 }
