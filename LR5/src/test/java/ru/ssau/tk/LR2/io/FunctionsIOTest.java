@@ -4,6 +4,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.junit.AfterClass;
+import org.junit.jupiter.api.Assertions;
 import ru.ssau.tk.LR2.functions.*;
 import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.LR2.functions.factory.LinkedListTabulatedFunctionFactory;
@@ -13,8 +14,22 @@ import java.io.*;
 
 public class FunctionsIOTest extends TestCase {
     public void testConstuctor() {
+        Assertions.assertThrows(UnsupportedOperationException.class, FunctionsIO::new);
+    }
 
-        ass new FunctionsIO();
+    public void testReadTabulatedFunctionThrows() {
+        try (FileWriter fw1 = new FileWriter("temp/test.txt")) {
+            fw1.write("200\na3\nsecond");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (FileReader fr = new FileReader("temp/test.txt")) {
+            BufferedReader br = new BufferedReader(fr);
+            Assertions.assertThrows(IOException.class, () -> FunctionsIO.readTabulatedFunction(br, null));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -119,6 +134,29 @@ public class FunctionsIOTest extends TestCase {
             assertEquals(second_derivative.toString(), function3.toString());
 
         } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void testSerializeXML() {
+        SqrFunction sqr = new SqrFunction();
+        ArrayTabulatedFunction atf = new ArrayTabulatedFunction(sqr, 1, 10, 10);
+
+        try (FileWriter fw = new FileWriter("temp/serialized array functions.xml")) {
+            BufferedWriter bw = new BufferedWriter(fw);
+
+
+            FunctionsIO.serializeXml(bw, atf);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (FileReader fr = new FileReader("temp/serialized array functions.xml")) {
+
+            BufferedReader br = new BufferedReader(fr);
+            TabulatedFunction function = FunctionsIO.deserializeXml(br);
+            assertEquals(atf.toString(), function.toString());
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

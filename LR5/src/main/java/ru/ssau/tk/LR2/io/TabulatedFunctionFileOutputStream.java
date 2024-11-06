@@ -5,7 +5,6 @@ import ru.ssau.tk.LR2.functions.LinkedListTabulatedFunction;
 import ru.ssau.tk.LR2.functions.SqrFunction;
 
 import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 

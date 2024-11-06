@@ -1,7 +1,6 @@
 package ru.ssau.tk.LR2.io;
 
 import com.thoughtworks.xstream.XStream;
-import ru.ssau.tk.LR2.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
 import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;

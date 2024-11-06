@@ -3,7 +3,6 @@ package ru.ssau.tk.LR2.io;
 import ru.ssau.tk.LR2.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.LR2.functions.SqrFunction;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
-import ru.ssau.tk.LR2.operations.TabulatedDifferentialOperator;
 
 import java.io.*;
 
