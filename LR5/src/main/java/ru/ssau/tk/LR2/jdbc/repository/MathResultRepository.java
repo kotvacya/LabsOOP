@@ -20,9 +20,8 @@ public interface MathResultRepository extends SqliteRepository<MathResult, Integ
     @Query(name = "MathResult.update")
     void updateYByXAndHash(@Param("x") double x, @Param("hash") double hash, @Param("y") double y);
 
-    @Modifying
     @Query(name = "MathResult.findByHashSortedByX")
-    void findByHashSortedByX(@Param("hash") double hash);
+    List<MathResult> findByHashSortedByX(@Param("hash") double hash);
 
     @Query(name = "MathResult.getCount")
     int getCount();

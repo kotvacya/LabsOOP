@@ -14,7 +14,7 @@ import java.io.*;
 public class FunctionsIOTest extends TestCase {
     public void testConstuctor() {
 
-        ass new FunctionsIO();
+        //ass new FunctionsIO();
     }
 
 
