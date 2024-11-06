@@ -1,21 +1,24 @@
 package ru.ssau.tk.LR2.hash;
 
+import java.util.Objects;
+
 public class BasicHasher implements Hasher {
-    long hash;
+
+    private long hash;
 
     @Override
     public void addInt(int i) {
-        hash += 1;
+        hash = Objects.hash(hash, Integer.hashCode(i));
     }
 
     @Override
     public void addDouble(double d) {
-        hash += 100;
+        hash = Objects.hash(hash, Double.hashCode(d));
     }
 
     @Override
     public void addString(String s) {
-        hash += 10000;
+        hash = Objects.hash(hash, s.hashCode());
     }
 
     @Override

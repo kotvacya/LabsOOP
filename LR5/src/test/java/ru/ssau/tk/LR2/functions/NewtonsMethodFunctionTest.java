@@ -3,6 +3,7 @@ package ru.ssau.tk.LR2.functions;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import ru.ssau.tk.LR2.hash.Hasher;
 
 public class NewtonsMethodFunctionTest extends TestCase {
 
@@ -18,6 +19,11 @@ public class NewtonsMethodFunctionTest extends TestCase {
         final double PRECISION = 1e-9;
 
         MathFunction sin = new MathFunction() {
+            @Override
+            public long hash(Hasher h) {
+                return 0;
+            }
+
             @Override
             public double apply(double x) {
                 return Math.sin(x);
@@ -35,6 +41,11 @@ public class NewtonsMethodFunctionTest extends TestCase {
         assertEquals(Double.NaN, const_newton.apply(0.0));
 
         MathFunction exp = new MathFunction() {
+            @Override
+            public long hash(Hasher h) {
+                return 0;
+            }
+
             @Override
             public double apply(double x) {
                 return Math.exp(x)-1;

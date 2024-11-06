@@ -1,11 +1,8 @@
 package ru.ssau.tk.LR2.functions;
 
-
-import ru.ssau.tk.LR2.hash.BasicHasher;
 import ru.ssau.tk.LR2.hash.Hasher;
 
 public class ConstantFunction implements MathFunction {
-
     private final double x;
 
     public ConstantFunction(double x) {
