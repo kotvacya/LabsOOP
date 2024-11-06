@@ -5,6 +5,7 @@ import junit.framework.TestSuite;
 import ru.ssau.tk.LR2.functions.*;
 import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.LR2.functions.factory.LinkedListTabulatedFunctionFactory;
+import ru.ssau.tk.LR2.hash.Hasher;
 
 public class TabulatedDifferentialOperatorTest extends TestCase {
 
@@ -31,6 +32,11 @@ public class TabulatedDifferentialOperatorTest extends TestCase {
         assertEquals(0.0, derive3.apply(9.5));
 
         TabulatedFunction derive4 = diff_array.derive(new ArrayTabulatedFunction(new MathFunction() {
+            @Override
+            public long hash(Hasher h) {
+                return 0;
+            }
+
             @Override
             public double apply(double x) {
                 return Math.exp(x);
@@ -65,6 +71,11 @@ public class TabulatedDifferentialOperatorTest extends TestCase {
         assertEquals(0.0, derive3.apply(9.5));
 
         TabulatedFunction derive4 = diff_array.deriveSynchronously(new ArrayTabulatedFunction(new MathFunction() {
+            @Override
+            public long hash(Hasher h) {
+                return 0;
+            }
+
             @Override
             public double apply(double x) {
                 return Math.exp(x);

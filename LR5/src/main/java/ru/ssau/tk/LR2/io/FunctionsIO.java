@@ -99,7 +99,6 @@ public final class FunctionsIO {
 
     public static TabulatedFunction deserializeXml(BufferedReader reader) {
         XStream xs = new XStream();
-        //xs.allowTypes(new Class[] { TabulatedFunction.class });
         xs.allowTypeHierarchy(TabulatedFunction.class);
         return (TabulatedFunction) xs.fromXML(reader);
     }

@@ -1,5 +1,7 @@
 package ru.ssau.tk.LR2.functions;
 
+import ru.ssau.tk.LR2.hash.Hasher;
+
 import java.io.BufferedWriter;
 import java.io.Serializable;
 import java.util.Arrays;
@@ -213,4 +215,6 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
             }
         };
     }
+
+
 }

@@ -12,6 +12,11 @@ import ru.ssau.tk.LR2.operations.TabulatedDifferentialOperator;
 import java.io.*;
 
 public class FunctionsIOTest extends TestCase {
+    public void testConstuctor() {
+
+        ass new FunctionsIO();
+    }
+
 
     public void testBuffered() {
         ArrayTabulatedFunction atf = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{11, 12, 13});

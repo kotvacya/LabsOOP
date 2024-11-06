@@ -1,5 +1,7 @@
 package ru.ssau.tk.LR2.functions;
 
+import ru.ssau.tk.LR2.hash.Hasher;
+
 public class NewtonsMethodFunction implements MathFunction {
 
     private final static double DERIVATIVE_EPS = 1e-6;
@@ -42,5 +44,14 @@ public class NewtonsMethodFunction implements MathFunction {
         }
 
         return Double.NaN; // function does not converge to zero
+    }
+
+    @Override
+    public long hash(Hasher h) {
+        h.addDouble(DERIVATIVE_EPS);
+        func.hash(h);
+        h.addDouble(tolerance);
+        h.addDouble(max_iterations);
+        return h.getHash(NewtonsMethodFunction.class);
     }
 }
