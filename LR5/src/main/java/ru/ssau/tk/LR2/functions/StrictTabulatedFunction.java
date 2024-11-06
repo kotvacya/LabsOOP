@@ -1,6 +1,6 @@
 package ru.ssau.tk.LR2.functions;
 
-public class StrictTabulatedFunction implements TabulatedFunction{
+public class StrictTabulatedFunction implements TabulatedFunction {
 
     private final TabulatedFunction function;
 

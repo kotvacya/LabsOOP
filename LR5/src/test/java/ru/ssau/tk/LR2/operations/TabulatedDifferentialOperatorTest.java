@@ -9,6 +9,13 @@ import ru.ssau.tk.LR2.hash.Hasher;
 
 public class TabulatedDifferentialOperatorTest extends TestCase {
 
+    public void testGettersSetters() {
+        TabulatedDifferentialOperator test = new TabulatedDifferentialOperator();
+        assertEquals(ArrayTabulatedFunctionFactory.class, test.getFactory().getClass());
+        test.setFactory(new LinkedListTabulatedFunctionFactory());
+        assertEquals(LinkedListTabulatedFunctionFactory.class, test.getFactory().getClass());
+    }
+
     public void testDerive() {
         TabulatedDifferentialOperator diff_array = new TabulatedDifferentialOperator(new ArrayTabulatedFunctionFactory());
         TabulatedDifferentialOperator diff_linked = new TabulatedDifferentialOperator(new LinkedListTabulatedFunctionFactory());

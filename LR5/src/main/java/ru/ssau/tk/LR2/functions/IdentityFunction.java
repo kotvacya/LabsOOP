@@ -7,9 +7,4 @@ public class IdentityFunction implements MathFunction {
     public double apply(double x) {
         return x;
     }
-
-    @Override
-    public long hash(Hasher h) {
-        return h.getHash(IdentityFunction.class);
-    }
 }

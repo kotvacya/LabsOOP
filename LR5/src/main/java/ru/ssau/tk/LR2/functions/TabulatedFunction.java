@@ -27,7 +27,11 @@ public interface TabulatedFunction extends MathFunction, Iterable<Point> {
     }
 
     @Override
-    default public long hash(Hasher h) {
-        return 0;
+    default long hash(Hasher h) {
+        for (Point el : this) {
+            h.addDouble(el.x);
+            h.addDouble(el.y);
+        }
+        return h.getHash(this.getClass());
     }
 }

@@ -11,6 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TabulatedFunctionOperationServiceTest extends TestCase {
 
+    public void testConstructor() {
+        TabulatedFunctionOperationService tfs = new TabulatedFunctionOperationService();
+        assertEquals(ArrayTabulatedFunctionFactory.class, tfs.getFactory().getClass());
+    }
+
     public void testAsPoints() {
         ArrayTabulatedFunction atf = new ArrayTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});
         LinkedListTabulatedFunction ltf = new LinkedListTabulatedFunction(new double[]{1, 2, 3}, new double[]{1, 2, 3});

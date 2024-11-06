@@ -13,11 +13,6 @@ public class LeftSteppingDifferentialOperator extends SteppingDifferentialOperat
     public MathFunction derive(MathFunction function) {
         return new MathFunction() {
             @Override
-            public long hash(Hasher h) {
-                return h.getHash(this.getClass());
-            }
-
-            @Override
             public double apply(double x) {
                 return ((function.apply(x) - function.apply(x - getStep())) / getStep());
             }
