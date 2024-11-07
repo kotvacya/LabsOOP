@@ -14,6 +14,8 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import ru.ssau.tk.LR2.hash.BasicHaserFactory;
+import ru.ssau.tk.LR2.hash.HasherFactory;
 
 import javax.sql.DataSource;
 
@@ -25,6 +27,11 @@ public class DBConfig {
 
     @Autowired
     public Environment env;
+
+    @Bean
+    HasherFactory hasherFactory(){
+        return new BasicHaserFactory();
+    }
 
     @Bean
     DataSource dataSource(){

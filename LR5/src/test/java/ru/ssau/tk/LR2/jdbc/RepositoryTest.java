@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.ssau.tk.LR2.functions.CompositeFunction;
+import ru.ssau.tk.LR2.functions.IdentityFunction;
+import ru.ssau.tk.LR2.functions.MathFunction;
+import ru.ssau.tk.LR2.functions.SqrFunction;
 import ru.ssau.tk.LR2.jdbc.model.MathResult;
 import ru.ssau.tk.LR2.jdbc.repository.MathResultRepository;
 
@@ -17,6 +21,9 @@ public class RepositoryTest {
 
     @Autowired
     MathResultRepository repo;
+
+    @Autowired
+    CachedMathFunctionFactory factory;
 
     @Test
     public void testDatabase(){
@@ -58,6 +65,25 @@ public class RepositoryTest {
 
         Assert.assertEquals(123.0, repo.findByXAndHash(52.0, 10000).getY(), Double.MIN_VALUE);
 
+    }
+
+    @Test
+    public void testMathFunctionRepository(){
+        MathFunction func1 = new SqrFunction();
+        MathFunction func2 = new IdentityFunction();
+
+        CompositeFunction comp1 = new CompositeFunction(func1, func2);
+        CompositeFunction comp2 = new CompositeFunction(func2, func1);
+
+        CachedMathFunction c_func1 = factory.create(comp1);
+        CachedMathFunction c_func2 = factory.create(comp2);
+
+        Assert.assertNotEquals(c_func1.getHash(), c_func2.getHash());
+
+        Assert.assertEquals(func1.apply(1.0), c_func1.apply(1.0), Double.MIN_VALUE);
+        Assert.assertEquals(func1.apply(1.0), c_func1.apply(1.0), Double.MIN_VALUE);
+        Assert.assertEquals(func2.apply(1.0), c_func2.apply(1.0), Double.MIN_VALUE);
+        Assert.assertEquals(func2.apply(1.0), c_func2.apply(1.0), Double.MIN_VALUE);
     }
 
 }
