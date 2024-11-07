@@ -40,11 +40,6 @@ public class TabulatedDifferentialOperatorTest extends TestCase {
 
         TabulatedFunction derive4 = diff_array.derive(new ArrayTabulatedFunction(new MathFunction() {
             @Override
-            public long hash(Hasher h) {
-                return 0;
-            }
-
-            @Override
             public double apply(double x) {
                 return Math.exp(x);
             }
@@ -78,11 +73,6 @@ public class TabulatedDifferentialOperatorTest extends TestCase {
         assertEquals(0.0, derive3.apply(9.5));
 
         TabulatedFunction derive4 = diff_array.deriveSynchronously(new ArrayTabulatedFunction(new MathFunction() {
-            @Override
-            public long hash(Hasher h) {
-                return 0;
-            }
-
             @Override
             public double apply(double x) {
                 return Math.exp(x);

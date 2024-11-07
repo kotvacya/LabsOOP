@@ -12,22 +12,12 @@ public class CompositeFunctionTest extends TestCase {
         public double apply(double x) {
             return x + 1;
         }
-
-        @Override
-        public long hash(Hasher h) {
-            return 0;
-        }
     }
 
     private static class Exp implements MathFunction {
         @Override
         public double apply(double x) {
             return Math.exp(x);
-        }
-
-        @Override
-        public long hash(Hasher h) {
-            return 0;
         }
     }
 
