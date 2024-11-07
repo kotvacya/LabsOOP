@@ -10,7 +10,7 @@ public class SynchronizedTabulatedFunction implements TabulatedFunction {
     private final TabulatedFunction func;
 
     public interface Operation<T> {
-        public T apply(SynchronizedTabulatedFunction x);
+        T apply(SynchronizedTabulatedFunction x);
     }
 
     public SynchronizedTabulatedFunction(TabulatedFunction func) {

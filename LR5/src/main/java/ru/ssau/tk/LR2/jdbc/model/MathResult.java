@@ -40,17 +40,17 @@ public class MathResult {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return String.format("x: %f y: %f hash: %x", x, y, hash);
     }
 
-    public MathResult(){
+    public MathResult() {
         x = 0;
         y = 0;
         hash = 0;
     }
 
-    public MathResult(double x, double y, long hash){
+    public MathResult(double x, double y, long hash) {
         this.x = x;
         this.y = y;
         this.hash = hash;

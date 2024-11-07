@@ -29,12 +29,12 @@ public class DBConfig {
     public Environment env;
 
     @Bean
-    HasherFactory hasherFactory(){
+    HasherFactory hasherFactory() {
         return new BasicHaserFactory();
     }
 
     @Bean
-    DataSource dataSource(){
+    DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl(env.getProperty("spring.datasource.url"));
         dataSource.setUsername(env.getProperty("spring.datasource.username"));
@@ -48,8 +48,7 @@ public class DBConfig {
     }
 
     @Bean
-    public NamedParameterJdbcTemplate template(DataSource source){
+    public NamedParameterJdbcTemplate template(DataSource source) {
         return new NamedParameterJdbcTemplate(source);
     }
-
 }

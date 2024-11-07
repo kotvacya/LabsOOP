@@ -7,15 +7,15 @@ import ru.ssau.tk.LR2.jdbc.repository.MathResultRepository;
 
 @Component
 public class CachedMathFunctionFactory {
-    MathResultRepository repository;
-    HasherFactory factory;
+    private final MathResultRepository repository;
+    private final HasherFactory factory;
 
-    public CachedMathFunctionFactory(MathResultRepository repo, HasherFactory hash_factory){
+    public CachedMathFunctionFactory(MathResultRepository repo, HasherFactory hash_factory) {
         repository = repo;
         factory = hash_factory;
     }
 
-    public CachedMathFunction create(MathFunction func){
+    public CachedMathFunction create(MathFunction func) {
         return new CachedMathFunction(repository, func, factory);
     }
 }
