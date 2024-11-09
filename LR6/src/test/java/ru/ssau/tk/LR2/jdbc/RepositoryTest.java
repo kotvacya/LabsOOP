@@ -114,7 +114,7 @@ public class RepositoryTest {
 
         logRepo.updateTextAndTsById( testLog.getId(),"321321", Timestamp.from(now));
         Assert.assertEquals("321321", logRepo.findById(testLog.getId()).getText());
-        Assert.assertEquals(now.truncatedTo(ChronoUnit.MILLIS), logRepo.findById(testLog.getId()).getTimestamp().toInstant());
+        Assert.assertEquals(now.truncatedTo(ChronoUnit.MILLIS), logRepo.findById(testLog.getId()).getTs().toInstant());
 
         logRepo.delete(testLog.getId());
 
@@ -124,7 +124,7 @@ public class RepositoryTest {
 
         Instant prev = Instant.EPOCH;
         for (Log res : logRepo.findSortedByTimestamp()){
-            Instant val = res.getTimestamp().toInstant();
+            Instant val = res.getTs().toInstant();
 
             Assert.assertTrue(val.compareTo(prev) >= 0);
             prev = val;

@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
-@EnableSqliteRepositories(namedQueriesLocation = "sql/jdbc-named-queries.properties")
+@EnableSqliteRepositories(namedQueriesLocation = "classpath:sql/jdbc-named-queries.properties")
 public class DBConfig {
 
     @Autowired
