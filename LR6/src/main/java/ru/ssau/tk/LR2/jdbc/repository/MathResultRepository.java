@@ -18,10 +18,10 @@ public interface MathResultRepository extends SqliteRepository<MathResult, Integ
 
     @Modifying
     @Query(name = "MathResult.update")
-    void updateYByXAndHash(@Param("x") double x, @Param("hash") double hash, @Param("y") double y);
+    void updateYByXAndHash(@Param("x") double x, @Param("hash") long hash, @Param("y") double y);
 
     @Query(name = "MathResult.findByHashSortedByX")
-    List<MathResult> findByHashSortedByX(@Param("hash") double hash);
+    List<MathResult> findByHashSortedByX(@Param("hash") long hash);
 
     @Query(name = "MathResult.getCount")
     int getCount();
@@ -32,5 +32,9 @@ public interface MathResultRepository extends SqliteRepository<MathResult, Integ
 
     @Modifying
     @Query(name = "MathResult.deleteByXAndHash")
-    void deleteByXAndHash(@Param("x") double x, @Param("hash") double hash);
+    void deleteByXAndHash(@Param("x") double x, @Param("hash") long hash);
+
+    @Modifying
+    @Query(name = "MathResult.deleteByHash")
+    void deleteByHash(@Param("hash") long hash);
 }
