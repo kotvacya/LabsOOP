@@ -1,2 +1,11 @@
-package ru.ssau.tk.LR2.web;public class Application {
+package ru.ssau.tk.LR2.web;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Application {
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
 }
