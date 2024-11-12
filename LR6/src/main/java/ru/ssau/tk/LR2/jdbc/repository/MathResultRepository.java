@@ -30,11 +30,11 @@ public interface MathResultRepository extends SqliteRepository<MathResult, Integ
     @Query(name = "MathResult.deleteAll")
     void deleteAll();
 
-    @Modifying
+//    @Modifying
     @Query(name = "MathResult.deleteByXAndHash")
-    void deleteByXAndHash(@Param("x") double x, @Param("hash") long hash);
+    List<MathResult> deleteByXAndHash(@Param("x") double x, @Param("hash") long hash);
 
-    @Modifying
+//    @Modifying
     @Query(name = "MathResult.deleteByHash")
-    void deleteByHash(@Param("hash") long hash);
+    List<MathResult> deleteByHash(@Param("hash") long hash);
 }
