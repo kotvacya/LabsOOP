@@ -10,5 +10,5 @@ import ru.ssau.tk.LR2.jdbc.repository.MathResultRepository;
 @AllArgsConstructor
 public class MathService {
     @Delegate(types = MathResultRepository.class)
-    private MathResultRepository userRepo;
+    private MathResultRepository mathRepo;
 }
