@@ -5,10 +5,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsChecker;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.ssau.tk.LR2.jdbc.model.User;
 import ru.ssau.tk.LR2.jdbc.repository.UserRepository;
 import ru.ssau.tk.LR2.web.service.UserService;
 
@@ -44,6 +47,13 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsManager userDetailsManager(PasswordEncoder encoder, UserRepository repo) {
-        return new UserService(repo);
+        UserDetailsManager service = new UserService(repo);
+
+        service.createUser(new User(
+                "user",
+                encoder.encode("password")
+        ));
+
+        return service;
     }
 }
