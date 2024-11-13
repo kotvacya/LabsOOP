@@ -13,6 +13,7 @@ import java.time.Instant;
 public class Log {
     @Id
     @Setter(AccessLevel.PROTECTED)
+    @Getter
     private int id;
 
     private String text;
@@ -28,12 +29,12 @@ public class Log {
         this.ts = ts.getTime();
     }
 
-    public Log(String text){
+    public Log(String text) {
         this.text = text;
         ts = Timestamp.from(Instant.now()).getTime();
     }
 
-    public Log(String text, Timestamp ts){
+    public Log(String text, Timestamp ts) {
         this.text = text;
         this.ts = ts.getTime();
     }

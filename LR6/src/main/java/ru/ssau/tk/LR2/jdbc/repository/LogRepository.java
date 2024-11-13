@@ -31,6 +31,6 @@ public interface LogRepository extends SqliteRepository<Log, Integer> {
     void deleteAll();
 
     @Modifying
-    @Query(name = "Log.delete")
-    void delete(@Param("id") int id);
+    @Query(name = "Log.deleteById")
+    void deleteById(@Param("id") int id);
 }
