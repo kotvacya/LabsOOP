@@ -116,7 +116,7 @@ public class RepositoryTest {
         Assert.assertEquals("321321", logRepo.findById(testLog.getId()).getText());
         Assert.assertEquals(now.truncatedTo(ChronoUnit.MILLIS), logRepo.findById(testLog.getId()).getTs().toInstant());
 
-        logRepo.delete(testLog.getId());
+        logRepo.deleteById(testLog.getId());
 
         for (int i = 0; i < 100; i++) {
             logRepo.insert(new Log("text" + i, Timestamp.from(now.plusSeconds(100-i))));

@@ -10,9 +10,6 @@ import ru.ssau.tk.LR2.jdbc.model.MathResult;
 import ru.ssau.tk.LR2.web.dto.MathResultDTO;
 import ru.ssau.tk.LR2.web.service.MathService;
 
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
-import java.security.Key;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -47,33 +44,30 @@ public class MathFunctionController {
     }
 
     @PostMapping("/{hash}")
-    public ResponseEntity<Boolean> create(@PathVariable("hash") long hash, @RequestParam("x") double x, @RequestParam("y") double y) {
+    public ResponseEntity<String> create(@PathVariable("hash") long hash, @RequestParam("x") double x, @RequestParam("y") double y) {
         try {
-            MathResult mathResult = new MathResult(x, y, hash);
-            mathService.insert(mathResult);
-            return ResponseEntity.ok(true);
+            mathService.insert(new MathResult(x, y, hash));
+            return ResponseEntity.ok("success");
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
         }
     }
 
-//    @PutMapping("/{hash}")
-//    public ResponseEntity updateByHashAndX(@PathVariable("hash") long hash, @RequestParam("x") double x, @RequestParam("y") double y) {
-//        try {
-//            MathResult mathResult = new MathResult(x, y, hash);
-//            mathService.update()
-//            return ResponseEntity.ok("Update" + hash + "(" + x + ")");
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
-//        }
-//    }
+    @PutMapping("/{hash}")
+    public ResponseEntity<String> updateByHashAndX(@PathVariable("hash") long hash, @RequestParam("x") double x, @RequestParam("y") double y) {
+        try {
+            mathService.updateYByXAndHash(x, hash, y);
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
+        }
+    }
 
     @DeleteMapping("/")
     public ResponseEntity<String> deleteAll() {
         try {
             mathService.deleteAll();
             return ResponseEntity.ok("success");
-
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
         }
