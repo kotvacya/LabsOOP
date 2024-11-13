@@ -1,35 +1,95 @@
 package ru.ssau.tk.LR2.web.controller;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import ru.ssau.tk.LR2.hash.BasicHasherTest;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import ru.ssau.tk.LR2.functions.MathFunction;
+import ru.ssau.tk.LR2.jdbc.model.Log;
+import ru.ssau.tk.LR2.jdbc.model.MathResult;
+import ru.ssau.tk.LR2.web.dto.LogDTO;
+import ru.ssau.tk.LR2.web.dto.MathResultDTO;
+import ru.ssau.tk.LR2.web.service.MathService;
 
-public class MathFunctionControllerTest extends TestCase {
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
 
-    public void testGet() {
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+class MathFunctionControllerTest {
+
+    @Autowired
+    MockMvc mvc;
+
+    @MockBean
+    MathService mathService;
+
+    @Test
+    void testGet() throws Exception {
+        Mockito.when(mathService.findByHash(123)).thenReturn(getMathResults().subList(0, 1));
+
+        mvc.perform(get("/math/123"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].hash").value(123));
+
+        Mockito.verify(mathService).findByHash(123);
     }
 
-    public void testCreate() {
+    @Test
+    void testCreate() throws Exception {
+        Mockito.when(mathService.insert(Mockito.any(MathResult.class))).thenReturn(new MathResult());
+        mvc.perform(post("/math/222?x=2&y=2")).andExpect(status().isOk());
+        Mockito.verify(mathService).insert(Mockito.any(MathResult.class));
     }
 
-    public void testUpdateByHashAndX() {
+    @Test
+    void updateByHashAndX() throws Exception {
+        mvc.perform(put("/math/222?x=2&y=5")).andExpect(status().isOk());
+        Mockito.verify(mathService).updateYByXAndHash(2, 222, 5);
     }
 
-    public void testDeleteAll() {
+    @Test
+    void deleteAll() throws Exception {
+        mvc.perform(delete("/math/222?x=2&y=5")).andExpect(status().isOk());
+        Mockito.verify(mathService).deleteAll();
     }
 
-    public void testDeleteByHash() {
+    @Test
+    void deleteByHash() throws Exception {
+        mvc.perform(delete("/math/222")).andExpect(status().isOk());
+        mvc.perform(delete("/math/123?x=1")).andExpect(status().isOk());
+        Mockito.verify(mathService).deleteByHash(222);
+        Mockito.verify(mathService).deleteByXAndHash(1, 123);
     }
 
-    public void testGetCount() {
+    @Test
+    void getCount() throws Exception {
+        Mockito.when(mathService.getCount()).thenReturn(getMathResults().size());
+
+        mvc.perform(get("/math/count"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(2));
+
+        Mockito.verify(mathService).getCount();
     }
 
-    public MathFunctionControllerTest(String testName) {
-        super(testName);
-    }
-
-    public static junit.framework.Test suite() {
-        return new TestSuite(MathFunctionControllerTest.class);
+    private List<MathResult> getMathResults() {
+        return Arrays.asList(
+                new MathResult(1, 2, 123),
+                new MathResult(2, 4, 321)
+        );
     }
 }

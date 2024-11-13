@@ -21,7 +21,6 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -55,7 +54,6 @@ class LogControllerTest {
         Mockito.when(logService.insert(Mockito.any(Log.class))).thenReturn(new Log());
 
         ObjectMapper objectMapper = new ObjectMapper();
-
 
         mvc.perform(post("/log/")
                         .content(objectMapper.writeValueAsString(
@@ -98,13 +96,10 @@ class LogControllerTest {
         Mockito.verify(logService).deleteAll();
     }
 
-
-
     private List<Log> getLogs() {
         return Arrays.asList(
                 new Log("log1", Timestamp.from(Instant.EPOCH)),
                 new Log("log2", Timestamp.from(Instant.EPOCH.plusSeconds(10)))
         );
-
     }
 }
