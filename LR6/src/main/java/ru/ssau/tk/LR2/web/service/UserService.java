@@ -16,8 +16,7 @@ public class UserService implements UserDetailsManager {
 
     @Override
     public void createUser(UserDetails user) {
-        User user_obj = new User(user.getUsername(), user.getPassword());
-        user_repo.insert(user_obj);
+        user_repo.insert(new User(user.getUsername(), user.getPassword()));
     }
 
     @Override

@@ -105,5 +105,6 @@ class LogControllerTest {
                 new Log("log1", Timestamp.from(Instant.EPOCH)),
                 new Log("log2", Timestamp.from(Instant.EPOCH.plusSeconds(10)))
         );
+
     }
 }
