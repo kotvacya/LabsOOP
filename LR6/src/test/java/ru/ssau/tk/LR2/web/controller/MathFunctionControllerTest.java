@@ -63,7 +63,7 @@ class MathFunctionControllerTest {
 
     @Test
     void deleteAll() throws Exception {
-        mvc.perform(delete("/math/222?x=2&y=5")).andExpect(status().isOk());
+        mvc.perform(delete("/math/")).andExpect(status().isOk());
         Mockito.verify(mathService).deleteAll();
     }
 
