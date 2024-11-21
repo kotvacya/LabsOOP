@@ -1,0 +1,817 @@
+{
+	"info": {
+		"_postman_id": "313a0a01-ce38-493d-9822-741f57a8e29b",
+		"name": "LR6 newman tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39656711"
+	},
+	"item": [
+		{
+			"name": "MathResult",
+			"item": [
+				{
+					"name": "Delete all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Is success\", function () {\r",
+									"    pm.response.to.have.body(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/math/",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"math",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create math result 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.body(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/math/123?x=1.0&y=2.0",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"math",
+								"123"
+							],
+							"query": [
+								{
+									"key": "x",
+									"value": "1.0"
+								},
+								{
+									"key": "y",
+									"value": "2.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create math result 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.body(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/math/321?x=2.0&y=1.0",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"math",
+								"321"
+							],
+							"query": [
+								{
+									"key": "x",
+									"value": "2.0"
+								},
+								{
+									"key": "y",
+									"value": "1.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create math result 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.body(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/math/321?x=3.0&y=2.0",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"math",
+								"321"
+							],
+							"query": [
+								{
+									"key": "x",
+									"value": "3.0"
+								},
+								{
+									"key": "y",
+									"value": "2.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update math result 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.body(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/math/123?x=1.0&y=5.0",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"math",
+								"123"
+							],
+							"query": [
+								{
+									"key": "x",
+									"value": "1.0"
+								},
+								{
+									"key": "y",
+									"value": "5.0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is correct\", function () {\r",
+									"    pm.response.to.have.body(\"3\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/math/count",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"math",
+								"count"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by hash",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(2);\r",
+									"    pm.expect(jsonData[0].hash).to.eql(321);\r",
+									"    pm.expect(jsonData[0].x).to.eql(2.0);\r",
+									"    pm.expect(jsonData[0].y).to.eql(1.0);\r",
+									"    pm.expect(jsonData[1].hash).to.eql(321);\r",
+									"    pm.expect(jsonData[1].x).to.eql(3.0);\r",
+									"    pm.expect(jsonData[1].y).to.eql(2.0);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/math/321",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"math",
+								"321"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get by hash and x",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check values\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(jsonData[0].hash).to.eql(123);\r",
+									"    pm.expect(jsonData[0].x).to.eql(1.0);\r",
+									"    pm.expect(jsonData[0].y).to.eql(5.0);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/math/123?x=1.0",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"math",
+								"123"
+							],
+							"query": [
+								{
+									"key": "x",
+									"value": "1.0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Logs",
+			"item": [
+				{
+					"name": "Delete all",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.body(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/log/",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"log",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create log 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.globals.set(\"first_log\", Number(pm.response.text()));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_path}}/log/",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"log",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create log 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.globals.set(\"second_log\", Number(pm.response.text()));\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_path}}/log/",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"log",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update log 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.body(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"222\",\r\n    \"ts\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_path}}/log/{{first_log}}",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"log",
+								"{{first_log}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get logs sorted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is correct\", function () {\r",
+									"\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(2);\r",
+									"    pm.expect(jsonData[0].id).to.eql(pm.globals.get(\"first_log\"));\r",
+									"    pm.expect(jsonData[0].text).to.eql(\"222\");\r",
+									"    pm.expect(jsonData[1].id).to.eql(pm.globals.get(\"second_log\"));\r",
+									"    pm.expect(jsonData[1].text).to.eql(\"321\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/log/",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"log",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get second log",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(pm.globals.get(\"second_log\"));\r",
+									"    pm.expect(jsonData.text).to.eql(\"321\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/log/{{second_log}}",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"log",
+								"{{second_log}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.body(\"success\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/log/{{first_log}}",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"log",
+								"{{first_log}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "user",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_path}}/login",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "WhoAmI",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    pm.response.to.have.body(\"user\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/users/whoami",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"users",
+								"whoami"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.eql(1);\r",
+									"    pm.expect(jsonData.username).to.eql(\"user\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/users/1",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Body is true\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.eql(1);\r",
+									"    pm.expect(jsonData[0].id).to.eql(1);\r",
+									"    pm.expect(jsonData[0].username).to.eql(\"user\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/users/",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_path}}/logout",
+							"host": [
+								"{{base_path}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_path",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
