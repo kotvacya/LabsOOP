@@ -9,14 +9,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.stereotype.Service;
 import ru.ssau.tk.LR2.jpa.model.User;
 import ru.ssau.tk.LR2.jpa.repository.UserRepository;
 import ru.ssau.tk.LR2.web.service.UserService;
 
 import java.io.IOException;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
 public class SecurityConfig {
 
     @Bean PasswordEncoder passwordEncoder(){
@@ -25,6 +26,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123");
         http
                 .csrf((csrf) -> csrf.disable())
                 .cors((cors) -> cors.disable())
