@@ -30,7 +30,7 @@ public abstract class AbstractTabulatedFunction implements TabulatedFunction {
         if (xValues.length != yValues.length) throw new DifferentLengthOfArraysException();
     }
 
-    void checkSorted(double[] xValues) {
+    void checkSorted(double[] xValues) throws ArrayIsNotSortedException {
         for (int i = 1; i < xValues.length; ++i) {
             if (xValues[i] <= xValues[i - 1]) throw new ArrayIsNotSortedException();
         }

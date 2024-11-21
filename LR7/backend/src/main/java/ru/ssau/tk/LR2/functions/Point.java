@@ -1,11 +1,13 @@
 package ru.ssau.tk.LR2.functions;
 
-public class Point {
-    final public double x;
-    final public double y;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-    public Point(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Point {
+    public double x;
+    public double y;
 }

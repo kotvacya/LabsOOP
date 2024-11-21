@@ -1,5 +1,6 @@
 package ru.ssau.tk.LR2.functions;
 
+import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.LR2.hash.Hasher;
 
 import java.io.BufferedWriter;
@@ -15,7 +16,7 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
     private double[] yValues;
     private int count;
 
-    public ArrayTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException {
+    public ArrayTabulatedFunction(double[] xValues, double[] yValues) throws IllegalArgumentException, ArrayIsNotSortedException {
         if (xValues.length < 2) throw new IllegalArgumentException("Array length <2");
         checkLengthIsTheSame(xValues, yValues);
         checkSorted(xValues);
