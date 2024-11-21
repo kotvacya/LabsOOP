@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
-import ru.ssau.tk.LR2.jdbc.DBConfig;
+import ru.ssau.tk.LR2.jpa.DBConfig;
 
 @SpringBootApplication
 @Import(DBConfig.class)

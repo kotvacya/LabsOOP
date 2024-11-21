@@ -1,27 +1,29 @@
-package ru.ssau.tk.LR2.jdbc.model;
+package ru.ssau.tk.LR2.jpa.model;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 
-@Table("users")
+@Entity
+@Table(name = "users")
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.PROTECTED)
     private int id = 0;
 
     @NonNull
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     @NonNull
     private String password;
 

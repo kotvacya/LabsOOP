@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.provisioning.UserDetailsManager;
-import ru.ssau.tk.LR2.jdbc.model.User;
-import ru.ssau.tk.LR2.jdbc.repository.UserRepository;
+import ru.ssau.tk.LR2.jpa.model.User;
+import ru.ssau.tk.LR2.jpa.repository.UserRepository;
 
 import java.util.Objects;
 
@@ -16,12 +16,12 @@ public class UserService implements UserDetailsManager {
 
     @Override
     public void createUser(UserDetails user) {
-        user_repo.insert(new User(user.getUsername(), user.getPassword()));
+        user_repo.save(new User(user.getUsername(), user.getPassword()));
     }
 
     @Override
     public void updateUser(UserDetails user) {
-        user_repo.updateByUsername(user.getUsername(), user.getPassword());
+        user_repo.save((User) user);
     }
 
     @Override

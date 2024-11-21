@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.ssau.tk.LR2.jdbc.model.Log;
+import ru.ssau.tk.LR2.jpa.model.Log;
 import ru.ssau.tk.LR2.web.dto.LogDTO;
 import ru.ssau.tk.LR2.web.service.LogService;
 
@@ -22,7 +22,7 @@ public class LogController {
     @GetMapping("/{id}")
     public ResponseEntity<Log> getById(@PathVariable("id") int id) {
         try {
-            return ResponseEntity.ok(logService.findById(id));
+            return ResponseEntity.ok(logService.findById(id).orElse(null));
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
         }
@@ -31,7 +31,7 @@ public class LogController {
     @GetMapping("/")
     public ResponseEntity<List<Log>> getAll() {
         try {
-            return ResponseEntity.ok(logService.findSortedByTimestamp());
+            return ResponseEntity.ok(logService.findAllByOrderByTsAsc());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
         }
@@ -41,7 +41,7 @@ public class LogController {
     public ResponseEntity<Integer> post(@RequestBody LogDTO log) {
         try {
             Log l = new Log(log.getText());
-            logService.insert(l);
+            logService.save(l);
             return ResponseEntity.ok(l.getId());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());

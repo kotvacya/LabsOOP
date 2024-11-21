@@ -8,14 +8,13 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.ssau.tk.LR2.jdbc.model.MathResult;
-import ru.ssau.tk.LR2.jdbc.model.User;
-import ru.ssau.tk.LR2.jdbc.repository.UserRepository;
-import ru.ssau.tk.LR2.web.dto.MathResultDTO;
+import ru.ssau.tk.LR2.jpa.model.User;
+import ru.ssau.tk.LR2.jpa.repository.UserRepository;
 import ru.ssau.tk.LR2.web.dto.UserDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/users")
@@ -34,7 +33,7 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> getUsers() {
         try {
             return ResponseEntity.ok(
-                    userRepository.getUsers().stream().map(this::convertToDto).collect(Collectors.toList())
+                    StreamSupport.stream( userRepository.findAll().spliterator(), false ).map(this::convertToDto).collect(Collectors.toList())
             );
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());

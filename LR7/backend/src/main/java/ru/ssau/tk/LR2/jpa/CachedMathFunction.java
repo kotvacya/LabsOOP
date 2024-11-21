@@ -1,10 +1,10 @@
-package ru.ssau.tk.LR2.jdbc;
+package ru.ssau.tk.LR2.jpa;
 
 import ru.ssau.tk.LR2.functions.MathFunction;
 import ru.ssau.tk.LR2.hash.Hasher;
 import ru.ssau.tk.LR2.hash.HasherFactory;
-import ru.ssau.tk.LR2.jdbc.model.MathResult;
-import ru.ssau.tk.LR2.jdbc.repository.MathResultRepository;
+import ru.ssau.tk.LR2.jpa.model.MathResult;
+import ru.ssau.tk.LR2.jpa.repository.MathResultRepository;
 
 public class CachedMathFunction implements MathFunction {
 
@@ -29,7 +29,7 @@ public class CachedMathFunction implements MathFunction {
 
         if (res != null) return res.getY();
         double y = function.apply(x);
-        repository.insert(new MathResult(x, y, function_hash));
+        repository.save(new MathResult(x, y, function_hash));
         return y;
     }
 

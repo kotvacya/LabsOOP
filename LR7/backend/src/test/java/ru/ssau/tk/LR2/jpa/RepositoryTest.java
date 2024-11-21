@@ -1,33 +1,40 @@
-package ru.ssau.tk.LR2.jdbc;
+package ru.ssau.tk.LR2.jpa;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.ssau.tk.LR2.functions.CompositeFunction;
 import ru.ssau.tk.LR2.functions.IdentityFunction;
 import ru.ssau.tk.LR2.functions.MathFunction;
 import ru.ssau.tk.LR2.functions.SqrFunction;
-import ru.ssau.tk.LR2.jdbc.model.Log;
-import ru.ssau.tk.LR2.jdbc.model.MathResult;
-import ru.ssau.tk.LR2.jdbc.repository.LogRepository;
-import ru.ssau.tk.LR2.jdbc.repository.MathResultRepository;
+import ru.ssau.tk.LR2.hash.HasherFactory;
+import ru.ssau.tk.LR2.jpa.model.Log;
+import ru.ssau.tk.LR2.jpa.model.MathResult;
+import ru.ssau.tk.LR2.jpa.repository.LogRepository;
+import ru.ssau.tk.LR2.jpa.repository.MathResultRepository;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
-@SpringBootTest(classes = {MathResultRepository.class, DBConfig.class})
+@SpringBootTest(classes = {CachedMathFunctionFactory.class, LogRepository.class, MathResultRepository.class, DBConfig.class})
 @TestPropertySource(locations = "classpath:test.properties")
+@ExtendWith(SpringExtension.class)
 @RunWith(SpringRunner.class)
+@Import(DBConfig.class)
 public class RepositoryTest {
 
-    private static final Logger log = LoggerFactory.getLogger(RepositoryTest.class);
+    //private static final Logger log = LoggerFactory.getLogger(RepositoryTest.class);
+    @Autowired
+    DBConfig dbConfig;
+
     @Autowired
     MathResultRepository resRepo;
 
@@ -37,33 +44,38 @@ public class RepositoryTest {
     @Autowired
     LogRepository logRepo;
 
+    @Autowired
+    HasherFactory hf;
+
     @Test
     public void testDatabase(){
+        System.out.println(hf);
+
         resRepo.deleteAll();
 
-        Assert.assertEquals(0, resRepo.getCount());
+        Assert.assertEquals(0, resRepo.count());
 
         MathResult res1 = new MathResult(10.0, 10.0, 1000);
 
-        resRepo.insert(res1);
+        resRepo.save(res1);
 
-        Assert.assertEquals(1, resRepo.getCount());
+        Assert.assertEquals(1, resRepo.count());
         Assert.assertEquals(res1, resRepo.findByXAndHash(10.0, 1000));
 
         resRepo.deleteByXAndHash(10.0, 1000);
 
-        Assert.assertEquals(0, resRepo.getCount());
+        Assert.assertEquals(0, resRepo.count());
 
-        resRepo.insert(res1);
+        resRepo.save(res1);
 
         for (int i = 0; i < 100; i++) {
-            resRepo.insert(new MathResult(i, 100-i, 10000));
+            resRepo.save(new MathResult(i, 100-i, 10000));
         }
 
-        Assert.assertEquals(101, resRepo.getCount());
+        Assert.assertEquals(101, resRepo.count());
 
         double prev = -Double.MAX_VALUE;
-        for (MathResult res : resRepo.findByHashSortedByX(10000)){
+        for (MathResult res : resRepo.findByHashOrderByXDesc(10000)){
             double val = res.getY();
 
             Assert.assertTrue(val >= prev);
@@ -104,33 +116,33 @@ public class RepositoryTest {
 
         Instant now = Instant.now();
 
-        Assert.assertEquals(0, logRepo.getCount());
+        Assert.assertEquals(0, logRepo.count());
 
         Log testLog = new Log("123123", Timestamp.from(now));
 
-        logRepo.insert(testLog);
+        logRepo.save(testLog);
 
-        Assert.assertEquals(1, logRepo.getCount());
+        Assert.assertEquals(1, logRepo.count());
 
         logRepo.updateTextAndTsById( testLog.getId(),"321321", Timestamp.from(now));
-        Assert.assertEquals("321321", logRepo.findById(testLog.getId()).getText());
-        Assert.assertEquals(now.truncatedTo(ChronoUnit.MILLIS), logRepo.findById(testLog.getId()).getTs().toInstant());
+        Assert.assertEquals("321321", logRepo.findById(testLog.getId()).orElse(null).getText());
+        Assert.assertEquals(now.truncatedTo(ChronoUnit.MILLIS), logRepo.findById(testLog.getId()).orElse(null).getTs().toInstant().truncatedTo(ChronoUnit.MILLIS));
 
         logRepo.deleteById(testLog.getId());
 
         for (int i = 0; i < 100; i++) {
-            logRepo.insert(new Log("text" + i, Timestamp.from(now.plusSeconds(100-i))));
+            logRepo.save(new Log("text" + i, Timestamp.from(now.plusSeconds(100-i))));
         }
 
         Instant prev = Instant.EPOCH;
-        for (Log res : logRepo.findSortedByTimestamp()){
+        for (Log res : logRepo.findAllByOrderByTsAsc()){
             Instant val = res.getTs().toInstant();
 
             Assert.assertTrue(val.compareTo(prev) >= 0);
             prev = val;
         }
 
-        Assert.assertEquals(100, logRepo.getCount());
+        Assert.assertEquals(100, logRepo.count());
 
     }
 
