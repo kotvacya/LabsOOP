@@ -1,0 +1,14 @@
+.btn {
+	width: fit-content;
+	padding: 8px 12px;
+	font-weight: 600;
+	font-size: 25px;
+	border: 2px solid var(--black);
+	border-radius: 12px;
+}
+
+.btn:hover {
+	transform: scale(1.05);
+	background-color: var(--light-blue);
+	color: var(--white);
+}

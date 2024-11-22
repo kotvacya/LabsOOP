@@ -1,0 +1,21 @@
+.link {
+	height: 100%;
+	width: 20%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	font-size: 24px;
+	font-weight: 500;
+	color: var(--light-blue);
+}
+
+.link:hover {
+	filter: drop-shadow(0 0 10px var(--blue));
+	color: var(--blue);
+}
+
+.active {
+	font-weight: 700;
+	color: var(--blue);
+}

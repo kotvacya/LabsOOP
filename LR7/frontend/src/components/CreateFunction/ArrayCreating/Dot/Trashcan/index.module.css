@@ -1,0 +1,8 @@
+.btn > svg {
+	fill: var(--black);
+	transition: none;
+}
+
+.btn > svg:hover {
+	fill: var(--light-blue);
+}
