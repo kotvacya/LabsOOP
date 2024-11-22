@@ -4,7 +4,9 @@ import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.LR2.functions.ArrayTabulatedFunction;
 import ru.ssau.tk.LR2.functions.MathFunction;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
+import ru.ssau.tk.LR2.ui.annotations.TabulatedFactory;
 
+@TabulatedFactory(canonName = "Фабрика табулированных массивов")
 public class ArrayTabulatedFunctionFactory implements TabulatedFunctionFactory {
 
     @Override
