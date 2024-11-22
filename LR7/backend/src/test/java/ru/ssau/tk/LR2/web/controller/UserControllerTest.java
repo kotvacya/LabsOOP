@@ -10,8 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.ssau.tk.LR2.jdbc.model.User;
-import ru.ssau.tk.LR2.jdbc.repository.UserRepository;
+import ru.ssau.tk.LR2.jpa.model.User;
+import ru.ssau.tk.LR2.jpa.repository.UserRepository;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -36,7 +36,7 @@ class UserControllerTest {
     @Test
     void testUserController() throws Exception {
         Mockito.when(userRepo.findByUsername("user1")).thenReturn(getUsers().get(0));
-        Mockito.when(userRepo.getUsers()).thenReturn(getUsers());
+        Mockito.when(userRepo.findAll()).thenReturn(getUsers());
         Mockito.when(userRepo.findById(1)).thenReturn(getUsers().get(1));
 
         session = (MockHttpSession)mvc.perform(post("/login")

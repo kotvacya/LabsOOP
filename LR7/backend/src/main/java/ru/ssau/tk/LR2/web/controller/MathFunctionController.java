@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import ru.ssau.tk.LR2.jdbc.model.MathResult;
+import ru.ssau.tk.LR2.jpa.model.MathResult;
 import ru.ssau.tk.LR2.web.dto.MathResultDTO;
 import ru.ssau.tk.LR2.web.service.MathService;
 
@@ -46,7 +46,7 @@ public class MathFunctionController {
     @PostMapping("/{hash}")
     public ResponseEntity<String> create(@PathVariable("hash") long hash, @RequestParam("x") double x, @RequestParam("y") double y) {
         try {
-            mathService.insert(new MathResult(x, y, hash));
+            mathService.save(new MathResult(x, y, hash));
             return ResponseEntity.ok("success");
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
@@ -88,9 +88,9 @@ public class MathFunctionController {
     }
 
     @GetMapping("/count")
-    public ResponseEntity<Integer> getCount() {
+    public ResponseEntity<Long> getCount() {
         try {
-            return ResponseEntity.ok(mathService.getCount());
+            return ResponseEntity.ok(mathService.count());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.toString());
         }

@@ -4,7 +4,7 @@ package ru.ssau.tk.LR2.web.service;
 import lombok.AllArgsConstructor;
 import lombok.experimental.Delegate;
 import org.springframework.stereotype.Service;
-import ru.ssau.tk.LR2.jdbc.repository.MathResultRepository;
+import ru.ssau.tk.LR2.jpa.repository.MathResultRepository;
 
 @Service
 @AllArgsConstructor

@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.ssau.tk.LR2.jdbc.model.Log;
+import ru.ssau.tk.LR2.jpa.model.Log;
 import ru.ssau.tk.LR2.web.dto.LogDTO;
 import ru.ssau.tk.LR2.web.service.LogService;
 
@@ -20,6 +20,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 
 @SpringBootTest
@@ -33,7 +34,7 @@ class LogControllerTest {
 
     @Test
     void testGet() throws Exception {
-        Mockito.when(logService.findSortedByTimestamp()).thenReturn(getLogs());
+        Mockito.when(logService.findAllByOrderByTsAsc()).thenReturn(getLogs());
 
         mvc.perform(get("/log/"))
                 .andExpect(status().isOk())
@@ -42,7 +43,7 @@ class LogControllerTest {
 
     @Test
     void testGetById() throws Exception {
-        Mockito.when(logService.findById(1)).thenReturn(getLogs().get(1));
+        Mockito.when(logService.findById(1)).thenReturn(Optional.of(getLogs().get(1)));
 
         mvc.perform(get("/log/1"))
                 .andExpect(status().isOk())
@@ -51,7 +52,7 @@ class LogControllerTest {
 
     @Test
     void testPost() throws Exception {
-        Mockito.when(logService.insert(Mockito.any(Log.class))).thenReturn(new Log());
+        Mockito.when(logService.save(Mockito.any(Log.class))).thenReturn(new Log());
 
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -64,7 +65,7 @@ class LogControllerTest {
                 )
                 .andExpect(status().isOk());
 
-        Mockito.verify(logService).insert(Mockito.any(Log.class));
+        Mockito.verify(logService).save(Mockito.any(Log.class));
     }
 
     @Test

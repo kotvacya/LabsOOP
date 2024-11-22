@@ -1,25 +1,27 @@
-package ru.ssau.tk.LR2.jdbc.model;
+package ru.ssau.tk.LR2.jpa.model;
 
+import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.Objects;
-
-@Table("MathResult")
+@Entity
+@Table(name = "MathResult")
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
 public class MathResult {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.PROTECTED)
     private int id = 0;
 
     @NonNull
+    @Column(nullable = false)
     private double x;
     @NonNull
+    @Column(nullable = false)
     private double y;
     @NonNull
+    @Column(nullable = false)
     private long hash;
 }

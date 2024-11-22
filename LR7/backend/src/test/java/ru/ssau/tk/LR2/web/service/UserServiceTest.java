@@ -4,8 +4,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.mockito.Mockito;
-import ru.ssau.tk.LR2.jdbc.model.User;
-import ru.ssau.tk.LR2.jdbc.repository.UserRepository;
+import ru.ssau.tk.LR2.jpa.model.User;
+import ru.ssau.tk.LR2.jpa.repository.UserRepository;
 
 public class UserServiceTest extends TestCase {
 
@@ -21,13 +21,13 @@ public class UserServiceTest extends TestCase {
 
         service.createUser(nu);
 
-        Mockito.verify(mock_repo).insert(nu);
+        Mockito.verify(mock_repo).save(nu);
 
         nu.setPassword("password2");
 
         service.updateUser(nu);
 
-        Mockito.verify(mock_repo).updateByUsername(nu.getUsername(), nu.getPassword());
+        Mockito.verify(mock_repo, Mockito.times(2)).save(Mockito.any());
 
         service.deleteUser(nu.getUsername());
 

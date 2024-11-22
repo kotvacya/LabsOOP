@@ -1,9 +1,9 @@
-package ru.ssau.tk.LR2.jdbc;
+package ru.ssau.tk.LR2.jpa;
 
 import org.springframework.stereotype.Component;
 import ru.ssau.tk.LR2.functions.MathFunction;
 import ru.ssau.tk.LR2.hash.HasherFactory;
-import ru.ssau.tk.LR2.jdbc.repository.MathResultRepository;
+import ru.ssau.tk.LR2.jpa.repository.MathResultRepository;
 
 @Component
 public class CachedMathFunctionFactory {

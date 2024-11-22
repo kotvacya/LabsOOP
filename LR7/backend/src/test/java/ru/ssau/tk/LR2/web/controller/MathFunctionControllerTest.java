@@ -1,24 +1,15 @@
 package ru.ssau.tk.LR2.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.ssau.tk.LR2.functions.MathFunction;
-import ru.ssau.tk.LR2.jdbc.model.Log;
-import ru.ssau.tk.LR2.jdbc.model.MathResult;
-import ru.ssau.tk.LR2.web.dto.LogDTO;
-import ru.ssau.tk.LR2.web.dto.MathResultDTO;
+import ru.ssau.tk.LR2.jpa.model.MathResult;
 import ru.ssau.tk.LR2.web.service.MathService;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,9 +41,9 @@ class MathFunctionControllerTest {
 
     @Test
     void testCreate() throws Exception {
-        Mockito.when(mathService.insert(Mockito.any(MathResult.class))).thenReturn(new MathResult());
+        Mockito.when(mathService.save(Mockito.any(MathResult.class))).thenReturn(new MathResult());
         mvc.perform(post("/math/222?x=2&y=2")).andExpect(status().isOk());
-        Mockito.verify(mathService).insert(Mockito.any(MathResult.class));
+        Mockito.verify(mathService).save(Mockito.any(MathResult.class));
     }
 
     @Test
@@ -77,13 +68,13 @@ class MathFunctionControllerTest {
 
     @Test
     void getCount() throws Exception {
-        Mockito.when(mathService.getCount()).thenReturn(getMathResults().size());
+        Mockito.when(mathService.count()).thenReturn((long)getMathResults().size());
 
         mvc.perform(get("/math/count"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(2));
 
-        Mockito.verify(mathService).getCount();
+        Mockito.verify(mathService).count();
     }
 
     private List<MathResult> getMathResults() {
