@@ -4,24 +4,25 @@ import jakarta.security.auth.message.AuthException;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.web.bind.annotation.*;
 import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
 import ru.ssau.tk.LR2.functions.MathFunction;
 import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
-import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
-import ru.ssau.tk.LR2.ui.dto.ArrayTabulatedDTO;
-import ru.ssau.tk.LR2.ui.dto.SimpleFunctionDTO;
-import ru.ssau.tk.LR2.ui.dto.SimpleTabulatedRequestDTO;
-import ru.ssau.tk.LR2.ui.dto.TabulatedFactoryDTO;
+import ru.ssau.tk.LR2.operations.TabulatedFunctionOperationService;
+import ru.ssau.tk.LR2.ui.dto.*;
 import ru.ssau.tk.LR2.ui.exceptions.BaseUIException;
 import ru.ssau.tk.LR2.ui.exceptions.ExceptionUtils;
 import ru.ssau.tk.LR2.ui.exceptions.TabulatedCreationException;
 import ru.ssau.tk.LR2.ui.services.SimpleFunctionService;
 import ru.ssau.tk.LR2.ui.services.TabulatedFactoryService;
+import ru.ssau.tk.LR2.ui.services.TabulatedOperationService;
 import ru.ssau.tk.LR2.ui.storage.InMemoryTabulatedFunctionStorage;
+import ru.ssau.tk.LR2.ui.storage.TemporaryFunctionsStorage;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,10 +38,20 @@ public class TabulatedFunctionController {
     TabulatedFactoryService factoryService;
 
     @Autowired
+    TabulatedOperationService operationService;
+
+    @Autowired
     InMemoryTabulatedFunctionStorage storage;
 
-    @PostMapping("/array")
-    public ArrayTabulatedDTO TabulatedFunctionFromArray(@RequestBody ArrayTabulatedDTO requestDTO) throws BaseUIException, AuthException {
+    @Autowired
+    TemporaryFunctionsStorage temp_storage;
+
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+
+    /////////// CURRENT ///////////
+
+    @PostMapping("/current/array")
+    public ArrayTabulatedResponseDTO TabulatedFunctionFromArray(@RequestBody ArrayTabulatedRequestDTO requestDTO) throws BaseUIException, AuthException {
         double[] xValues = new double[requestDTO.getPoints().size()];
         double[] yValues = new double[requestDTO.getPoints().size()];
 
@@ -52,28 +63,28 @@ public class TabulatedFunctionController {
         }
 
         try {
-            TabulatedFunctionFactory factory = storage.getCurrentFactory(SecurityContextHolder.getContext());
+            TabulatedFunctionFactory factory = storage.getCurrentFactory(securityContextHolderStrategy.getContext());
             TabulatedFunction tabulatedFunction = factory.create(xValues, yValues);
 
-            storage.setCurrentFunction(SecurityContextHolder.getContext(), tabulatedFunction);
+            temp_storage.setCurrentFunction(securityContextHolderStrategy.getContext(), tabulatedFunction);
 
-            return ArrayTabulatedDTO.from(tabulatedFunction);
+            return ArrayTabulatedResponseDTO.from(tabulatedFunction);
         }catch (IllegalArgumentException | ArrayIsNotSortedException e){
             throw new TabulatedCreationException(ExceptionUtils.exceptionMessageWithClass(e));
         }
     }
 
-    @PostMapping("/simple")
-    public ArrayTabulatedDTO TabulatedFunctionFromSimpleFunction(@RequestBody SimpleTabulatedRequestDTO requestDTO) throws BaseUIException, AuthException {
+    @PostMapping("/current/simple")
+    public ArrayTabulatedResponseDTO TabulatedFunctionFromSimpleFunction(@RequestBody SimpleTabulatedRequestDTO requestDTO) throws BaseUIException, AuthException {
         MathFunction mathFunction = functionService.create(requestDTO.getFunction());
 
         try {
-            TabulatedFunctionFactory factory = storage.getCurrentFactory(SecurityContextHolder.getContext());
+            TabulatedFunctionFactory factory = storage.getCurrentFactory(securityContextHolderStrategy.getContext());
             TabulatedFunction tabulatedFunction = factory.create(mathFunction, requestDTO.getStart(), requestDTO.getEnd(), requestDTO.getCount());
 
-            storage.setCurrentFunction(SecurityContextHolder.getContext(), tabulatedFunction);
+            temp_storage.setCurrentFunction(securityContextHolderStrategy.getContext(), tabulatedFunction);
 
-            return ArrayTabulatedDTO.from(tabulatedFunction);
+            return ArrayTabulatedResponseDTO.from(tabulatedFunction);
         }catch (IllegalArgumentException e){
             throw new TabulatedCreationException(ExceptionUtils.exceptionMessageWithClass(e));
         }
@@ -86,13 +97,12 @@ public class TabulatedFunctionController {
     }
 
     @GetMapping()
-    public ArrayTabulatedDTO getCurrentFunction() throws BaseUIException, AuthException{
-        TabulatedFunction func = storage.getCurrentFunction(SecurityContextHolder.getContext());
-        if(Objects.nonNull(func)) {
-            return ArrayTabulatedDTO.from(func);
-        }
-        return null;
+    public ArrayTabulatedResponseDTO getCurrentFunction() throws BaseUIException, AuthException{
+        TabulatedFunction func = temp_storage.getCurrentFunction(securityContextHolderStrategy.getContext());
+        return ArrayTabulatedResponseDTO.from(func);
     }
+
+    /////////// FACTORY ///////////
 
     @Cacheable
     @GetMapping("/factory/all")
@@ -102,14 +112,50 @@ public class TabulatedFunctionController {
 
     @GetMapping("/factory")
     public TabulatedFactoryDTO getCurrentFactory() throws AuthException{
-        return TabulatedFactoryDTO.from(storage.getCurrentFactory(SecurityContextHolder.getContext()));
+        return TabulatedFactoryDTO.from(storage.getCurrentFactory(securityContextHolderStrategy.getContext()));
     }
 
     @PostMapping("/factory")
     public void setTabulatedFactory(@NonNull @RequestParam("type") String classname) throws AuthException, BaseUIException{
-        storage.setCurrentFactory(SecurityContextHolder.getContext(), factoryService.create(classname));
+        storage.setCurrentFactory(securityContextHolderStrategy.getContext(), factoryService.create(classname));
     }
 
+    /////////// OPERANDS ///////////
+
+
+    @GetMapping("/operands")
+    public List<ArrayTabulatedResponseDTO> getOperands() throws AuthException{
+        return temp_storage.getOperands(securityContextHolderStrategy.getContext()).stream().map(ArrayTabulatedResponseDTO::from).toList();
+    }
+
+    @GetMapping("/operands/{id}")
+    public ArrayTabulatedResponseDTO getOperand(@PathVariable("id") Integer index) throws AuthException, BaseUIException {
+        return ArrayTabulatedResponseDTO.from(temp_storage.getOperand(securityContextHolderStrategy.getContext(), index));
+    }
+
+    @PostMapping("/operands")
+    public void setOperandFromCurrent(@NonNull @RequestParam("index") Integer index) throws AuthException, BaseUIException {
+        SecurityContext ctx = securityContextHolderStrategy.getContext();
+        temp_storage.setOperand(ctx, index, temp_storage.getCurrentFunction(ctx));
+    }
+
+    @Cacheable
+    @GetMapping("/operands/methods")
+    public List<OperationDTO> getOperations() {
+        return operationService.getAllOperations();
+    }
+
+    @PostMapping("/operands/apply")
+    public ArrayTabulatedResponseDTO applyOperation(@NonNull @RequestParam String operation) throws AuthException, BaseUIException {
+        SecurityContext ctx = securityContextHolderStrategy.getContext();
+        TabulatedFunction result = operationService.apply(operation,
+                new TabulatedFunctionOperationService(storage.getCurrentFactory(ctx)),
+                temp_storage.getOperand(ctx, 0),
+                temp_storage.getOperand(ctx, 1)
+        );
+        temp_storage.setOperand(ctx, 2, result);
+        return ArrayTabulatedResponseDTO.from(result);
+    }
 
 
 

@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface SimpleFunction {
-    public String canonName();
+@Target(ElementType.METHOD)
+public @interface TabulatedOperation {
+    String symbol();
 }

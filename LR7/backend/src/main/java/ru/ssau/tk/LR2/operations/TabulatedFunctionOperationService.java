@@ -5,6 +5,7 @@ import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
 import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
+import ru.ssau.tk.LR2.ui.annotations.TabulatedOperation;
 
 public class TabulatedFunctionOperationService {
 
@@ -58,18 +59,22 @@ public class TabulatedFunctionOperationService {
         return factory.create(xValues, yValues);
     }
 
+    @TabulatedOperation(symbol = "+")
     public TabulatedFunction add(TabulatedFunction a, TabulatedFunction b) {
         return doOperation(a, b, (u, v) -> u + v); // Double::sui
     }
 
+    @TabulatedOperation(symbol = "-")
     public TabulatedFunction subtract(TabulatedFunction a, TabulatedFunction b) {
         return doOperation(a, b, (u, v) -> u - v);
     }
 
+    @TabulatedOperation(symbol = "*")
     public TabulatedFunction multiply(TabulatedFunction a, TabulatedFunction b) {
         return doOperation(a, b, (u, v) -> u * v);
     }
 
+    @TabulatedOperation(symbol = "/")
     public TabulatedFunction divide(TabulatedFunction a, TabulatedFunction b) {
         return doOperation(a, b, (u, v) -> u / v);
     }

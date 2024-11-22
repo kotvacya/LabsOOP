@@ -9,18 +9,15 @@ import ru.ssau.tk.LR2.functions.TabulatedFunction;
 import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class InMemoryTabulatedFunctionStorage implements TabulatedFunctionStorageInterface {
-
     Map<String, List<TabulatedFunction>> tabulated_store = new HashMap<>();
-    Map<String, TabulatedFunction> current_functions = new HashMap<>();
-    Map<String, TabulatedFunctionFactory> current_factory = new HashMap<>();
 
+    Map<String, TabulatedFunctionFactory> current_factory = new HashMap<>();
 
     private String getKey(SecurityContext ctx) throws AuthException{
         Authentication auth = ctx.getAuthentication();
@@ -33,17 +30,6 @@ public class InMemoryTabulatedFunctionStorage implements TabulatedFunctionStorag
     @Override
     public List<TabulatedFunction> getTabulatedFunctions(SecurityContext ctx) throws AuthException {
         return List.of();
-    }
-
-    @Override
-    @Nullable
-    public TabulatedFunction getCurrentFunction(SecurityContext ctx) throws AuthException {
-        return current_functions.get(getKey(ctx));
-    }
-
-    @Override
-    public void setCurrentFunction(SecurityContext ctx, @Nullable TabulatedFunction function) throws AuthException {
-        current_functions.put(getKey(ctx), function);
     }
 
     @Override

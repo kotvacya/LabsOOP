@@ -8,16 +8,17 @@ import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.StreamSupport;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ArrayTabulatedDTO {
-    @NonNull
+public class ArrayTabulatedResponseDTO {
     List<Point> points;
 
-    public static ArrayTabulatedDTO from(TabulatedFunction function){
-        return new ArrayTabulatedDTO(StreamSupport.stream(function.spliterator(), false).toList());
+    public static ArrayTabulatedResponseDTO from(TabulatedFunction function){
+        if(Objects.isNull(function)) return new ArrayTabulatedResponseDTO();
+        return new ArrayTabulatedResponseDTO(StreamSupport.stream(function.spliterator(), false).toList());
     }
 }
