@@ -9,7 +9,7 @@ instance.interceptors.response.use(
         return response;
     },
     function (error) {
-        console.log(error);
+        alert(error.response?.data?.error || error)
         
         return Promise.reject(error);
     }
