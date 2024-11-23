@@ -1,4 +1,4 @@
-import NumberInput from '../../NumberInput'
+import NumberInput from '../../VerifiedInput'
 import styles from './index.module.css'
 
 export default ({count, setCount}) => {

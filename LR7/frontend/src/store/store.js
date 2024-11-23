@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import ArrayDotsSlice from './ArrayDotsSlice'
+import ArrayPointsSlice from './slices/pointsSlice'
 
 export default configureStore({
 	reducer: {
-		arrayDots: ArrayDotsSlice,
+		arrayPoints: ArrayPointsSlice,
 	},
 })

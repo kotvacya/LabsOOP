@@ -5,7 +5,7 @@ import styles from './index.module.css'
 
 export default ({ className, getError, value, setValue, ...rest }) => {
 	const [text, setText] = setValue ? [value, setValue] : useState(value || "")
-	const [error, setError] = useState(getError ? getError(text) : null)
+	const [error, setError] = useState(getError ? getError(text, true) : null)
 	
 	const onChange = getError ? (e) => {
 		setText(e.target.value);
