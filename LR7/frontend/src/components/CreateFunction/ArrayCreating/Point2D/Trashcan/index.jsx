@@ -2,7 +2,7 @@ import styles from './index.module.css'
 export default ({ onClick }) => {
 	return (
 		<button className={styles.btn} onClick={onClick}>
-			<svg width='40' height='40' viewBox='0 0 48 48'>
+			<svg width='24' height='24' viewBox='0 0 48 48'>
 				<path
 					d='M42.055,6.696h-8.783v-2.36C33.271,1.944,31.327,0,28.936,0h-9.232c-2.392,0-4.337,1.944-4.337,4.336v2.36H6.584
 			c-2.391,0-4.336,1.945-4.336,4.336v4.617c0,1.243,1.012,2.256,2.256,2.256h3.064v26.396c0,2.392,1.945,4.338,4.336,4.338h25.38

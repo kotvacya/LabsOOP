@@ -11,6 +11,7 @@
 	transition: 200ms ease-in-out;
 	color: var(--black);
 	font-weight: 300;
+	--button-border-radius: 12px;
 }
 
 *,

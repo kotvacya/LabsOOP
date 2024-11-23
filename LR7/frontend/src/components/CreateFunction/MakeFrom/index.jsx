@@ -14,7 +14,7 @@ export default ({ state, setState }) => {
 					className={classNames(styles.btn, !state && styles.btn_active)}
 					onClick={arraysClick}
 				>
-					массивов
+					массива	
 				</button>
 				<span className={styles.br}>|</span>
 				<button
