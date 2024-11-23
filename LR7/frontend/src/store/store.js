@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import ArrayPointsSlice from './slices/pointsSlice'
+import factorySlice from './slices/factorySlice'
 import SimpleFunctionsConfigSlice from './slices/functionConfigSlice'
+import ArrayPointsSlice from './slices/pointSlice'
 
 export default configureStore({
 	reducer: {
 		arrayPoints: ArrayPointsSlice,
-		simpleFunctionConfig: SimpleFunctionsConfigSlice
+		simpleFunctionConfig: SimpleFunctionsConfigSlice,
+		factory: factorySlice,
 	},
 })

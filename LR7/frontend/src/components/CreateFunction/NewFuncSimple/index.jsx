@@ -1,3 +1,4 @@
+
 "use client";
 import VerifiedInput from "@/components/VerifiedInput";
 import styles from "./index.module.css";
@@ -10,8 +11,8 @@ import instance from "@/utils/axiosInstance";
 import CreateButton from "../CreateButton";
 
 export default () => {
-	const functionConfig = useSelector((state) => state.simpleFunctionConfig);
-    const dispatch = useDispatch();
+	const functionConfig = useSelector((state) => state.simpleFunctionConfig)
+	const dispatch = useDispatch()
 
     const [functions, setFunctions] = useState([])
     

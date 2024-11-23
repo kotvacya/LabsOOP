@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import styles from "./index.module.css"
-import classNames from "@/utils/classNames";
+import classNames from '@/utils/classNames'
+import styles from './index.module.css'
 
 export default function Dropdown({content, name, value, setValue, className}) {
     const text = content.find((data) => data.value === value)?.text || name;
