@@ -5,6 +5,7 @@
 
 .form {
 	padding: 8px 12px;
+    padding-bottom: 28px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

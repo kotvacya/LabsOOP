@@ -26,7 +26,9 @@ const ArrayPointsSlice = createSlice({
 
 		setPointCount: (state, action) => {
 			try {
-				const count = action.payload;
+				let count = action.payload
+				if(count > 2000) count = 2000
+
 				const diff = Math.max(0, count - state.points.length)
 				
 				state.points = [ ...state.points.slice(0, count), ...Array(diff).fill().map((v,i)=>({ id: state.id++, x: null, y: null })) ]
