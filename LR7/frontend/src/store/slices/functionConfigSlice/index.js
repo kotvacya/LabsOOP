@@ -1,24 +1,39 @@
-import { createSlice } from '@reduxjs/toolkit'
+import instance from '@/utils/axiosInstance'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-let initialState = { function: null, start: null, end: null, count: null }
+let initialState = { config: { function: null, start: null, end: null, count: null }, functions: [] }
+
+export const fetchSimpleFunctions = createAsyncThunk(
+	"simpleFunctions/fetchAll",
+	async (thunkApi) => {
+		const response = await instance.get("/tabulated/simple")
+		return response.data.map(func => ({text: func.canonical_name, value: func.type}))
+	}
+)
 
 const SimpleFunctionsConfigSlice = createSlice({
 	name: 'simpleFunctionConfig',
 	initialState,
 	reducers: {
 		setFunction: (state, action) => {
-			state.function = action.payload
+			state.config.function = action.payload
 		},
 		setStart: (state, action) => {
-			state.start = action.payload
+			state.config.start = action.payload
 		},
 		setEnd: (state, action) => {
-			state.end = action.payload
+			state.config.end = action.payload
 		},
 		setCount: (state, action) => {
-			state.count = action.payload
+			state.config.count = action.payload
 		},
 	},
+	extraReducers: (builder) => {
+		builder
+		.addCase(fetchSimpleFunctions.fulfilled, (state, action)=> {
+			state.functions = action.payload
+		})
+	}
 })
 
 export const { setFunction, setStart, setEnd, setCount } = SimpleFunctionsConfigSlice.actions

@@ -9,14 +9,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.web.bind.annotation.*;
 import ru.ssau.tk.LR2.exceptions.ArrayIsNotSortedException;
-import ru.ssau.tk.LR2.functions.MathFunction;
-import ru.ssau.tk.LR2.functions.Point;
-import ru.ssau.tk.LR2.functions.TabulatedFunction;
+import ru.ssau.tk.LR2.functions.*;
 import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 import ru.ssau.tk.LR2.operations.TabulatedFunctionOperationService;
 import ru.ssau.tk.LR2.ui.dto.*;
 import ru.ssau.tk.LR2.ui.exceptions.BaseUIException;
 import ru.ssau.tk.LR2.ui.exceptions.ExceptionUtils;
+import ru.ssau.tk.LR2.ui.exceptions.NoSuchOperationException;
 import ru.ssau.tk.LR2.ui.exceptions.TabulatedCreationException;
 import ru.ssau.tk.LR2.ui.services.SimpleFunctionService;
 import ru.ssau.tk.LR2.ui.services.TabulatedFactoryService;
@@ -133,10 +132,45 @@ public class TabulatedFunctionController {
         return ArrayTabulatedResponseDTO.from(temp_storage.getOperand(securityContextHolderStrategy.getContext(), index));
     }
 
-    @PostMapping("/operands")
+    @PostMapping("/operands/{id}/setY")
+    public ArrayTabulatedResponseDTO setYOperand(@PathVariable("id") Integer func_index, @NonNull @RequestParam("index") Integer index, @NonNull @RequestParam("y") Double y) throws AuthException, BaseUIException {
+        TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), func_index);
+        if(Objects.nonNull(function)) function.setY(index, y);
+        return ArrayTabulatedResponseDTO.from(function);
+    }
+
+    @PostMapping("/operands/{id}/remove")
+    public ArrayTabulatedResponseDTO removeIndexOperand(@PathVariable("id") Integer func_index, @NonNull @RequestParam("index") Integer index) throws AuthException, BaseUIException {
+        TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), func_index);
+        if(function instanceof Removable removable){
+            removable.remove(index);
+        }else{
+            throw new NoSuchOperationException("this function doesn't implement Removable interface");
+        }
+        return ArrayTabulatedResponseDTO.from(function);
+    }
+
+    @PostMapping("/operands/{id}/insert")
+    public ArrayTabulatedResponseDTO insertOperand(@PathVariable("id") Integer func_index, @NonNull @RequestParam("x") Double x, @NonNull @RequestParam("y") Double y) throws AuthException, BaseUIException {
+        TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), func_index);
+        if(function instanceof Insertable insertable){
+            insertable.insert(x, y);
+        }else{
+            throw new NoSuchOperationException("this function doesn't implement Insertable interface");
+        }
+        return ArrayTabulatedResponseDTO.from(function);
+    }
+
+    @PostMapping("/operands/set")
     public void setOperandFromCurrent(@NonNull @RequestParam("index") Integer index) throws AuthException, BaseUIException {
         SecurityContext ctx = securityContextHolderStrategy.getContext();
         temp_storage.setOperand(ctx, index, temp_storage.getCurrentFunction(ctx));
+    }
+
+    @PostMapping("/operands/get")
+    public void setCurrentFromOperand(@NonNull @RequestParam("index") Integer index) throws AuthException, BaseUIException {
+        SecurityContext ctx = securityContextHolderStrategy.getContext();
+        temp_storage.setCurrentFunction(ctx, temp_storage.getOperand(ctx, index));
     }
 
     @Cacheable

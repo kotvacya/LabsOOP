@@ -2,6 +2,7 @@ import Layout from '@/components/Layout'
 import Provider from '@/store/Provider'
 import localFont from 'next/font/local'
 import './globals.css'
+import Preloader from '@/components/Preloader'
 
 export const metadata = {
 	title: 'LR7',
@@ -13,6 +14,7 @@ export default function RootLayout({ children }) {
 		<html lang='ru'>
 			<body className={comfortaa.className}>
 				<Provider>
+					<Preloader/>
 					<Layout>{children}</Layout>
 				</Provider>
 			</body>
