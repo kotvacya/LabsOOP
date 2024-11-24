@@ -1,6 +1,4 @@
 .btn {
-	border: 2px solid var(--black);
-	padding: 2px;
 	border-radius: var(--button-border-radius);
 }
 
@@ -9,6 +7,6 @@
 	transition: none;
 }
 
-.btn > svg:hover {
+.btn:hover > svg {
 	fill: var(--light-blue);
 }

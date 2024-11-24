@@ -1,0 +1,12 @@
+.wrapper {
+	width: 100%;
+	min-height: calc(100vh - var(--header-height));
+	padding-top: 4vh;
+	display: flex;
+	justify-content: space-between;
+}
+
+.chart {
+	width: 60%;
+	height: calc(100vh - var(--header-height) - 8vh);
+}

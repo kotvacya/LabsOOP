@@ -1,0 +1,16 @@
+.dropdown {
+	padding: 0 !important;
+	width: 56px;
+	height: 56px;
+	margin-bottom: 16px;
+}
+
+.dropdown button {
+	width: 52px;
+	height: 52px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: 500;
+	font-size: 56px;
+}

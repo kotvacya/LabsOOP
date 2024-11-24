@@ -1,12 +1,12 @@
-
 .points {
-	padding: 8px 12px;
+	padding: 8px 12px 16px 12px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	gap: 2vh;
-	border: 3px solid var(--black); 
-	box-sizing: border-box; 
+	border: 3px solid var(--black);
+	border-radius: var(--button-border-radius);
+	box-sizing: border-box;
 }
 
 .legend {
