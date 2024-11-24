@@ -1,0 +1,9 @@
+.button > svg {
+	fill: var(--black);
+	transition: none;
+}
+
+.button:hover > svg {
+	fill: var(--light-blue);
+	stroke: var(--light-blue);
+}
