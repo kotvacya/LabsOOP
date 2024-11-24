@@ -1,16 +1,13 @@
-'use client'
 import Dropdown from '@/components/Dropdown'
-import { useState } from 'react'
 import styles from './index.module.css'
 
-export default () => {
-	const [state, setState] = useState('+')
-
+export default ({ state, setState }) => {
 	const operations = [
 		{ text: '+', value: '+' },
 		{ text: '-', value: '-' },
-		{ text: 'x', value: '*' },
+		{ text: '⨉', value: '*' },
 		{ text: '÷', value: '/' },
+		{ text: '𝑑', value: 'd' },
 	]
 
 	return (

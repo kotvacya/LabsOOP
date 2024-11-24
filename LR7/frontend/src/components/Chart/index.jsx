@@ -30,7 +30,6 @@ export default ({ xData, yData }) => {
 		labels: xData,
 		datasets: [
 			{
-				label: 'name of the function',
 				data: yData,
 				backgroundColor: '#4da6ff',
 				borderColor: '#90c9f8',
@@ -75,7 +74,7 @@ export default ({ xData, yData }) => {
 		},
 
 		plugins: {
-			legend: { display: true },
+			legend: { display: false },
 			tooltip: {
 				enabled: true,
 				displayColors: false,
