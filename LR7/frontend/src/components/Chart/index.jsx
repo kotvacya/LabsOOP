@@ -54,7 +54,7 @@ export default ({ xData, yData }) => {
 				beginAtZero: true,
 				title: { display: true, text: 'X-values' },
 				ticks: { stepSize: 1, font: { size: 16 } },
-				max: 30,
+				max: Math.min(30, xData.length - 1),
 				grid: {
 					color: (ctx) => (ctx.tick.value == 0 ? 'black' : '#e5e5e5'),
 					lineWidth: (ctx) => (ctx.tick.value == 0 ? 2 : 1),
@@ -66,7 +66,7 @@ export default ({ xData, yData }) => {
 				beginAtZero: true,
 				title: { display: true, text: 'Y-values' },
 				ticks: { stepSize: 1, font: { size: 16 } },
-				max: 30,
+				max: Math.ceil((yData.reduce((a, b) => a + b) / yData.length) * 2),
 				grid: {
 					color: (ctx) => (ctx.tick.value == 0 ? 'black' : '#e5e5e5'),
 					lineWidth: (ctx) => (ctx.tick.value == 0 ? 2 : 1),

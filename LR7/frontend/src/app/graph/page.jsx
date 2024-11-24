@@ -2,9 +2,9 @@ import Chart from '../../components/Chart'
 import styles from './page.module.css'
 
 export default () => {
-	const len = 30
+	const len = 10
 	const x = Array.from({ length: len }, (el, i) => i)
-	const y = Array.from({ length: len }, () => Math.random() * 10)
+	const y = Array.from({ length: len }, () => Math.random() * 1000)
 
 	return (
 		<div className={styles.wrapper}>
