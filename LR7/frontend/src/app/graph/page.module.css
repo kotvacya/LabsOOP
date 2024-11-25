@@ -4,9 +4,55 @@
 	padding-top: 4vh;
 	display: flex;
 	justify-content: space-between;
+	gap: 1vw;
+}
+
+.apply {
+	height: calc(100vh - var(--header-height) - 8vh);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 2vh;
+}
+
+.input {
+	width: 300px;
+}
+
+.disabled {
+	pointer-events: none;
+	filter: grayscale(100%);
+	opacity: 0.3;
+}
+
+.btns {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	gap: 1vw;
+}
+
+.btn {
+	width: 100%;
+	padding: 8px;
+	font-size: 20px;
+	font-weight: 500;
+	border: 2px solid var(--black);
+	border-radius: 12px;
+}
+
+.btn:hover {
+	background-color: var(--light-blue);
+	color: var(--white);
+	transform: scale(1.05);
 }
 
 .chart {
-	width: 60%;
+	flex-grow: 1;
 	height: calc(100vh - var(--header-height) - 8vh);
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

@@ -52,11 +52,11 @@ export default ({ xData, yData }) => {
 				type: 'linear',
 				beginAtZero: true,
 				title: { display: true, text: 'X-values' },
-				ticks: { stepSize: 1, font: { size: 16 } },
-				max: Math.min(30, xData.length - 1),
+				ticks: { precision: 1, autoSkip: false, font: { size: 16 } },
+				max: Math.min(30, Math.max(...xData)),
 				grid: {
-					color: (ctx) => (ctx.tick.value == 0 ? 'black' : '#e5e5e5'),
-					lineWidth: (ctx) => (ctx.tick.value == 0 ? 2 : 1),
+					color: (ctx) => (ctx.tick?.value == 0 ? 'black' : '#e5e5e5'),
+					lineWidth: (ctx) => (ctx.tick?.value == 0 ? 2 : 1),
 				},
 			},
 
@@ -64,11 +64,11 @@ export default ({ xData, yData }) => {
 				type: 'linear',
 				beginAtZero: true,
 				title: { display: true, text: 'Y-values' },
-				ticks: { stepSize: 1, font: { size: 16 } },
+				ticks: { autoSkip: false, font: { size: 16 } },
 				max: Math.ceil((yData.reduce((a, b) => a + b) / yData.length) * 2),
 				grid: {
-					color: (ctx) => (ctx.tick.value == 0 ? 'black' : '#e5e5e5'),
-					lineWidth: (ctx) => (ctx.tick.value == 0 ? 2 : 1),
+					color: (ctx) => (ctx.tick?.value == 0 ? 'black' : '#e5e5e5'),
+					lineWidth: (ctx) => (ctx.tick?.value == 0 ? 2 : 1),
 				},
 			},
 		},
@@ -87,7 +87,6 @@ export default ({ xData, yData }) => {
 			zoom: {
 				pan: { enabled: true, mode: 'xy', threshold: 0 },
 				zoom: {
-					enabled: true,
 					mode: 'xy',
 					speed: 0.1,
 					sensitivity: 1,
