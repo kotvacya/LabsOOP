@@ -1,4 +1,5 @@
 import instance from '@/utils/axiosInstance'
+import { mapFunction } from '@/utils/functionUtils'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 let initialState = {id: 0, points: []}
@@ -7,8 +8,7 @@ export const fetchCurrentFunction = createAsyncThunk(
 	"ArrayPointsSlice/fetch",
 	async (thunkApi) => {
 		const response = await instance.get("/tabulated")
-		let points = response.data.points
-		return points.map((v,i)=>({ id: i++, x: v.x, y: v.y }))
+		return response.data
 	}
 )
 
@@ -50,7 +50,7 @@ const ArrayPointsSlice = createSlice({
 	},
 	extraReducers : (builder) => {
 		builder.addCase(fetchCurrentFunction.fulfilled, (state, action) => {
-			state.points = action.payload
+			state.points = mapFunction(action.payload)?.points || []
 		})
 	}
 })

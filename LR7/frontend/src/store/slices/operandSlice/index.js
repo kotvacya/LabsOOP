@@ -1,4 +1,5 @@
 import instance from '@/utils/axiosInstance'
+import { mapFunction } from '@/utils/functionUtils'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 let initialState = {copyto: null, functions: []}
@@ -58,8 +59,7 @@ export const operandInsert = createAsyncThunk(
 )
 
 function setOperand(state, action){
-    const points = action.payload.data.points
-    state.functions[action.payload.id] = {points: points.map((v,i)=>({ id: i++, x: v.x, y: v.y })), ...action.payload.data}
+    state.functions[action.payload.id] = mapFunction(action.payload.data)
 }
 
 const operandSlice = createSlice({
@@ -73,11 +73,7 @@ const operandSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 		.addCase(fetchAllOperands.fulfilled, (state, action) => {
-            state.functions = action.payload.map(func => {
-                if(!func.points) return func
-                const points = func.points
-                return {points: points.map((v,i)=>({ id: i++, x: v.x, y: v.y })), ...action.payload.data}
-            })
+            state.functions = action.payload.map(mapFunction)
         })
         .addCase(fetchOperand.fulfilled, setOperand)
         .addCase(operandSetY.fulfilled, setOperand)
