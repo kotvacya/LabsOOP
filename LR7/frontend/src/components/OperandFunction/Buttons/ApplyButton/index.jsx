@@ -1,5 +1,5 @@
 import styles from './index.module.css'
 
-export default () => {
-	return <button className={styles.button}>=</button>
+export default ({...rest}) => {
+	return <button {...rest} className={styles.button}>=</button>
 }

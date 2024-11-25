@@ -1,9 +1,18 @@
 package ru.ssau.tk.LR2.ui.controllers;
 
 import jakarta.security.auth.message.AuthException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
@@ -16,6 +25,7 @@ import ru.ssau.tk.LR2.ui.dto.ArrayTabulatedResponseDTO;
 import ru.ssau.tk.LR2.ui.dto.OperationDTO;
 import ru.ssau.tk.LR2.ui.exceptions.BaseUIException;
 import ru.ssau.tk.LR2.ui.exceptions.NoSuchOperationException;
+import ru.ssau.tk.LR2.ui.services.SerializationDeserializationService;
 import ru.ssau.tk.LR2.ui.services.TabulatedOperationService;
 import ru.ssau.tk.LR2.ui.storage.InMemoryTabulatedFunctionStorage;
 import ru.ssau.tk.LR2.ui.storage.TemporaryFunctionsStorage;
@@ -26,6 +36,7 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/tabulated/operands")
 public class OperandsController {
+    private static final Logger log = LoggerFactory.getLogger(OperandsController.class);
     @Autowired
     TabulatedOperationService operationService;
 
@@ -34,6 +45,9 @@ public class OperandsController {
 
     @Autowired
     TemporaryFunctionsStorage temp_storage;
+
+    @Autowired
+    SerializationDeserializationService serialService;
 
     private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
 
@@ -45,6 +59,23 @@ public class OperandsController {
     @GetMapping("/{id}")
     public ArrayTabulatedResponseDTO getOperand(@PathVariable("id") Integer index) throws AuthException, BaseUIException {
         return ArrayTabulatedResponseDTO.from(temp_storage.getOperand(securityContextHolderStrategy.getContext(), index));
+    }
+
+    @GetMapping(value = "/{id}/serialized", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<Resource> getSerializedOperand(@PathVariable("id") Integer index) throws AuthException, BaseUIException {
+        TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), index);
+        ByteArrayResource resource = new ByteArrayResource(serialService.serializeFunction(function));
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION)
+                .body(resource);
+    }
+
+    @PostMapping("/{id}/serialized")
+    public ArrayTabulatedResponseDTO setSerializedOperand(@PathVariable("id") Integer index, @RequestBody byte[] data) throws AuthException, BaseUIException {
+        TabulatedFunction function = serialService.deserializeFunction(data);
+        temp_storage.setOperand(securityContextHolderStrategy.getContext(), index, function);
+        return ArrayTabulatedResponseDTO.from(function);
     }
 
     @PostMapping("/{id}/setY")
@@ -95,7 +126,7 @@ public class OperandsController {
     }
 
     @PostMapping("/apply")
-    public ArrayTabulatedResponseDTO applyOperation(@NonNull @RequestParam String operation) throws AuthException, BaseUIException {
+    public ArrayTabulatedResponseDTO applyOperation(@NonNull @RequestParam("operation") String operation) throws AuthException, BaseUIException {
         SecurityContext ctx = securityContextHolderStrategy.getContext();
         TabulatedFunction result = operationService.apply(operation,
                 new TabulatedFunctionOperationService(storage.getCurrentFactory(ctx)),

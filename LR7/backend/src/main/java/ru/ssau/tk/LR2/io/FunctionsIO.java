@@ -1,5 +1,8 @@
 package ru.ssau.tk.LR2.io;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.thoughtworks.xstream.XStream;
 import ru.ssau.tk.LR2.functions.Point;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
@@ -87,6 +90,17 @@ public final class FunctionsIO {
         ObjectOutputStream oos = new ObjectOutputStream(stream);
         oos.writeObject(function);
         oos.flush();
+    }
+
+    public static void serializeJson(BufferedWriter writer, TabulatedFunction function) throws IOException, JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        writer.write(mapper.writeValueAsString(function));
+    }
+
+    public static TabulatedFunction deserializeJson(BufferedReader reader) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectReader arrayTablulatedReader = mapper.readerFor(TabulatedFunction.class);
+        return arrayTablulatedReader.readValue(reader);
     }
 
     public static void serializeXml(BufferedWriter writer, TabulatedFunction  function) {

@@ -5,15 +5,13 @@ import CreateButton from './Buttons/CreateButton'
 import SaveButton from './Buttons/SaveButton'
 import UploadButton from './Buttons/UploadButton'
 import styles from './index.module.css'
-import { useEffect } from 'react'
 import instance from '@/utils/axiosInstance'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { fetchCurrentFunction } from '@/store/slices/pointSlice'
-import { setCopyToOperator } from '@/store/slices/operandSlice'
+import { setOperand } from '@/store/slices/operandSlice'
 
 export default ({ id, immutable, disabled, ...rest }) => {
-
 	const router = useRouter()
 	const dispatch = useDispatch();
 
@@ -21,17 +19,54 @@ export default ({ id, immutable, disabled, ...rest }) => {
 		await instance.post("/tabulated/operands/get", null, {
 			params: {index: id} 
 		})
-		dispatch(setCopyToOperator(id))
 		await dispatch(fetchCurrentFunction()).unwrap()
-		router.push("/")
-
+		router.push(`/?copy_to=${id}`)
 	}
-	const onSave = () => {}
-	const onUpload = () => {}
 
-	useEffect(() => {
+	const opts = {
+		types: [{
+			description: "Tabulated Function",
+			accept: { "application/x-binary": [".bin"] },
+		}],
+	};
 
-	}, [])
+	async function onSave(e) {
+		try{
+			const handle = await window.showSaveFilePicker(opts);
+			
+			const response = await instance.get(`/tabulated/operands/${id}/serialized`, {
+				responseType: 'blob'
+			})
+
+			const writableStream = await handle.createWritable();
+			await writableStream.write(response.data);
+			await writableStream.close();
+		}catch(e){
+			if(e.name !== "AbortError") throw e
+		}
+	}
+
+	async function onUpload(e) {
+		try{
+			const [handle] = await window.showOpenFilePicker(opts);
+
+			const fileData = await handle.getFile();
+
+			const response = await instance.post(`/tabulated/operands/${id}/serialized`, await fileData.arrayBuffer(), {
+				headers: {
+					'Content-Type': 'application/octet-stream'
+				}
+			})
+
+			dispatch(setOperand({id: id, data: response.data}))
+		}catch(e){
+			if(e.name !== "AbortError") throw e
+		}
+	}
+
+	async function onChangeY(pt, y) {
+		console.log(y);
+	}
 
 	return (
 		<div className={classNames(styles.wrapper, disabled && styles.disabled)}>
@@ -40,7 +75,7 @@ export default ({ id, immutable, disabled, ...rest }) => {
 				<SaveButton onClick={onSave} />
 				{!immutable && <UploadButton onClick={onUpload} />}
 			</div>
-			<ArrayFunction {...rest} />
+			<ArrayFunction onChangeY={onChangeY} {...rest} />
 		</div>
 	)
 }

@@ -2,7 +2,7 @@ import instance from '@/utils/axiosInstance'
 import { mapFunction } from '@/utils/functionUtils'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-let initialState = {copyto: null, functions: []}
+let initialState = {copyto: null, functions: [], uid: 0}
 
 export const fetchAllOperands = createAsyncThunk(
 	"operandSlice/fetchAll",
@@ -58,29 +58,29 @@ export const operandInsert = createAsyncThunk(
 	}
 )
 
-function setOperand(state, action){
-    state.functions[action.payload.id] = mapFunction(action.payload.data)
+function setOperandInner(state, action){
+    const func = mapFunction(action.payload.data, state.uid)
+    state.functions[action.payload.id] = func
+    state.uid += func.points.length
 }
 
 const operandSlice = createSlice({
 	name: 'operandSlice',
 	initialState,
 	reducers: {
-		setCopyToOperator: (state, action) => {
-			state.copyto = action.payload
-		}
+		setOperand: setOperandInner
 	},
 	extraReducers: (builder) => {
 		builder
 		.addCase(fetchAllOperands.fulfilled, (state, action) => {
             state.functions = action.payload.map(mapFunction)
         })
-        .addCase(fetchOperand.fulfilled, setOperand)
-        .addCase(operandSetY.fulfilled, setOperand)
-        .addCase(operandInsert.fulfilled, setOperand)
-        .addCase(operandRemove.fulfilled, setOperand)
+        .addCase(fetchOperand.fulfilled, setOperandInner)
+        .addCase(operandSetY.fulfilled, setOperandInner)
+        .addCase(operandInsert.fulfilled, setOperandInner)
+        .addCase(operandRemove.fulfilled, setOperandInner)
 	}
 })
 
-export const { setCopyToOperator } = operandSlice.actions
+export const { setOperand } = operandSlice.actions
 export default operandSlice.reducer
