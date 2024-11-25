@@ -2,19 +2,28 @@
 import OperandFunction from '@/components/OperandFunction'
 import ApplyButton from '@/components/OperandFunction/Buttons/ApplyButton'
 import OperatorButton from '@/components/OperandFunction/Buttons/OperatorButton'
-import styles from './page.module.css'
+import classNames from '@/utils/classNames'
 import { useSelector } from 'react-redux'
+import styles from './page.module.css'
+
+const unary = ['diff', 'int', 'add']
 
 export default () => {
-	const functions = useSelector((state => state.operands.functions))
-	
+	const operatorConfig = useSelector((state) => state.operator)
+	let cur = operatorConfig?.current
+	const functions = useSelector((state) => state.operands.functions)
+
+	const onApply = () => {
+		// setFunctions
+	}
+
 	return (
-		<div className={styles.wrapper}>
-			<OperandFunction points={functions[0]?.points || []} id={0} />
-			<OperatorButton/>
-			<OperandFunction points={functions[1]?.points || []} id={1} />
-			<ApplyButton />
-			<OperandFunction points={functions[2]?.points || []} id={2} immutable />
+		<div className={classNames(styles.wrapper, unary.includes(cur) && styles.short_wrapper)}>
+			{!unary.includes(cur) && <OperandFunction id={0} points={functions[0]?.points || []} />}
+			<OperatorButton className={classNames(styles.btn, unary.includes(cur) && styles.offset)} />
+			<OperandFunction id={1} points={functions[1]?.points || []} />
+			<ApplyButton className={styles.btn} onClick={onApply} />
+			<OperandFunction id={2} points={functions[2]?.points || []} immutable />
 		</div>
 	)
 }

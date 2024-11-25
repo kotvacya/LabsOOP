@@ -8,7 +8,6 @@
 	align-items: center;
 	border: 2px solid var(--black);
 	border-radius: var(--button-border-radius);
-	margin-bottom: 16px;
 }
 
 .button:hover {
