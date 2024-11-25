@@ -19,8 +19,8 @@ public class ArrayTabulatedResponseDTO {
 
     List<Point> points;
 
-    boolean is_insertable;
-    boolean is_removable;
+    boolean isInsertable;
+    boolean isRemovable;
 
     public static ArrayTabulatedResponseDTO from(TabulatedFunction function){
         if(Objects.isNull(function)) return new ArrayTabulatedResponseDTO();

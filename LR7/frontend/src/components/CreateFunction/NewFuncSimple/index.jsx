@@ -9,14 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import instance from "@/utils/axiosInstance";
 import CreateButton from "../CreateButton";
 
-export default () => {
+export default ({onCreate, createText}) => {
 	const functionConfig = useSelector((state) => state.simpleFunctionConfig)
 	const dispatch = useDispatch()
 
-    const onCreate = () => {
-        instance.post("/tabulated/current/simple", functionConfig.config).then((response) => {
-            console.log(response);
-        }).catch(error => console.log(error))
+    const onCreateClick =  async () => {
+        const response = await instance.post("/tabulated/current/simple", functionConfig.config);
+        console.log(response);
+        await onCreate()
     }
 
     return (
@@ -38,7 +38,7 @@ export default () => {
                 <p className={styles.property}>Количество точек</p>
                 <VerifiedInput value={functionConfig.config.count} setValue={(val) => dispatch(setCount(val))} getError={(text, firstTime) => countVerifier(text, firstTime, (val) => dispatch(setCount(val)))}/>
             </div>
-            <CreateButton onClick={onCreate}/>
+            <CreateButton onClick={onCreateClick} text={createText}/>
         </fieldset>
     );
 };
