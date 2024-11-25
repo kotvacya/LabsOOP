@@ -69,12 +69,12 @@ public class TabulatedFunctionOperationService {
         return doOperation(a, b, (u, v) -> u - v);
     }
 
-    @TabulatedOperation(symbol = "*")
+    @TabulatedOperation(symbol = "×")
     public TabulatedFunction multiply(TabulatedFunction a, TabulatedFunction b) {
         return doOperation(a, b, (u, v) -> u * v);
     }
 
-    @TabulatedOperation(symbol = "/")
+    @TabulatedOperation(symbol = "÷")
     public TabulatedFunction divide(TabulatedFunction a, TabulatedFunction b) {
         return doOperation(a, b, (u, v) -> u / v);
     }

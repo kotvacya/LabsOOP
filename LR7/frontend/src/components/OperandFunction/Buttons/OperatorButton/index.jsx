@@ -1,22 +1,18 @@
 import Dropdown from '@/components/Dropdown'
 import styles from './index.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { setOperator } from '@/store/slices/operatorSlice'
 
-export default ({ state, setState }) => {
-	const operations = [
-		{ text: '+', value: '+' },
-		{ text: '-', value: '-' },
-		{ text: '⨉', value: '*' },
-		{ text: '÷', value: '/' },
-		{ text: '𝑑', value: 'd' },
-	]
+export default () => {
+	const dispatch = useDispatch()
+	const operatorConfig = useSelector(state => state.operator)
 
 	return (
 		<Dropdown
 			className={styles.dropdown}
-			content={operations}
-			name={'+'}
-			value={state}
-			setValue={setState}
+			content={operatorConfig.all}
+			value={operatorConfig.current}
+			setValue={(val) => dispatch(setOperator(val))}
 		/>
 	)
 }

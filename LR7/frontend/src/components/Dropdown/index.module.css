@@ -5,6 +5,7 @@
 	padding: 8px 12px;
 	border-radius: var(--button-border-radius);
 	font-size: 24px;
+	transition: none;
 }
 
 .drop_btn {
@@ -15,7 +16,8 @@
 
 .dropdown_content {
 	left: -2px;
-	top: calc(100% - var(--button-border-radius));
+	/* top: calc(100% - var(--button-border-radius)); */
+	top: 100%;
 	width: calc(100% + 4px);
 	display: none;
 	position: absolute;
@@ -30,6 +32,11 @@
 .last {
 	border-bottom-left-radius: calc(var(--button-border-radius) - 2px);
 	border-bottom-right-radius: calc(var(--button-border-radius) - 2px);
+}
+
+.dropdown:hover {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
 }
 
 .dropdown:hover > .dropdown_content {

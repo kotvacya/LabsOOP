@@ -23,6 +23,7 @@ const operatorSlice = createSlice({
 		builder
 		.addCase(fetchAllOperators.fulfilled, (state, action)=> {
 			state.all = action.payload
+            state.current = action.payload[0].value
 		})
 	}
 })
