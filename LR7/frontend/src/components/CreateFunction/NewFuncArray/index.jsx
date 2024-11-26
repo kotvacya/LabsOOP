@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import CreateButton from '../CreateButton'
 import styles from './index.module.css'
 
-export default function NewFuncArray({onCreate, createText}) {
+export default function NewFuncArray({ onCreate }) {
 	const points = useSelector((state) => state.arrayPoints.points)
 	const dispatch = useDispatch()
 
@@ -16,7 +16,7 @@ export default function NewFuncArray({onCreate, createText}) {
 
 	const onCreateClick = async () => {
 		const response = await instance.post('/tabulated/current/array', { points: points })
-		console.log(response);
+		console.log(response)
 		await onCreate()
 	}
 
@@ -31,7 +31,7 @@ export default function NewFuncArray({onCreate, createText}) {
 			/>
 			<div className={styles.controls}>
 				<CountInput count={points.length} setCount={(count) => dispatch(setPointCount(count))} />
-				<CreateButton onClick={onCreateClick} text={createText} />
+				<CreateButton onClick={onCreateClick} />
 			</div>
 		</div>
 	)

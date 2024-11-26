@@ -12,3 +12,9 @@
 	background-color: var(--light-blue);
 	color: var(--white);
 }
+
+.btn_disabled {
+	pointer-events: none;
+	filter: grayscale(100%);
+	opacity: 0.3;
+}
