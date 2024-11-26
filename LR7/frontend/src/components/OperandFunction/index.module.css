@@ -9,9 +9,3 @@
 	justify-content: center;
 	gap: 2vw;
 }
-
-.disabled {
-	pointer-events: none;
-	opacity: 0.3;
-	filter: grayscale(100%);
-}

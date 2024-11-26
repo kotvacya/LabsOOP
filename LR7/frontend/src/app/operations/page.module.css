@@ -1,7 +1,26 @@
 .wrapper {
+	position: relative;
+	margin: 0 auto;
 	width: 100%;
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-end;
-	padding-top: 10vh;
+	display: grid;
+	grid-template-columns: 4fr 1fr 4fr 1fr 4fr;
+	justify-items: center;
+	margin-top: 10vh;
+}
+
+.short_wrapper {
+	width: 60%;
+	grid-template-columns: 4fr 1fr 4fr;
+	justify-items: center;
+}
+
+.btn {
+	margin-top: calc(39px + 2vh + 2.9rem);
+	transform: translate(0, -50%);
+}
+
+.offset {
+	position: absolute;
+	left: 0;
+	transform: translate(-125%, -50%);
 }
