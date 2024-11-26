@@ -4,7 +4,8 @@ import { useState } from 'react'
 import styles from './index.module.css'
 
 export default ({ className, getError, value, setValue, ...rest }) => {
-	const [text, setText] = setValue ? [value || '', setValue] : useState(value || '')
+	const val = value === undefined ? '' : value.toString()
+	const [text, setText] = setValue ? [val || '', setValue] : useState(val || '')
 	const [error, setError] = useState(getError ? getError(text, true) : null)
 
 	const onChange = getError
@@ -12,10 +13,10 @@ export default ({ className, getError, value, setValue, ...rest }) => {
 				setText(e.target.value)
 				const err = getError(e.target.value)
 				setError(err)
-		  }
+	}
 		: (e) => {
 				setText(e.target.value)
-		  }
+		}
 
 	return (
 		<input

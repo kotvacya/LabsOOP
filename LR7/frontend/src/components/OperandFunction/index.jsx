@@ -64,7 +64,7 @@ export default ({ id, immutable, disabled, ...rest }) => {
 	}
 
 	async function onChangeY(pt, y) {
-		console.log(y);
+		
 	}
 
 	return (
