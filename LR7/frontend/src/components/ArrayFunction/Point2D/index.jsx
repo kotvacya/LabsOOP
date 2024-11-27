@@ -2,7 +2,7 @@ import Cell from './Cell'
 import Trashcan from './Trashcan'
 import styles from './index.module.css'
 
-export default ({ onRemove, onChangeX, onChangeY, values }) => {
+export default ({ values, onChangeX, onChangeY, onRemove }) => {
 	return (
 		<div className={styles.wrapper}>
 			<Cell value={values.x} onChange={onChangeX} />

@@ -1,22 +1,16 @@
 'use client'
-import NumberInput from '@/components/VerifiedInput'
-import classNames from '@/utils/classNames'
+import VerifiedInput from '@/components/VerifiedInput'
+import { floatVerifier } from '@/utils/verifiers'
 import styles from './index.module.css'
 
-export default ({ onChange, value }) => {
-	const errorFunc = (text, firstTime) => {
-		let float = parseFloat(text)
-		if (float !== float) return 'error'
-		if (!firstTime) onChange(float)
-	}
-
+export default ({ value, onChange }) => {
 	return (
-		<NumberInput
+		<VerifiedInput
 			value={value}
-			className={classNames(styles.input, !onChange && styles.input_disabled)}
-			step={'any'}
+			setValue={onChange}
+			className={styles.input}
+			checkCorrect={floatVerifier}
 			disabled={!onChange}
-			getError={errorFunc}
 		/>
 	)
 }

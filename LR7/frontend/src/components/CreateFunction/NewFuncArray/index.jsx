@@ -1,23 +1,30 @@
 'use client'
 import ArrayFunction from '@/components/ArrayFunction'
-import CountInput from '@/components/CreateFunction/CountInput'
-import { addPoint, removePoint, setPointCount, updatePoint } from '@/store/slices/pointSlice'
+import CountInput from '@/components/CreateFunction/NewFuncArray/CountInput'
+import { addPoint, removePoint, updatePoint } from '@/store/slices/arrayPointsSlice'
 import instance from '@/utils/axiosInstance'
 import { useDispatch, useSelector } from 'react-redux'
 import CreateButton from '../CreateButton'
 import styles from './index.module.css'
 
-export default function NewFuncArray({ onCreate }) {
+export default function NewFuncArray() {
 	const points = useSelector((state) => state.arrayPoints.points)
 	const dispatch = useDispatch()
 
-	const onChangeX = (pt, val) => dispatch(updatePoint({ id: pt.id, x: val }))
-	const onChangeY = (pt, val) => dispatch(updatePoint({ id: pt.id, y: val }))
+	const checkPoints = () => {
+		if (points.length == 0) return true
+		for (let el of points) if (isNaN(parseFloat(el.x)) || isNaN(parseFloat(el.y))) return true
+		return false
+	}
 
-	const onCreateClick = async () => {
+	const onChangeX = (id, val) => dispatch(updatePoint({ id: id, x: val }))
+	const onChangeY = (id, val) => dispatch(updatePoint({ id: id, y: val }))
+	const onRemove = (id) => dispatch(removePoint(id))
+	const onAdd = () => dispatch(addPoint())
+
+	const createArrayFunc = async () => {
 		const response = await instance.post('/tabulated/current/array', { points: points })
 		console.log(response)
-		await onCreate()
 	}
 
 	return (
@@ -26,12 +33,12 @@ export default function NewFuncArray({ onCreate }) {
 				points={points}
 				onChangeX={onChangeX}
 				onChangeY={onChangeY}
-				onRemove={(pt) => dispatch(removePoint(pt.id))}
-				onAdd={() => dispatch(addPoint())}
+				onRemove={onRemove}
+				onAdd={onAdd}
 			/>
 			<div className={styles.controls}>
-				<CountInput count={points.length} setCount={(count) => dispatch(setPointCount(count))} />
-				<CreateButton onClick={onCreateClick} />
+				<CountInput currentCount={points.length} />
+				<CreateButton create={createArrayFunc} disabled={checkPoints()} />
 			</div>
 		</div>
 	)

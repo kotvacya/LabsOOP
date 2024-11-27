@@ -2,12 +2,13 @@
 import OperandFunction from '@/components/OperandFunction'
 import VerifiedInput from '@/components/VerifiedInput'
 import classNames from '@/utils/classNames'
+import { floatVerifier } from '@/utils/verifiers'
 import { useState } from 'react'
 import Chart from '../../components/Chart'
 import styles from './page.module.css'
 
 //mocks
-const insertable = false
+const insertable = true
 const len = 9
 const x = Array.from({ length: len }, (el, i) => i)
 const y = Array.from({ length: len }, () => Math.random() * 10)
@@ -22,6 +23,9 @@ export default () => {
 
 	const setX = (v) => setInput((prev) => ({ ...prev, x: v }))
 	const setY = (v) => setInput((prev) => ({ ...prev, y: v }))
+
+	const isCorrect = floatVerifier(input.x) && floatVerifier(input.y)
+	const isCorrectX = floatVerifier(input.x)
 
 	const onApply = (e) => {
 		e.preventDefault()
@@ -38,19 +42,33 @@ export default () => {
 			<OperandFunction points={points} />
 
 			<div className={styles.apply}>
-				<VerifiedInput value={input.x} setValue={setX} className={styles.input} placeholder='X:' />
+				<VerifiedInput
+					value={input.x}
+					setValue={setX}
+					checkCorrect={floatVerifier}
+					className={styles.input}
+					placeholder='X:'
+				/>
 				<VerifiedInput
 					value={input.y}
 					setValue={setY}
+					checkCorrect={floatVerifier}
 					className={classNames(styles.input, !insertable && styles.disabled)}
 					placeholder='Y:'
 				/>
 				<div className={styles.btns}>
-					<button className={styles.btn} onClick={onApply}>
+					<button
+						className={classNames(styles.btn, !isCorrectX && styles.disabled)}
+						onClick={onApply}
+					>
 						Вычислить
 					</button>
+
 					{insertable && (
-						<button className={styles.btn} onClick={onPaste}>
+						<button
+							className={classNames(styles.btn, !isCorrect && styles.disabled)}
+							onClick={onPaste}
+						>
 							Вставить
 						</button>
 					)}
@@ -58,7 +76,11 @@ export default () => {
 			</div>
 
 			<div className={styles.chart}>
-				<Chart xData={points.map((el) => el.x)} yData={points.map((el) => el.y)} />
+				<Chart
+					className={styles.graph}
+					xData={points.map((el) => el.x)}
+					yData={points.map((el) => el.y)}
+				/>
 			</div>
 		</div>
 	)

@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import factorySlice from './slices/factorySlice'
-import SimpleFunctionsConfigSlice from './slices/functionConfigSlice'
-import ArrayPointsSlice from './slices/pointSlice'
+import ArrayPointsSlice from './slices/arrayPointsSlice'
+import modalSlice from './slices/confirmationModalSlice'
+import factorySlice from './slices/factoryTypeSlice'
+import operandSlice from './slices/operandSlice'
 import operatorSlice from './slices/operatorSlice'
-import operandSlice from "./slices/operandSlice"
+import SimpleFunctionsConfigSlice from './slices/SimpleFunctionSlice'
 
 export default configureStore({
 	reducer: {
@@ -11,6 +12,7 @@ export default configureStore({
 		simpleFunctionConfig: SimpleFunctionsConfigSlice,
 		factory: factorySlice,
 		operator: operatorSlice,
-		operands: operandSlice
+		operands: operandSlice,
+		popups: modalSlice,
 	},
 })
