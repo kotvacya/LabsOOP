@@ -1,6 +1,6 @@
 'use client'
 import Dropdown from '@/components/Dropdown'
-import { setFactory } from '@/store/slices/factorySlice'
+import { setFactory } from '@/store/slices/factoryTypeSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './page.module.css'
 

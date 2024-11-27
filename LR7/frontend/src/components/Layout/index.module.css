@@ -9,3 +9,35 @@
 	width: 100%;
 	padding: 0 40px;
 }
+
+.popups {
+	position: fixed;
+	bottom: 40px;
+	right: 40px;
+	display: flex;
+	flex-direction: column;
+	gap: 1vh;
+	overflow: hidden;
+
+	will-change: transform;
+}
+
+.popups-enter {
+	opacity: 0;
+	transform: translateY(100%);
+}
+
+.popups-enter-active {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.popups-exit {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.popups-exit-active {
+	opacity: 0;
+	transform: translateY(100%);
+}

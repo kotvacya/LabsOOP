@@ -1,25 +1,20 @@
-export const floatVerifier = (text, firstTime, onChange) => {
-    let float = parseFloat(text)
-    if(float !== float){
-        return "Не число"
-    }
-    if(!firstTime) onChange(float)
+export const floatVerifier = (text) => {
+	let float = parseFloat(text)
+	if (isNaN(float)) return false
+	return true
 }
 
-export const intVerifier = (text, firstTime, onChange) => {
-    let int = parseInt(text)
-    if(int !== int){
-        return "Не число"
-    }
-    if(!firstTime) onChange(int)
+export const intVerifier = (text) => {
+	let int = parseInt(text)
+	if (isNaN(int)) return false
+	return true
 }
 
-export const countVerifier = (text, firstTime, onChange) => {
-    let int = parseInt(text)
-    if(int !== int){
-        return "Не число"
-    }else if(int <= 0){
-        return "Число должно быть > 0"
-    }
-    if(!firstTime) onChange(int)
+export const countVerifier = (text) => {
+	let int = parseInt(text)
+
+	if (int !== int) return false
+	if (int <= 0) return false
+
+	return true
 }

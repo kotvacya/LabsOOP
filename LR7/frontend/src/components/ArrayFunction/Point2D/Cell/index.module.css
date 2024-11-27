@@ -1,9 +1,3 @@
 .input {
 	width: 200px;
 }
-
-.input_disabled {
-	pointer-events: none;
-	border-color: gray;
-	color: gray;
-}
