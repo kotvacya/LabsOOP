@@ -61,6 +61,8 @@ public class OperandsController {
         return ArrayTabulatedResponseDTO.from(temp_storage.getOperand(securityContextHolderStrategy.getContext(), index));
     }
 
+    ///// SERIALIZATION /////
+
     @GetMapping(value = "/{id}/serialized", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<Resource> getSerializedOperand(@PathVariable("id") Integer index) throws AuthException, BaseUIException {
         TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), index);
@@ -77,6 +79,21 @@ public class OperandsController {
         temp_storage.setOperand(securityContextHolderStrategy.getContext(), index, function);
         return ArrayTabulatedResponseDTO.from(function);
     }
+
+    @GetMapping(value = "/{id}/xml", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public String getXmlOperand(@PathVariable("id") Integer index) throws AuthException, BaseUIException {
+        TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), index);
+        return serialService.serializeFunctionXML(function);
+    }
+
+    @PostMapping("/{id}/xml")
+    public ArrayTabulatedResponseDTO setXmlOperand(@PathVariable("id") Integer index, @RequestBody String data) throws AuthException, BaseUIException {
+        TabulatedFunction function = serialService.deserializeFunctionXML(data);
+        temp_storage.setOperand(securityContextHolderStrategy.getContext(), index, function);
+        return ArrayTabulatedResponseDTO.from(function);
+    }
+
+    ///// OPERATIONS /////
 
     @PostMapping("/{id}/setY")
     public ArrayTabulatedResponseDTO setYOperand(@PathVariable("id") Integer func_index, @NonNull @RequestParam("index") Integer index, @NonNull @RequestParam("y") Double y) throws AuthException, BaseUIException {
@@ -105,6 +122,16 @@ public class OperandsController {
             throw new NoSuchOperationException("this function doesn't implement Insertable interface");
         }
         return ArrayTabulatedResponseDTO.from(function);
+    }
+
+    @GetMapping("/{id}/apply")
+    public Double applyOperand(@PathVariable("id") Integer func_index, @NonNull @RequestParam("x") Double x) throws AuthException, BaseUIException {
+        TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), func_index);
+        if(Objects.nonNull(function)) {
+            return function.apply(x);
+        }else{
+            throw new NoSuchOperationException("No operand at index " + func_index);
+        }
     }
 
     @PostMapping("/set")

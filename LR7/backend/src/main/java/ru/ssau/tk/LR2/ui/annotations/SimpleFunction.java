@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface SimpleFunction {
     public String canonName();
+    public int priority() default 1;
 }

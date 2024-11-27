@@ -19,7 +19,7 @@ public class SerializationDeserializationService {
             out.flush();
             outputStream.flush();
             return outputStream.toByteArray();
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new SerializationException("Cannot serialize function");
         }
     }
@@ -29,9 +29,27 @@ public class SerializationDeserializationService {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(array);
             BufferedInputStream in = new BufferedInputStream(inputStream);
             return FunctionsIO.deserialize(in);
-        }catch (IOException | ClassNotFoundException e){
+        } catch (IOException | ClassNotFoundException e) {
             throw new SerializationException("Cannot deserialize function");
         }
+    }
+
+    public String serializeFunctionXML(TabulatedFunction func) throws BaseUIException {
+        try {
+            StringWriter swr = new StringWriter();
+            BufferedWriter bufferedWriter = new BufferedWriter(swr);
+            FunctionsIO.serializeXml(bufferedWriter, func);
+            bufferedWriter.flush();
+            return swr.toString();
+        } catch (IOException e) {
+            throw new SerializationException("Cannot serialize function");
+        }
+    }
+
+    public TabulatedFunction deserializeFunctionXML(String content) {
+        StringReader rdr = new StringReader(content);
+        BufferedReader bufferedReader = new BufferedReader(rdr);
+        return FunctionsIO.deserializeXml(bufferedReader);
     }
 
 }

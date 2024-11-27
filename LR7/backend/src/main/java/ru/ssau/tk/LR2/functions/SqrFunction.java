@@ -4,7 +4,7 @@ import ru.ssau.tk.LR2.ui.annotations.SimpleFunction;
 
 import java.lang.Math;
 
-@SimpleFunction(canonName = "Квадратичная функция")
+@SimpleFunction(canonName = "Квадратичная функция", priority = 2)
 public class SqrFunction implements MathFunction {
     public double apply(double x) {
         return Math.pow(x, 2);

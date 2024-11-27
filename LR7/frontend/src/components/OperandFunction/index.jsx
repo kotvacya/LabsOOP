@@ -26,16 +26,27 @@ export default ({ id, immutable, disabled, ...rest }) => {
 		types: [{
 			description: "Tabulated Function",
 			accept: { "application/x-binary": [".bin"] },
+		}, {
+			description: "Tabulated Function",
+			accept: { "application/xml": [".xml"] }
 		}],
+		excludeAcceptAllOption: true
 	};
 
 	async function onSave(e) {
 		try{
 			const handle = await window.showSaveFilePicker(opts);
-			
-			const response = await instance.get(`/tabulated/operands/${id}/serialized`, {
-				responseType: 'blob'
-			})
+
+			let response
+			if(handle.name.endsWith(".xml")){
+				response = await instance.get(`/tabulated/operands/${id}/xml`, {
+					responseType: 'blob'
+				})
+			}else{
+				response = await instance.get(`/tabulated/operands/${id}/serialized`, {
+					responseType: 'blob'
+				})
+			}
 
 			const writableStream = await handle.createWritable();
 			await writableStream.write(response.data);
@@ -50,12 +61,21 @@ export default ({ id, immutable, disabled, ...rest }) => {
 			const [handle] = await window.showOpenFilePicker(opts);
 
 			const fileData = await handle.getFile();
-
-			const response = await instance.post(`/tabulated/operands/${id}/serialized`, await fileData.arrayBuffer(), {
-				headers: {
-					'Content-Type': 'application/octet-stream'
-				}
-			})
+			
+			let response 
+			if(handle.name.endsWith(".xml")){
+				response = await instance.post(`/tabulated/operands/${id}/xml`, await fileData.text(), {
+					headers: {
+						'Content-Type': 'application/xml'
+					}
+				})
+			}else{
+				response = await instance.post(`/tabulated/operands/${id}/serialized`, await fileData.arrayBuffer(), {
+					headers: {
+						'Content-Type': 'application/octet-stream'
+					}
+				})
+			}
 
 			dispatch(setOperand({id: id, data: response.data}))
 		}catch(e){

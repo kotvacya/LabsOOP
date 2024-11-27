@@ -21,12 +21,14 @@ public class ArrayTabulatedResponseDTO {
 
     boolean isInsertable;
     boolean isRemovable;
+    String simpleName;
 
     public static ArrayTabulatedResponseDTO from(TabulatedFunction function){
         if(Objects.isNull(function)) return new ArrayTabulatedResponseDTO();
         return new ArrayTabulatedResponseDTO(
                 StreamSupport.stream(function.spliterator(), false).toList(),
                 function instanceof Insertable,
-                function instanceof Removable);
+                function instanceof Removable,
+                function.getClass().getSimpleName());
     }
 }
