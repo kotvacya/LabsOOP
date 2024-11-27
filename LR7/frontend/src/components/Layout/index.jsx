@@ -1,6 +1,7 @@
 'use client'
 import { useSelector } from 'react-redux'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import InsertModal from '../InsertModal'
 import ResultModal from '../ResultModal'
 import Header from './Header'
 import styles from './index.module.css'
@@ -28,6 +29,7 @@ export default ({ children }) => {
 					</CSSTransition>
 				))}
 			</TransitionGroup>
+			<InsertModal />
 		</div>
 	)
 }

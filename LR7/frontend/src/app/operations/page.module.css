@@ -22,5 +22,5 @@
 .offset {
 	position: absolute;
 	left: 0;
-	transform: translate(-125%, -50%);
+	transform: translate(125%, -50%);
 }

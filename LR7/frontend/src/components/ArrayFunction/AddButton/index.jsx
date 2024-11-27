@@ -1,9 +1,9 @@
 import classNames from '@/utils/classNames'
 import styles from './index.module.css'
 
-export default ({ onClick, className, ...rest }) => {
+export default ({ className, ...rest }) => {
 	return (
-		<button className={classNames(className, styles.btn)} onClick={onClick} {...rest}>
+		<button className={classNames(className, styles.btn)} {...rest}>
 			<svg
 				width='32px'
 				height='32px'

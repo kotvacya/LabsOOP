@@ -1,19 +1,15 @@
 'use client'
 import classNames from '@/utils/classNames'
-import { useSelector } from 'react-redux'
 import AddButton from './AddButton'
 import Point2D from './Point2D'
 import styles from './index.module.css'
 
-export default ({ points, onChangeX, onChangeY, onRemove, onAdd, className }) => {
-	let factory = useSelector((state) => state.factory)
-	console.log(factory)
-
+export default ({ points, onChangeX, onChangeY, onRemove, onAdd, className, factory }) => {
 	return (
 		<fieldset className={classNames(styles.points, className)}>
-			<legend className={styles.legend}>ArrayTabulatedFunction</legend>
+			<legend className={styles.legend}>{factory}</legend>
 			<div className={styles.wrapper}>
-				{points.map((pt) => (
+				{points?.map((pt) => (
 					<Point2D
 						key={pt.id}
 						values={pt}

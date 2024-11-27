@@ -8,18 +8,17 @@ import classNames from '@/utils/classNames'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './page.module.css'
 
-const unary = ['derivative']
+const unary = ['derivative', 'integral']
 
 export default () => {
 	const dispatch = useDispatch()
-	const functions = useSelector((state) => state.operands.functions)
-	const operatorConfig = useSelector((state) => state.operator)
-	let cur = operatorConfig?.current
+	const cur = useSelector((state) => state.operator)?.current
 
 	async function onApply(e) {
+		e.preventDefault()
 		const response = await instance.post('/tabulated/operands/apply', null, {
 			params: {
-				operation: operatorConfig.current,
+				operation: cur,
 			},
 		})
 
@@ -28,15 +27,15 @@ export default () => {
 
 	return (
 		<div className={classNames(styles.wrapper, unary.includes(cur) && styles.short_wrapper)}>
-			{!unary.includes(cur) && <OperandFunction id={0} points={functions[0]?.points || []} />}
+			{!unary.includes(cur) && <OperandFunction id={0} />}
 
 			<OperatorButton className={classNames(styles.btn, unary.includes(cur) && styles.offset)} />
 
-			<OperandFunction id={1} points={functions[1]?.points || []} />
+			<OperandFunction id={1} />
 
 			<ApplyButton className={styles.btn} onClick={onApply} />
 
-			<OperandFunction id={2} points={functions[2]?.points || []} immutable />
+			<OperandFunction id={2} immutable />
 		</div>
 	)
 }

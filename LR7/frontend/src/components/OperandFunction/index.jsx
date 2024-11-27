@@ -1,51 +1,56 @@
 'use client'
 import { fetchCurrentFunction } from '@/store/slices/arrayPointsSlice'
-import { setOperand } from '@/store/slices/operandSlice'
+import { setInsertVisibility } from '@/store/slices/insertModalSlice'
+import { operandRemove, setOperand } from '@/store/slices/operandSlice'
 import instance from '@/utils/axiosInstance'
 import { usePathname, useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ArrayFunction from '../ArrayFunction'
 import CreateButton from './Buttons/CreateButton'
 import SaveButton from './Buttons/SaveButton'
 import UploadButton from './Buttons/UploadButton'
 import styles from './index.module.css'
 
-export default ({ id, immutable, disabled, ...rest }) => {
+export default ({ id, immutable }) => {
 	const router = useRouter()
 	const dispatch = useDispatch()
+
 	const pathname = usePathname()
 
+	const data = useSelector((state) => state.operands.functions[id])
+
 	async function onCreate(e) {
-		await instance.post('/tabulated/operands/get', null, {
-			params: { index: id },
-		})
+		await instance.post('/tabulated/operands/get', null, { params: { index: id } })
 		await dispatch(fetchCurrentFunction()).unwrap()
 		router.push(`/?copy_to=${id}&return_to=${pathname}`)
 	}
 
 	const opts = {
-		types: [{
-			description: "Tabulated Function",
-			accept: { "application/x-binary": [".bin"] },
-		}, {
-			description: "Tabulated Function",
-			accept: { "application/xml": [".xml"] }
-		}],
-		excludeAcceptAllOption: true
-	};
+		types: [
+			{
+				description: 'Tabulated Function',
+				accept: { 'application/x-binary': ['.bin'] },
+			},
+			{
+				description: 'Tabulated Function',
+				accept: { 'application/xml': ['.xml'] },
+			},
+		],
+		excludeAcceptAllOption: true,
+	}
 
 	async function onSave(e) {
-		try{
-			const handle = await window.showSaveFilePicker(opts);
+		try {
+			const handle = await window.showSaveFilePicker(opts)
 
 			let response
-			if(handle.name.endsWith(".xml")){
+			if (handle.name.endsWith('.xml')) {
 				response = await instance.get(`/tabulated/operands/${id}/xml`, {
-					responseType: 'blob'
+					responseType: 'blob',
 				})
-			}else{
+			} else {
 				response = await instance.get(`/tabulated/operands/${id}/serialized`, {
-					responseType: 'blob'
+					responseType: 'blob',
 				})
 			}
 
@@ -60,29 +65,36 @@ export default ({ id, immutable, disabled, ...rest }) => {
 	async function onUpload(e) {
 		try {
 			const [handle] = await window.showOpenFilePicker(opts)
+			const fileData = await handle.getFile()
 
-			const fileData = await handle.getFile();
-			
-			let response 
-			if(handle.name.endsWith(".xml")){
+			let response
+			if (handle.name.endsWith('.xml')) {
 				response = await instance.post(`/tabulated/operands/${id}/xml`, await fileData.text(), {
 					headers: {
-						'Content-Type': 'application/xml'
-					}
+						'Content-Type': 'application/xml',
+					},
 				})
-			}else{
-				response = await instance.post(`/tabulated/operands/${id}/serialized`, await fileData.arrayBuffer(), {
-					headers: {
-						'Content-Type': 'application/octet-stream'
+			} else {
+				response = await instance.post(
+					`/tabulated/operands/${id}/serialized`,
+					await fileData.arrayBuffer(),
+					{
+						headers: {
+							'Content-Type': 'application/octet-stream',
+						},
 					}
-				})
+				)
 			}
-
 
 			dispatch(setOperand({ id: id, data: response.data }))
 		} catch (e) {
 			if (e.name !== 'AbortError') throw e
 		}
+	}
+
+	const onInsert = () => dispatch(setInsertVisibility({ id: id, visible: true }))
+	const onRemove = (i) => {
+		dispatch(operandRemove({ func_id: id, index: data?.points?.findIndex((el) => el.id == i) }))
 	}
 
 	return (
@@ -92,7 +104,12 @@ export default ({ id, immutable, disabled, ...rest }) => {
 				<SaveButton onClick={onSave} />
 				{!immutable && <UploadButton onClick={onUpload} />}
 			</div>
-			<ArrayFunction {...rest} />
+			<ArrayFunction
+				points={data?.points}
+				onAdd={data?.insertable && onInsert}
+				onRemove={data?.removable && onRemove}
+				factory={data?.simpleName || 'TabulatedFunction'}
+			/>
 		</div>
 	)
 }
