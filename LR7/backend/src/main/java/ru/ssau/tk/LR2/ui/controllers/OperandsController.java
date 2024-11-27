@@ -1,7 +1,6 @@
 package ru.ssau.tk.LR2.ui.controllers;
 
 import jakarta.security.auth.message.AuthException;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,8 @@ import ru.ssau.tk.LR2.ui.exceptions.BaseUIException;
 import ru.ssau.tk.LR2.ui.exceptions.NoSuchOperationException;
 import ru.ssau.tk.LR2.ui.services.SerializationDeserializationService;
 import ru.ssau.tk.LR2.ui.services.TabulatedOperationService;
-import ru.ssau.tk.LR2.ui.storage.InMemoryTabulatedFunctionStorage;
+import ru.ssau.tk.LR2.ui.storage.FunctionStorageFactory;
+import ru.ssau.tk.LR2.ui.storage.TabulatedFunctionStorageInterface;
 import ru.ssau.tk.LR2.ui.storage.TemporaryFunctionsStorage;
 
 import java.util.List;
@@ -41,7 +40,7 @@ public class OperandsController {
     TabulatedOperationService operationService;
 
     @Autowired
-    InMemoryTabulatedFunctionStorage storage;
+    FunctionStorageFactory storage_factory;
 
     @Autowired
     TemporaryFunctionsStorage temp_storage;
@@ -155,6 +154,8 @@ public class OperandsController {
     @PostMapping("/apply")
     public ArrayTabulatedResponseDTO applyOperation(@NonNull @RequestParam("operation") String operation) throws AuthException, BaseUIException {
         SecurityContext ctx = securityContextHolderStrategy.getContext();
+        TabulatedFunctionStorageInterface storage = storage_factory.getStorage(ctx);
+
         TabulatedFunction result = operationService.apply(operation,
                 new TabulatedFunctionOperationService(storage.getCurrentFactory(ctx)),
                 temp_storage.getOperand(ctx, 0),

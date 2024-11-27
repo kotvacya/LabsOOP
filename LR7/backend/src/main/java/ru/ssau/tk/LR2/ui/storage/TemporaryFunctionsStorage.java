@@ -27,7 +27,7 @@ public class TemporaryFunctionsStorage {
 
     private List<TabulatedFunction> getOperandsOrDefault(String key) {
         if (!operands_store.containsKey(key)) {
-            operands_store.put(key, new ArrayList<>(Collections.nCopies(3, null)));
+            operands_store.put(key, new ArrayList<>(Collections.nCopies(4, null)));
         }
         return operands_store.get(key);
     }

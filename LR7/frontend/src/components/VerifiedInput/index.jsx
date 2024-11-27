@@ -4,7 +4,7 @@ import { useState } from 'react'
 import styles from './index.module.css'
 
 export default ({ className, getError, value, setValue, ...rest }) => {
-	const val = value === undefined ? '' : value.toString()
+	const val = value === undefined ? '' : value?.toString()
 	const [text, setText] = setValue ? [val || '', setValue] : useState(val || '')
 	const [error, setError] = useState(getError ? getError(text, true) : null)
 
