@@ -6,8 +6,9 @@ import instance from '@/utils/axiosInstance'
 import { useDispatch, useSelector } from 'react-redux'
 import CreateButton from '../CreateButton'
 import styles from './index.module.css'
+import { createTimeLimitedPopup } from '@/store/slices/confirmationModalSlice'
 
-export default function NewFuncArray() {
+export default function NewFuncArray({doCopy, createText}) {
 	const points = useSelector((state) => state.arrayPoints.points)
 	const dispatch = useDispatch()
 
@@ -24,7 +25,8 @@ export default function NewFuncArray() {
 
 	const createArrayFunc = async () => {
 		const response = await instance.post('/tabulated/current/array', { points: points })
-		console.log(response)
+		if(doCopy) await doCopy()
+		dispatch(createTimeLimitedPopup({ success: true, message: "Функция успешно создана", duration: 5 }))
 	}
 
 	return (
@@ -38,7 +40,7 @@ export default function NewFuncArray() {
 			/>
 			<div className={styles.controls}>
 				<CountInput currentCount={points.length} />
-				<CreateButton create={createArrayFunc} disabled={checkPoints()} />
+				<CreateButton onClick={createArrayFunc} text={createText || "Создать"} disabled={checkPoints()} />
 			</div>
 		</div>
 	)

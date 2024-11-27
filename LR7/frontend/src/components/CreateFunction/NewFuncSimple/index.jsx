@@ -7,8 +7,9 @@ import { countVerifier, floatVerifier } from '@/utils/verifiers'
 import { useDispatch, useSelector } from 'react-redux'
 import CreateButton from '../CreateButton'
 import styles from './index.module.css'
+import { createTimeLimitedPopup } from '@/store/slices/confirmationModalSlice'
 
-export default function NewFuncSimple() {
+export default function NewFuncSimple({doCopy, createText}) {
 	const functionConfig = useSelector((state) => state.simpleFunctionConfig)
 	const dispatch = useDispatch()
 
@@ -20,7 +21,8 @@ export default function NewFuncSimple() {
 
 	const createSimpleFunc = async () => {
 		const response = await instance.post('/tabulated/current/simple', functionConfig.config)
-		console.log(response)
+		if(doCopy) await doCopy()
+		dispatch(createTimeLimitedPopup({ success: true, message: "Функция успешно создана", duration: 5 }))
 	}
 
 	return (
@@ -54,7 +56,7 @@ export default function NewFuncSimple() {
 					checkCorrect={countVerifier}
 				/>
 			</div>
-			<CreateButton create={createSimpleFunc} disabled={!isCorrect} />
+			<CreateButton onClick={createSimpleFunc} text={createText || "Создать"} disabled={!isCorrect} />
 		</fieldset>
 	)
 }

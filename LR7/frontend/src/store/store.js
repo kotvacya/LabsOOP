@@ -5,11 +5,13 @@ import factorySlice from './slices/factoryTypeSlice'
 import operandSlice from './slices/operandSlice'
 import operatorSlice from './slices/operatorSlice'
 import SimpleFunctionsConfigSlice from './slices/SimpleFunctionSlice'
+import CompositeFunctionSlice from './slices/CompositeFunctionSlice'
 
 export default configureStore({
 	reducer: {
 		arrayPoints: ArrayPointsSlice,
 		simpleFunctionConfig: SimpleFunctionsConfigSlice,
+		compositeFunctionConfig: CompositeFunctionSlice,
 		factory: factorySlice,
 		operator: operatorSlice,
 		operands: operandSlice,
