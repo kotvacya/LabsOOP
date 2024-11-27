@@ -24,7 +24,7 @@ export default () => {
 	const doCopy = copy_to !== null ? async () => {
 		await instance.post('/tabulated/operands/set', null, { params: { index: copy_to } })
 		await dispatch(fetchOperand(copy_to)).unwrap()
-		router.push('/operations')
+		router.push(params.get('return_to'))
 	} : async () => {}
 
 	return (

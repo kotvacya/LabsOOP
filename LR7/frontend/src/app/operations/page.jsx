@@ -8,13 +8,13 @@ import classNames from '@/utils/classNames'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './page.module.css'
 
-const unary = ['diff', 'int', 'add']
+const unary = ['derivative']
 
 export default () => {
 	const dispatch = useDispatch()
+	const functions = useSelector((state) => state.operands.functions)
 	const operatorConfig = useSelector((state) => state.operator)
 	let cur = operatorConfig?.current
-	const functions = useSelector((state) => state.operands.functions)
 
 	async function onApply(e) {
 		const response = await instance.post('/tabulated/operands/apply', null, {

@@ -180,8 +180,8 @@ public class ArrayTabulatedFunction extends AbstractTabulatedFunction implements
         if (index < 0 || index >= getCount()) throw new ArrayIndexOutOfBoundsException();
 
         if (count == 1) {
-            xValues = null;
-            yValues = null;
+            xValues = new double[0];
+            yValues = new double[0];
         } else {
 
             double[] new_xvalues = new double[count - 1];

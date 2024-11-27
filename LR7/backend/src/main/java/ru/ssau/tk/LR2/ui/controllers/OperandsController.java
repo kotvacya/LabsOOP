@@ -15,9 +15,12 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.web.bind.annotation.*;
+import ru.ssau.tk.LR2.concurrent.IntegralTask;
 import ru.ssau.tk.LR2.functions.Insertable;
 import ru.ssau.tk.LR2.functions.Removable;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
+import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
+import ru.ssau.tk.LR2.operations.TabulatedDifferentialOperator;
 import ru.ssau.tk.LR2.operations.TabulatedFunctionOperationService;
 import ru.ssau.tk.LR2.ui.dto.ArrayTabulatedResponseDTO;
 import ru.ssau.tk.LR2.ui.dto.OperationDTO;
@@ -29,6 +32,7 @@ import ru.ssau.tk.LR2.ui.storage.FunctionStorageFactory;
 import ru.ssau.tk.LR2.ui.storage.TabulatedFunctionStorageInterface;
 import ru.ssau.tk.LR2.ui.storage.TemporaryFunctionsStorage;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -133,6 +137,13 @@ public class OperandsController {
         }
     }
 
+    @GetMapping("/{id}/applyIntegral")
+    public Double applyOperand(@PathVariable("id") Integer func_index) throws AuthException, BaseUIException {
+        TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), func_index);
+        IntegralTask integralTask = new IntegralTask(function);
+        return integralTask.call();
+    }
+
     @PostMapping("/set")
     public void setOperandFromCurrent(@NonNull @RequestParam("index") Integer index) throws AuthException, BaseUIException {
         SecurityContext ctx = securityContextHolderStrategy.getContext();
@@ -148,19 +159,31 @@ public class OperandsController {
     @Cacheable
     @GetMapping("/methods")
     public List<OperationDTO> getOperations() {
-        return operationService.getAllOperations();
+        List<OperationDTO> res = new ArrayList<>(operationService.getAllOperations());
+        res.add(new OperationDTO("derivative", "d"));
+        return res;
     }
 
     @PostMapping("/apply")
     public ArrayTabulatedResponseDTO applyOperation(@NonNull @RequestParam("operation") String operation) throws AuthException, BaseUIException {
         SecurityContext ctx = securityContextHolderStrategy.getContext();
+
+
         TabulatedFunctionStorageInterface storage = storage_factory.getStorage(ctx);
 
-        TabulatedFunction result = operationService.apply(operation,
-                new TabulatedFunctionOperationService(storage.getCurrentFactory(ctx)),
-                temp_storage.getOperand(ctx, 0),
-                temp_storage.getOperand(ctx, 1)
-        );
+        TabulatedFunctionFactory factory = storage.getCurrentFactory(ctx);
+
+        TabulatedFunction result;
+        if(operation.equals("derivative")){
+            TabulatedDifferentialOperator differentialOperator = new TabulatedDifferentialOperator(factory);
+            result = differentialOperator.derive(temp_storage.getOperand(ctx, 1));
+        }else {
+            result = operationService.apply(operation,
+                    new TabulatedFunctionOperationService(factory),
+                    temp_storage.getOperand(ctx, 0),
+                    temp_storage.getOperand(ctx, 1)
+            );
+        }
         temp_storage.setOperand(ctx, 2, result);
         return ArrayTabulatedResponseDTO.from(result);
     }

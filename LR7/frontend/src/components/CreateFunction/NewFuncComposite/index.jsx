@@ -7,6 +7,7 @@ import styles from './index.module.css'
 import { fetchSimpleFunctions } from '@/store/slices/SimpleFunctionSlice'
 import { setInner, setName, setOuter } from '@/store/slices/CompositeFunctionSlice'
 import instance from '@/utils/axiosInstance'
+import { createTimeLimitedPopup } from '@/store/slices/confirmationModalSlice'
 
 export default () => {
 	const dispatch = useDispatch()
@@ -15,15 +16,24 @@ export default () => {
 
 	const isCorrect = !!functionConfig.config.name
 	const createCompositeFunc = async () => {
-		await instance.post('/tabulated/simple/composite', functionConfig.config)
-		await dispatch(fetchSimpleFunctions()).unwrap()
+		try{
+			await instance.post('/tabulated/simple/composite', functionConfig.config)
+			await dispatch(fetchSimpleFunctions()).unwrap()
+			dispatch(createTimeLimitedPopup({ success: true, message: "Функция успешно создана", duration: 5 }))
+		}catch(e){
+			if(e.response.data.type == "CompositeFunctionAlreadyExists"){
+				dispatch(createTimeLimitedPopup({ success: false, message: e.response.data.error, duration: 5 }))
+			}else{
+				throw e
+			}
+		}
 	}
 
 	return (
 		<div className={styles.wrapper}>
 			<div className={styles.column_wrapper}>
 				<h2 className={styles.title}>F(x)</h2>
-				<Dropdown // TODO
+				<Dropdown
 					className={styles.dropdown}
 					name='Выберите f(x)'
 					value={functionConfig.config.inner}
@@ -34,7 +44,7 @@ export default () => {
 
 			<div className={styles.column_wrapper}>
 				<h2 className={styles.title}>G(x)</h2>
-				<Dropdown // TODO
+				<Dropdown
 					className={styles.dropdown}
 					name='Выберите g(x)'
 					value={functionConfig.config.outer}

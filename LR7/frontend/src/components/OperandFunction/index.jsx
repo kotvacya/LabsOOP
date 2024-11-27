@@ -2,7 +2,7 @@
 import { fetchCurrentFunction } from '@/store/slices/arrayPointsSlice'
 import { setOperand } from '@/store/slices/operandSlice'
 import instance from '@/utils/axiosInstance'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import ArrayFunction from '../ArrayFunction'
 import CreateButton from './Buttons/CreateButton'
@@ -13,13 +13,14 @@ import styles from './index.module.css'
 export default ({ id, immutable, disabled, ...rest }) => {
 	const router = useRouter()
 	const dispatch = useDispatch()
+	const pathname = usePathname()
 
 	async function onCreate(e) {
 		await instance.post('/tabulated/operands/get', null, {
 			params: { index: id },
 		})
 		await dispatch(fetchCurrentFunction()).unwrap()
-		router.push(`/?copy_to=${id}`)
+		router.push(`/?copy_to=${id}&return_to=${pathname}`)
 	}
 
 	const opts = {

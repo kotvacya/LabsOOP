@@ -6,6 +6,8 @@ import { floatVerifier } from '@/utils/verifiers'
 import { useState } from 'react'
 import Chart from '../../components/Chart'
 import styles from './page.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import instance from '@/utils/axiosInstance'
 
 //mocks
 const insertable = true
@@ -18,6 +20,9 @@ const mock = { apply: (el) => 20 }
 let id = 0
 
 export default () => {
+	const dispatch = useDispatch()
+	const functions = useSelector((state) => state.operands.functions)
+
 	const [points, setPoints] = useState(arr) // TODO
 	const [input, setInput] = useState({ x: '', y: '' })
 
@@ -27,9 +32,15 @@ export default () => {
 	const isCorrect = floatVerifier(input.x) && floatVerifier(input.y)
 	const isCorrectX = floatVerifier(input.x)
 
-	const onApply = (e) => {
+	const onApply = async (e) => {
 		e.preventDefault()
-		setY(mock.apply(input.x)) // TODO
+		const response = await instance.get("/tabulated/operands/3/apply", {
+			params: {
+				x: input.x
+			}
+		})
+		
+		setY(response.data)
 	}
 
 	const onPaste = (e) => {
@@ -37,9 +48,11 @@ export default () => {
 		setPoints((prev) => [...prev, { id: id--, x: input.x, y: input.y }]) // TODO set(new_arr)
 	}
 
+	const points2 = functions[3]?.points || []
+
 	return (
 		<div className={styles.wrapper}>
-			<OperandFunction points={points} />
+			<OperandFunction id={3} points={points2} />
 
 			<div className={styles.apply}>
 				<VerifiedInput
@@ -76,11 +89,11 @@ export default () => {
 			</div>
 
 			<div className={styles.chart}>
-				<Chart
+				{points2.length !== 0 && <Chart
 					className={styles.graph}
-					xData={points.map((el) => el.x)}
-					yData={points.map((el) => el.y)}
-				/>
+					xData={ points2.map((el) => el.x) }
+					yData={ points2.map((el) => el.y) }
+				/>} 
 			</div>
 		</div>
 	)

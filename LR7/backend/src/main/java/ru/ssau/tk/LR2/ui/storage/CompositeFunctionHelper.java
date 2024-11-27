@@ -33,4 +33,13 @@ public class CompositeFunctionHelper {
 
         return new CompositeFunction(mathFunction1, mathFunction2);
     }
+
+    public boolean isSimpleFunction(String name) {
+        try {
+            functionService.create(name);
+            return true;
+        } catch (NoSuchSimpleFunctionException e) {
+            return false;
+        }
+    }
 }

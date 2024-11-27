@@ -10,6 +10,7 @@ import ru.ssau.tk.LR2.functions.CompositeFunction;
 import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 import ru.ssau.tk.LR2.ui.dto.NamedCompositeFunctionDTO;
+import ru.ssau.tk.LR2.ui.exceptions.CompositeFunctionAlreadyExists;
 import ru.ssau.tk.LR2.ui.exceptions.NoSuchCompositeFunctionException;
 
 import java.util.HashMap;
@@ -60,12 +61,18 @@ public class InMemoryFunctionStorage implements TabulatedFunctionStorageInterfac
     }
 
     @Override
-    public void addCompositeFunction(SecurityContext ctx, String name, String func1, String func2) throws AuthException, NoSuchCompositeFunctionException {
+    public void addCompositeFunction(SecurityContext ctx, String name, String func1, String func2) throws AuthException, NoSuchCompositeFunctionException, CompositeFunctionAlreadyExists {
         String token = getKey(ctx);
+        if(compositeHelper.isSimpleFunction(name)) throw new CompositeFunctionAlreadyExists("Такая простая функция уже существует");
 
         if (Objects.isNull(composite_functions.get(token))) composite_functions.put(token, new HashMap<>());
         Map<String, CompositeFunction> userData = composite_functions.get(token);
-        userData.put(name, compositeHelper.constructFunction(ctx, this, func1, func2));
+        if(Objects.isNull(userData.get(name))) {
+            userData.put(name, compositeHelper.constructFunction(ctx, this, func1, func2));
+        }else{
+            throw new CompositeFunctionAlreadyExists("Такая функция уже существует!");
+
+        }
     }
 
 

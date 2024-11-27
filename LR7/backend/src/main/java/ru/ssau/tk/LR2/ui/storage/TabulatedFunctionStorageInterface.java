@@ -5,6 +5,7 @@ import org.springframework.security.core.context.SecurityContext;
 import ru.ssau.tk.LR2.functions.CompositeFunction;
 import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 import ru.ssau.tk.LR2.ui.dto.NamedCompositeFunctionDTO;
+import ru.ssau.tk.LR2.ui.exceptions.CompositeFunctionAlreadyExists;
 import ru.ssau.tk.LR2.ui.exceptions.NoSuchCompositeFunctionException;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface TabulatedFunctionStorageInterface {
 
     List<NamedCompositeFunctionDTO> getCompositeFunctions(SecurityContext ctx) throws AuthException;
     CompositeFunction getCompositeFunction(SecurityContext ctx, String name) throws AuthException, NoSuchCompositeFunctionException;
-    void addCompositeFunction(SecurityContext ctx, String name, String func1, String func2) throws AuthException, NoSuchCompositeFunctionException;
+    void addCompositeFunction(SecurityContext ctx, String name, String func1, String func2) throws AuthException, CompositeFunctionAlreadyExists, NoSuchCompositeFunctionException;
 
 }

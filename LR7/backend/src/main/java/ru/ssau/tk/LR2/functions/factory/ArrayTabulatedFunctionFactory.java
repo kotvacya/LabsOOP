@@ -6,7 +6,7 @@ import ru.ssau.tk.LR2.functions.MathFunction;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
 import ru.ssau.tk.LR2.ui.annotations.TabulatedFactory;
 
-@TabulatedFactory(canonName = "Фабрика табулированных массивов")
+@TabulatedFactory(canonName = "Фабрика массивов")
 public class ArrayTabulatedFunctionFactory implements TabulatedFunctionFactory {
 
     @Override

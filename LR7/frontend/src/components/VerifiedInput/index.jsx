@@ -17,7 +17,7 @@ export default ({ value, setValue, checkCorrect, disabled, className, ...rest })
 				disabled && styles.disabled,
 				className
 			)}
-			value={value || ''}
+			value={value != null ? value : ''}
 			onChange={onChange}
 			{...rest}
 		/>

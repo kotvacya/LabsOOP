@@ -6,7 +6,7 @@ import ru.ssau.tk.LR2.functions.MathFunction;
 import ru.ssau.tk.LR2.functions.TabulatedFunction;
 import ru.ssau.tk.LR2.ui.annotations.TabulatedFactory;
 
-@TabulatedFactory(canonName = "Фабрика табулированных связных списков")
+@TabulatedFactory(canonName = "Фабрика связных списков")
 public class LinkedListTabulatedFunctionFactory implements TabulatedFunctionFactory {
 
     @Override
