@@ -35,7 +35,11 @@ export default () => {
 
 			<ApplyButton className={styles.btn} onClick={onApply} />
 
-			<OperandFunction id={2} immutable />
+			{cur == 'integral' ? (
+				<input type='number' className={styles.input} placeholder='поле ответа' />
+			) : (
+				<OperandFunction id={2} immutable />
+			)}
 		</div>
 	)
 }
