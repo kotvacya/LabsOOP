@@ -1,29 +1,16 @@
 'use client'
 import OperandFunction from '@/components/OperandFunction'
 import VerifiedInput from '@/components/VerifiedInput'
+import instance from '@/utils/axiosInstance'
 import classNames from '@/utils/classNames'
 import { floatVerifier } from '@/utils/verifiers'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import Chart from '../../components/Chart'
 import styles from './page.module.css'
-import { useDispatch, useSelector } from 'react-redux'
-import instance from '@/utils/axiosInstance'
-
-//mocks
-const insertable = true
-const len = 9
-const x = Array.from({ length: len }, (el, i) => i)
-const y = Array.from({ length: len }, () => Math.random() * 10)
-const arr = []
-for (let i = 0; i < len; ++i) arr.push({ id: i, x: x[i], y: y[i] })
-const mock = { apply: (el) => 20 }
-let id = 0
 
 export default () => {
-	const dispatch = useDispatch()
 	const functions = useSelector((state) => state.operands.functions)
-
-	const [points, setPoints] = useState(arr) // TODO
 	const [input, setInput] = useState({ x: '', y: '' })
 
 	const setX = (v) => setInput((prev) => ({ ...prev, x: v }))
@@ -34,12 +21,12 @@ export default () => {
 
 	const onApply = async (e) => {
 		e.preventDefault()
-		const response = await instance.get("/tabulated/operands/3/apply", {
+		const response = await instance.get('/tabulated/operands/3/apply', {
 			params: {
-				x: input.x
-			}
+				x: input.x,
+			},
 		})
-		
+
 		setY(response.data)
 	}
 
@@ -48,11 +35,14 @@ export default () => {
 		setPoints((prev) => [...prev, { id: id--, x: input.x, y: input.y }]) // TODO set(new_arr)
 	}
 
-	const points2 = functions[3]?.points || []
+	const points = functions[3]?.points || []
+	const insertable = functions[3]?.insertable || false
 
 	return (
 		<div className={styles.wrapper}>
-			<OperandFunction id={3} points={points2} />
+			<div className={styles.operand}>
+				<OperandFunction id={3} points={points} />
+			</div>
 
 			<div className={styles.apply}>
 				<VerifiedInput
@@ -89,11 +79,14 @@ export default () => {
 			</div>
 
 			<div className={styles.chart}>
-				{points2.length !== 0 && <Chart
-					className={styles.graph}
-					xData={ points2.map((el) => el.x) }
-					yData={ points2.map((el) => el.y) }
-				/>} 
+				{points.length != 0 && (
+					<Chart
+						className={styles.graph}
+						xData={points.map((el) => el.x)}
+						yData={points.map((el) => el.y)}
+					/>
+				)}
+				{points.length == 0 && 'Здесь будет график...'}
 			</div>
 		</div>
 	)

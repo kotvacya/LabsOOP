@@ -5,6 +5,7 @@ import OperatorButton from '@/components/OperandFunction/Buttons/OperatorButton'
 import { setOperand } from '@/store/slices/operandSlice'
 import instance from '@/utils/axiosInstance'
 import classNames from '@/utils/classNames'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './page.module.css'
 
@@ -12,6 +13,7 @@ const unary = ['derivative', 'integral']
 
 export default () => {
 	const dispatch = useDispatch()
+	const [text, setText] = useState()
 	const cur = useSelector((state) => state.operator)?.current
 
 	async function onApply(e) {
@@ -22,7 +24,8 @@ export default () => {
 			},
 		})
 
-		dispatch(setOperand({ id: 2, data: response.data }))
+		if (cur == 'integral') setText(response.data)
+		else dispatch(setOperand({ id: 2, data: response.data }))
 	}
 
 	return (
@@ -36,7 +39,7 @@ export default () => {
 			<ApplyButton className={styles.btn} onClick={onApply} />
 
 			{cur == 'integral' ? (
-				<input type='number' className={styles.input} placeholder='поле ответа' />
+				<input className={styles.input} value={text} placeholder='поле ответа' readOnly />
 			) : (
 				<OperandFunction id={2} immutable />
 			)}

@@ -49,11 +49,17 @@
 }
 
 .chart {
-	flex-grow: 1;
+	width: 50%;
 	height: calc(100vh - var(--header-height) - 8vh);
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	border: 2px solid var(--black);
+	border-radius: var(--button-border-radius);
+}
+
+.chart:hover {
+	border-color: var(--light-blue);
 }
 
 .graph {

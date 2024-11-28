@@ -160,8 +160,8 @@ public class OperandsController {
     @GetMapping("/methods")
     public List<OperationDTO> getOperations() {
         List<OperationDTO> res = new ArrayList<>(operationService.getAllOperations());
-        res.add(new OperationDTO("derivative", "∂"));
-        res.add(new OperationDTO("integral", "ƒ"));
+        res.add(new OperationDTO("derivative", "\uD835\uDF15"));
+        res.add(new OperationDTO("integral", "∫"));
         return res;
     }
 
