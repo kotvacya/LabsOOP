@@ -42,13 +42,12 @@
 	border-bottom-right-radius: 0;
 }
 
-.dropdown:hover > .dropdown_content {
+.dropdown_content_hover {
 	display: flex;
 }
 
 .element_btn {
 	width: 100%;
-	display: block;
 	border-top: 2px solid var(--black);
 	font-size: 1.4rem;
 	padding: 4px 0;

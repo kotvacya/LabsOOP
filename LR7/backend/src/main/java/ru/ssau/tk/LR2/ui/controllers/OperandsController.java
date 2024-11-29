@@ -144,6 +144,7 @@ public class OperandsController {
     @GetMapping("/{id}/applyIntegral")
     public Double applyOperand(@PathVariable("id") Integer func_index) throws AuthException, BaseUIException {
         TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), func_index);
+        if(Objects.isNull(function)) throw new OperationFailedException("Функция-аргумент интеграла пустая");
         IntegralTask integralTask = new IntegralTask(function);
         return integralTask.call();
     }
@@ -180,8 +181,10 @@ public class OperandsController {
 
         TabulatedFunction result;
         if(operation.equals("derivative")){
+            TabulatedFunction function = temp_storage.getOperand(ctx, 1);
+            if(Objects.isNull(function)) throw new OperationFailedException("Функция-аргумент производной пустая");
             TabulatedDifferentialOperator differentialOperator = new TabulatedDifferentialOperator(factory);
-            result = differentialOperator.derive(temp_storage.getOperand(ctx, 1));
+            result = differentialOperator.derive(function);
         }else {
             result = operationService.apply(operation,
                     new TabulatedFunctionOperationService(factory),

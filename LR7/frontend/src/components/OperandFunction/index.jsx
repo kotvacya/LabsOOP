@@ -22,7 +22,7 @@ export default ({ id, immutable }) => {
 	async function onCreate(e) {
 		await instance.post('/tabulated/operands/get', null, { params: { index: id } })
 		await dispatch(fetchCurrentFunction()).unwrap()
-		router.push(`/?copy_to=${id}&return_to=${pathname}`)
+		router.push(`/create?copy_to=${id}&return_to=${pathname}`)
 	}
 
 	const opts = {
@@ -108,7 +108,7 @@ export default ({ id, immutable }) => {
 				points={data?.points}
 				onAdd={data?.insertable && onInsert}
 				onRemove={data?.removable && (data?.points?.length || 0) > 2 && onRemove}
-				factory={data?.simpleName || 'TabulatedFunction'}
+				factory={data?.simpleName || 'TabulatedFunction(null)'}
 			/>
 		</div>
 	)
