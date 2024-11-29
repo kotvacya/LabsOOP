@@ -26,6 +26,7 @@ import ru.ssau.tk.LR2.ui.dto.ArrayTabulatedResponseDTO;
 import ru.ssau.tk.LR2.ui.dto.OperationDTO;
 import ru.ssau.tk.LR2.ui.exceptions.BaseUIException;
 import ru.ssau.tk.LR2.ui.exceptions.NoSuchOperationException;
+import ru.ssau.tk.LR2.ui.exceptions.OperationFailedException;
 import ru.ssau.tk.LR2.ui.services.SerializationDeserializationService;
 import ru.ssau.tk.LR2.ui.services.TabulatedOperationService;
 import ru.ssau.tk.LR2.ui.storage.FunctionStorageFactory;
@@ -109,6 +110,9 @@ public class OperandsController {
     public ArrayTabulatedResponseDTO removeIndexOperand(@PathVariable("id") Integer func_index, @NonNull @RequestParam("index") Integer index) throws AuthException, BaseUIException {
         TabulatedFunction function = temp_storage.getOperand(securityContextHolderStrategy.getContext(), func_index);
         if(function instanceof Removable removable){
+            if(function.getCount() <= 2){
+                throw new OperationFailedException("У функции не может быть < 2 точек");
+            }
             removable.remove(index);
         }else{
             throw new NoSuchOperationException("this function doesn't implement Removable interface");

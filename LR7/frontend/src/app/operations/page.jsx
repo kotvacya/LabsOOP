@@ -8,6 +8,7 @@ import classNames from '@/utils/classNames'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './page.module.css'
+import { createTimeLimitedPopup } from '@/store/slices/confirmationModalSlice'
 
 const unary = ['derivative', 'integral']
 
@@ -18,14 +19,24 @@ export default () => {
 
 	async function onApply(e) {
 		e.preventDefault()
-		const response = await instance.post('/tabulated/operands/apply', null, {
-			params: {
-				operation: cur,
-			},
-		})
+		
+		try{
+			let response;
+			if(cur === "integral"){
+				response = await instance.get('/tabulated/operands/1/applyIntegral')
+			}else{
+				response = await instance.post('/tabulated/operands/apply', null, {
+					params: {
+						operation: cur,
+					},
+				})
+			}
 
-		if (cur == 'integral') setText(response.data)
-		else dispatch(setOperand({ id: 2, data: response.data }))
+			if (cur == 'integral') setText(response.data)
+			else dispatch(setOperand({ id: 2, data: response.data }))
+		}catch(error){
+			dispatch(createTimeLimitedPopup({ success: false, message: error.response?.data?.error || error, duration: 5 }))
+		}
 	}
 
 	return (

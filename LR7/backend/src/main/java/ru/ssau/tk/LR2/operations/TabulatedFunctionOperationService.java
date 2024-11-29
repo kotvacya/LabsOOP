@@ -7,6 +7,8 @@ import ru.ssau.tk.LR2.functions.factory.ArrayTabulatedFunctionFactory;
 import ru.ssau.tk.LR2.functions.factory.TabulatedFunctionFactory;
 import ru.ssau.tk.LR2.ui.annotations.TabulatedOperation;
 
+import java.util.Objects;
+
 public class TabulatedFunctionOperationService {
 
     private TabulatedFunctionFactory factory;
@@ -41,8 +43,11 @@ public class TabulatedFunctionOperationService {
     }
 
     private TabulatedFunction doOperation(TabulatedFunction a, TabulatedFunction b, BiOperation operation) {
+        if(Objects.isNull(a)) throw new InconsistentFunctionsException("Функция 1 не задана");
+        if(Objects.isNull(b)) throw new InconsistentFunctionsException("Функция 2 не задана");
+
         int count = a.getCount();
-        if (count != b.getCount()) throw new InconsistentFunctionsException();
+        if (count != b.getCount()) throw new InconsistentFunctionsException("Точки не совпадают");
 
         Point[] arrA = TabulatedFunctionOperationService.asPoints(a);
         Point[] arrB = TabulatedFunctionOperationService.asPoints(b);
@@ -51,7 +56,7 @@ public class TabulatedFunctionOperationService {
         double[] yValues = new double[count];
 
         for (int i = 0; i < count; i++) {
-            if (arrA[i].x != arrB[i].x) throw new InconsistentFunctionsException();
+            if (arrA[i].x != arrB[i].x) throw new InconsistentFunctionsException("Точки не совпадают");
             xValues[i] = arrA[i].x;
             yValues[i] = operation.apply(arrA[i].y, arrB[i].y);
         }

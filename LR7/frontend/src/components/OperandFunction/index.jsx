@@ -107,7 +107,7 @@ export default ({ id, immutable }) => {
 			<ArrayFunction
 				points={data?.points}
 				onAdd={data?.insertable && onInsert}
-				onRemove={data?.removable && onRemove}
+				onRemove={data?.removable && (data?.points?.length || 0) > 2 && onRemove}
 				factory={data?.simpleName || 'TabulatedFunction'}
 			/>
 		</div>
