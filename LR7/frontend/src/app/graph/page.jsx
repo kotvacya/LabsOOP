@@ -2,8 +2,14 @@
 import ExploreGraph from '@/components/ExploreGraph'
 import OperandFunction from '@/components/OperandFunction'
 import { useSelector } from 'react-redux'
-import Chart from '../../components/Chart'
+//import Chart from '../../components/Chart'
 import styles from './page.module.css'
+
+import dynamic from 'next/dynamic'
+
+const Chart = dynamic(() => import('../../components/Chart'), {
+	ssr: false
+})
 
 export default () => {
 	const functions = useSelector((state) => state.operands.functions)

@@ -9,8 +9,9 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import instance from '@/utils/axiosInstance'
 import { useDispatch } from 'react-redux'
 import { fetchOperand } from '@/store/slices/operandSlice'
+import { Suspense } from 'react'
 
-export default () => {
+function CreateFunction(){
 	const [choice, setChoice] = useState(0)
 	const dispatch = useDispatch()
 	const router = useRouter()
@@ -35,4 +36,10 @@ export default () => {
 			{choice == 2 && <NewFuncComposite />}
 		</div>
 	)
+}
+
+export default () => {
+	return (<Suspense>
+		<CreateFunction/>
+	</Suspense>)
 }

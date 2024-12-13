@@ -25,27 +25,27 @@ export default function RootLayout({ children }) {
 const comfortaa = localFont({
 	src: [
 		{
-			path: '../../public/Fonts/Comfortaa-Light.ttf',
+			path: '../../public/fonts/Comfortaa-Light.ttf',
 			weight: '300',
 			style: 'light',
 		},
 		{
-			path: '../../public/Fonts/Comfortaa-Regular.ttf',
+			path: '../../public/fonts/Comfortaa-Regular.ttf',
 			weight: '400',
 			style: 'regular',
 		},
 		{
-			path: '../../public/Fonts/Comfortaa-Medium.ttf',
+			path: '../../public/fonts/Comfortaa-Medium.ttf',
 			weight: '500',
 			style: 'medium',
 		},
 		{
-			path: '../../public/Fonts/Comfortaa-SemiBold.ttf',
+			path: '../../public/fonts/Comfortaa-SemiBold.ttf',
 			weight: '600',
 			style: 'semi-bold',
 		},
 		{
-			path: '../../public/Fonts/Comfortaa-Bold.ttf',
+			path: '../../public/fonts/Comfortaa-Bold.ttf',
 			weight: '700',
 			style: 'bold',
 		},

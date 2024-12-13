@@ -4,11 +4,12 @@ const nextConfig = {
         return [
             {
                 source: "/api/:path*",
-                destination: "http://localhost:8080/:path*",
+                destination: "http://backend:8080/:path*",
             },
         ];
     },
     skipTrailingSlashRedirect: true,
+    output: "standalone",
 };
 
 export default nextConfig;
